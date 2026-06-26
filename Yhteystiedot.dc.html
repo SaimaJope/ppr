@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'Archivo',system-ui,sans-serif;color:#14181F;background:#F0F2F6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  p{text-wrap:pretty}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:#015AFF;color:#fff}
+  .lbl{font-family:'Archivo Narrow',sans-serif;text-transform:uppercase;letter-spacing:.14em}
+  @media (max-width:980px){
+    [data-split]{grid-template-columns:1fr !important}
+    [data-srow]{grid-template-columns:1fr !important;gap:6px !important}
+    [data-grid3]{grid-template-columns:1fr 1fr !important}
+    [data-hero-h1]{font-size:50px !important}
+    [data-util-left]{display:none !important}
+    [data-sec]{padding-top:64px !important;padding-bottom:64px !important}
+  }
+  @media (max-width:860px){
+    [data-navlinks]{display:none !important}
+    [data-menubtn]{display:inline-flex !important}
+  }
+  @media (max-width:600px){
+    [data-grid3]{grid-template-columns:1fr !important}
+    [data-hero-h1]{font-size:38px !important}
+    [data-footcols]{grid-template-columns:1fr 1fr !important}
+  }
+</style>
+</helmet>
+
+<div style="background:#F0F2F6">
+
+  <!-- TOP BAR -->
+  <div style="background:#0E1116;color:#9AA6BD;font-size:13px">
+    <div style="max-width:1300px;margin:0 auto;padding:0 32px;height:42px;display:flex;align-items:center;justify-content:space-between">
+      <div data-util-left>Porvoon Paalurakenne Oy</div>
+      <div style="display:flex;align-items:center;gap:26px">
+        <a href="tel:+358196630666" style="color:#C7D0E0" style-hover="color:#fff">Toimisto (019) 663 0666</a>
+        <a href="tel:+358405666074" style="display:flex;align-items:center;gap:8px;color:#fff" style-hover="color:#5C97FF">
+          <span style="width:7px;height:7px;border-radius:50%;background:#015AFF;display:inline-block"></span>
+          24h päivystys 040 566 6074
+        </a>
+        <span style="display:flex;gap:9px;align-items:center;color:#6B7588">
+          <a href="#" style="color:#fff">FI</a><span>/</span>
+          <a href="#" style-hover="color:#fff">SV</a><span>/</span>
+          <a href="#" style-hover="color:#fff">EN</a>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav style="position:sticky;top:0;z-index:50;background:#F0F2F6;border-bottom:1px solid rgba(14,17,22,.12)">
+    <div style="max-width:1300px;margin:0 auto;padding:0 32px;height:74px;display:flex;align-items:center;justify-content:space-between">
+      <a href="Etusivu.dc.html" style="display:flex;align-items:center">
+        <img src="assets/ppr-mark.png" alt="PPR" style="height:27px;width:auto;display:block">
+      </a>
+      <div data-navlinks style="display:flex;align-items:center;gap:36px;font-size:16px;font-weight:500">
+        <a href="Palvelut.dc.html" style-hover="color:#015AFF">Palvelut</a>
+        <a href="Referenssit.dc.html" style-hover="color:#015AFF">Referenssit</a>
+        <a href="Yritys.dc.html" style-hover="color:#015AFF">Yritys</a>
+        <a href="Ura.dc.html" style-hover="color:#015AFF">Ura</a>
+        <a href="Yhteystiedot.dc.html" style="color:#015AFF">Yhteystiedot</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px">
+        <a href="Yhteystiedot.dc.html" style="background:#015AFF;color:#fff;font-weight:600;font-size:15px;padding:11px 22px" style-hover="background:#01266A">Pyydä tarjous</a>
+        <button data-menubtn onClick="{{ toggleMenu }}" style="display:none;align-items:center;justify-content:center;width:46px;height:44px;background:transparent;border:1px solid rgba(14,17,22,.2);color:#14181F;cursor:pointer;font-size:20px">≡</button>
+      </div>
+    </div>
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="border-top:1px solid rgba(14,17,22,.12);background:#F0F2F6">
+        <div style="max-width:1300px;margin:0 auto;padding:8px 24px 20px 24px;display:flex;flex-direction:column">
+          <a href="Palvelut.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">Palvelut</a>
+          <a href="Referenssit.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">Referenssit</a>
+          <a href="Yritys.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">Yritys</a>
+          <a href="Ura.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">Ura</a>
+          <a href="Yhteystiedot.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500">Yhteystiedot</a>
+        </div>
+      </div>
+    </sc-if>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <header style="background:#0E1116;color:#F0F2F6;position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.05) 0 1px,transparent 1px 16px)"></div>
+    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 32px">
+      <div style="padding-top:42px;font-size:13px;color:#5A6678" class="lbl"><a href="Etusivu.dc.html" style-hover="color:#fff">Etusivu</a> / <span style="color:#9AA6BD">Yhteystiedot</span></div>
+      <div style="max-width:860px;padding:52px 0 68px 0">
+        <div class="lbl" style="font-size:13px;color:#5C97FF;font-weight:600;margin-bottom:22px">Yhteystiedot</div>
+        <h1 data-hero-h1 style="font-size:clamp(40px,5.6vw,80px);line-height:1.0;font-weight:800;letter-spacing:-.025em;margin:0">Ota yhteyttä.</h1>
+        <p style="font-size:clamp(17px,1.5vw,20px);line-height:1.55;color:#C2CBDB;max-width:640px;margin:28px 0 0 0">Toimisto Askolassa ja varikko Kilpilahden Kulloossa. Kilpilahden 24h päivystys palvelee ympäri vuorokauden.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- LOCATIONS -->
+  <section data-sec style="background:#fff">
+    <div style="max-width:1300px;margin:0 auto;padding:88px 32px">
+      <div data-grid3 style="display:grid;grid-template-columns:1fr 1fr;gap:28px">
+        <div style="border:1px solid rgba(14,17,22,.12);padding:36px">
+          <div class="lbl" style="font-size:12px;color:#015AFF;font-weight:600;margin-bottom:16px">Toimisto</div>
+          <div style="font-size:22px;font-weight:700;margin-bottom:14px">Askola</div>
+          <div style="font-size:17px;line-height:1.7;color:#28303C">Pappilantie 2<br>07500 Askola</div>
+          <div style="font-size:17px;line-height:1.9;margin-top:14px"><a href="tel:+358196630666" style="color:#015AFF" style-hover="color:#01266A">(019) 663 0666</a><br><a href="mailto:toimisto@ppr.fi" style="color:#015AFF" style-hover="color:#01266A">toimisto@ppr.fi</a></div>
+        </div>
+        <div style="border:1px solid rgba(14,17,22,.12);padding:36px">
+          <div class="lbl" style="font-size:12px;color:#015AFF;font-weight:600;margin-bottom:16px">Varikko ja varasto</div>
+          <div style="font-size:22px;font-weight:700;margin-bottom:14px">Kulloo, Kilpilahti</div>
+          <div style="font-size:17px;line-height:1.7;color:#28303C">Nybyntie 16<br>06850 Kulloo</div>
+          <div style="font-size:17px;line-height:1.9;margin-top:14px;font-weight:600">24h päivystys<br><a href="tel:+358405666074" style="color:#015AFF" style-hover="color:#01266A">040 566 6074</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section data-sec style="background:#F0F2F6">
+    <div style="max-width:1300px;margin:0 auto;padding:88px 32px">
+      <div class="lbl" style="font-size:13px;color:#015AFF;font-weight:600;margin-bottom:20px">Avainhenkilöt</div>
+      <h2 style="font-size:clamp(26px,3vw,40px);line-height:1.1;font-weight:700;letter-spacing:-.02em;margin:0 0 44px 0">Ota yhteyttä suoraan.</h2>
+      <div data-grid3 style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+        <sc-for list="{{ team }}" as="m" hint-placeholder-count="9">
+          <div style="background:#fff;border:1px solid rgba(14,17,22,.10);padding:28px">
+            <div style="font-size:20px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px">{{ m.name }}</div>
+            <div style="font-size:15px;color:#56607A;line-height:1.45;margin-bottom:18px;min-height:42px">{{ m.role }}</div>
+            <div style="font-size:16px;line-height:1.7;border-top:1px solid rgba(14,17,22,.10);padding-top:16px"><a href="{{ m.tel }}" style="color:#015AFF" style-hover="color:#01266A">{{ m.phone }}</a><br><a href="{{ m.mailto }}" style="color:#28303C" style-hover="color:#015AFF">{{ m.email }}</a></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- INVOICING -->
+  <section data-sec style="background:#0E1116;color:#F0F2F6">
+    <div style="max-width:1300px;margin:0 auto;padding:88px 32px">
+      <div data-split style="display:grid;grid-template-columns:0.8fr 1.2fr;gap:64px;align-items:start">
+        <div>
+          <div class="lbl" style="font-size:13px;color:#5C97FF;font-weight:600;margin-bottom:20px">Laskutus</div>
+          <h2 style="font-size:clamp(24px,2.6vw,34px);line-height:1.12;font-weight:700;letter-spacing:-.02em;margin:0 0 14px 0">Laskutustiedot</h2>
+          <div style="font-size:15px;color:#9AA6BD">Y-tunnus 2026187-3</div>
+        </div>
+        <div data-grid3 style="display:grid;grid-template-columns:1fr 1fr;gap:32px 48px;font-size:16px;line-height:1.6">
+          <div><div style="color:#7E89A0;font-size:14px;margin-bottom:6px">Verkkolaskuosoite / OVT</div><div style="color:#F0F2F6;font-weight:600">003720261873</div></div>
+          <div><div style="color:#7E89A0;font-size:14px;margin-bottom:6px">Operaattori / OVT</div><div style="color:#F0F2F6;font-weight:600">PAGERO 003723609900</div></div>
+          <div><div style="color:#7E89A0;font-size:14px;margin-bottom:6px">Sähköpostilasku</div><div style="color:#F0F2F6;font-weight:600">003720261873@xbs-salo.com</div></div>
+          <div><div style="color:#7E89A0;font-size:14px;margin-bottom:6px">Paperilasku</div><div style="color:#F0F2F6;font-weight:600">Porvoon Paalurakenne Oy<br>OVT 003720261873<br>PL 908, 02066 DOCUSCAN</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- CONTACT STRIP -->
+  <section style="background:#01266A;color:#F0F2F6">
+    <div style="max-width:1300px;margin:0 auto;padding:64px 32px">
+      <div data-split style="display:grid;grid-template-columns:1fr auto;gap:36px;align-items:center">
+        <div>
+          <h2 style="font-size:clamp(24px,2.8vw,38px);line-height:1.12;font-weight:700;letter-spacing:-.02em;margin:0">Keskustellaan kohteestasi.</h2>
+          <p style="font-size:17px;color:#B6C6F0;margin:14px 0 0 0">Pyydä tarjous tai soita. Kilpilahden 24h päivystys palvelee ympäri vuorokauden.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+          <a href="tel:+358405666074" style="background:#015AFF;color:#fff;font-weight:600;font-size:18px;padding:16px 28px;display:inline-flex;align-items:center;gap:12px" style-hover="background:#fff;color:#01266A">
+            <span style="width:9px;height:9px;border-radius:50%;background:#fff;display:inline-block"></span>
+            24h päivystys 040 566 6074
+          </a>
+          <a href="tel:+358196630666" style="color:#B6C6F0;font-size:16px;padding-left:4px" style-hover="color:#fff">Toimisto (019) 663 0666</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#0E1116;color:#9AA6BD">
+    <div style="max-width:1300px;margin:0 auto;padding:80px 32px 36px 32px">
+      <div data-footcols style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1.3fr;gap:48px;padding-bottom:56px;border-bottom:1px solid rgba(128,147,181,.18)">
+        <div>
+          <img src="assets/ppr-mark-white.png" alt="PPR" style="height:30px;width:auto;display:block;margin-bottom:22px">
+          <p style="font-size:15px;line-height:1.65;color:#9AA6BD;margin:0 0 22px 0;max-width:300px">Porvoon Paalurakenne Oy tuottaa rakentamispalveluja teollisuudelle sekä julkisille asiakkaille Etelä-Suomen alueella.</p>
+          <div style="font-size:14px;color:#6B7588">Y-tunnus 2026187-3</div>
+        </div>
+        <div>
+          <div class="lbl" style="font-size:12px;color:#F0F2F6;margin-bottom:18px;font-weight:600">Sivut</div>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px;font-size:15px">
+            <li><a href="Palvelut.dc.html" style-hover="color:#fff">Palvelut</a></li>
+            <li><a href="Referenssit.dc.html" style-hover="color:#fff">Referenssit</a></li>
+            <li><a href="Yritys.dc.html" style-hover="color:#fff">Yritys</a></li>
+            <li><a href="Ura.dc.html" style-hover="color:#fff">Ura</a></li>
+            <li><a href="Yhteystiedot.dc.html" style-hover="color:#fff">Yhteystiedot</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="lbl" style="font-size:12px;color:#F0F2F6;margin-bottom:18px;font-weight:600">Toimisto</div>
+          <div style="font-size:15px;line-height:1.7">
+            <div style="color:#C7D0E0;margin-bottom:2px">Pappilantie 2</div>
+            <div style="color:#C7D0E0;margin-bottom:12px">07500 Askola</div>
+            <div><a href="tel:+358196630666" style-hover="color:#fff">(019) 663 0666</a></div>
+            <div><a href="mailto:toimisto@ppr.fi" style="color:#5C97FF" style-hover="color:#fff">toimisto@ppr.fi</a></div>
+          </div>
+        </div>
+        <div>
+          <div class="lbl" style="font-size:12px;color:#F0F2F6;margin-bottom:18px;font-weight:600">Varikko / Kilpilahti</div>
+          <div style="font-size:15px;line-height:1.7">
+            <div style="color:#C7D0E0;margin-bottom:2px">Nybyntie 16</div>
+            <div style="color:#C7D0E0;margin-bottom:12px">06850 Kulloo</div>
+            <div style="color:#fff;font-weight:600">24h päivystys</div>
+            <div><a href="tel:+358405666074" style="color:#5C97FF" style-hover="color:#fff">040 566 6074</a></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding-top:26px;font-size:13px;color:#6B7588">
+        <span>© 2026 Porvoon Paalurakenne Oy</span>
+        <span style="display:flex;gap:22px;align-items:center">
+          <a href="Yhteystiedot.dc.html" style-hover="color:#fff">Laskutus ja OVT</a>
+          <a href="https://app.easywhistle.com/report/ppr/" style-hover="color:#fff">Whistleblowing-ilmoituskanava</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { menuOpen: false };
+  renderVals() {
+    return {
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
+      team: [
+        { name: 'Marko Paavola', role: 'Hallituksen puheenjohtaja, rakennusmestari', phone: '0400 714 532', tel: 'tel:+358400714532', email: 'marko.paavola@ppr.fi', mailto: 'mailto:marko.paavola@ppr.fi' },
+        { name: 'Jaani Karavirta', role: 'Toimitusjohtaja, rakennusmestari', phone: '0400 840 912', tel: 'tel:+358400840912', email: 'jaani.karavirta@ppr.fi', mailto: 'mailto:jaani.karavirta@ppr.fi' },
+        { name: 'Camilla Paavola', role: 'Talouspäällikkö', phone: '0400 351 804', tel: 'tel:+358400351804', email: 'camilla.paavola@ppr.fi', mailto: 'mailto:camilla.paavola@ppr.fi' },
+        { name: 'Tomi Hyppönen', role: 'Työsuojelupäällikkö / varastopäällikkö', phone: '0400 310 257', tel: 'tel:+358400310257', email: 'tomi.hypponen@ppr.fi', mailto: 'mailto:tomi.hypponen@ppr.fi' },
+        { name: 'Mikko Myllynen', role: 'Työmaapäällikkö, rakennusinsinööri', phone: '040 755 5133', tel: 'tel:+358407555133', email: 'mikko.myllynen@ppr.fi', mailto: 'mailto:mikko.myllynen@ppr.fi' },
+        { name: 'Mikael Tapanainen', role: 'Työmaapäällikkö, rakennusinsinööri', phone: '040 775 5006', tel: 'tel:+358407755006', email: 'mikael.tapanainen@ppr.fi', mailto: 'mailto:mikael.tapanainen@ppr.fi' },
+        { name: 'Juha Yletyinen', role: 'Kärkimies', phone: '040 513 7781', tel: 'tel:+358405137781', email: 'juha.yletyinen@ppr.fi', mailto: 'mailto:juha.yletyinen@ppr.fi' },
+        { name: 'Tarmo Kukkonen', role: 'Kärkimies', phone: '0400 920 891', tel: 'tel:+358400920891', email: 'tarmo.kukkonen@ppr.fi', mailto: 'mailto:tarmo.kukkonen@ppr.fi' },
+        { name: 'Mika Viitanen', role: 'Kärkimies', phone: '044 203 8822', tel: 'tel:+358442038822', email: 'mika.viitanen@ppr.fi', mailto: 'mailto:mika.viitanen@ppr.fi' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

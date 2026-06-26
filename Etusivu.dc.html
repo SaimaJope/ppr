@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'Archivo',system-ui,sans-serif;color:#14181F;background:#F0F2F6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  p{text-wrap:pretty}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:#015AFF;color:#fff}
+  .lbl{font-family:'Archivo Narrow',sans-serif;text-transform:uppercase;letter-spacing:.14em}
+  @media (max-width:980px){
+    [data-split]{grid-template-columns:1fr !important}
+    [data-srow]{grid-template-columns:1fr !important;gap:6px !important}
+    [data-grid3]{grid-template-columns:1fr 1fr !important}
+    [data-hero-h1]{font-size:50px !important}
+    [data-util-left]{display:none !important}
+    [data-sec]{padding-top:64px !important;padding-bottom:64px !important}
+  }
+  @media (max-width:860px){
+    [data-navlinks]{display:none !important}
+    [data-menubtn]{display:inline-flex !important}
+  }
+  @media (max-width:600px){
+    [data-grid3]{grid-template-columns:1fr !important}
+    [data-hero-h1]{font-size:38px !important}
+    [data-footcols]{grid-template-columns:1fr 1fr !important}
+  }
+</style>
+</helmet>
+
+<div style="background:#F0F2F6">
+
+  <!-- TOP BAR -->
+  <div style="background:#0E1116;color:#9AA6BD;font-size:13px">
+    <div style="max-width:1300px;margin:0 auto;padding:0 32px;height:42px;display:flex;align-items:center;justify-content:space-between">
+      <div data-util-left>Porvoon Paalurakenne Oy</div>
+      <div style="display:flex;align-items:center;gap:26px">
+        <a href="tel:+358196630666" style="color:#C7D0E0" style-hover="color:#fff">Toimisto (019) 663 0666</a>
+        <a href="tel:+358405666074" style="display:flex;align-items:center;gap:8px;color:#fff" style-hover="color:#5C97FF">
+          <span style="width:7px;height:7px;border-radius:50%;background:#015AFF;display:inline-block"></span>
+          24h päivystys 040 566 6074
+        </a>
+        <span style="display:flex;gap:9px;align-items:center;color:#6B7588">
+          <a href="#" style="color:#fff">FI</a><span>/</span>
+          <a href="#" style-hover="color:#fff">SV</a><span>/</span>
+          <a href="#" style-hover="color:#fff">EN</a>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav style="position:sticky;top:0;z-index:50;background:#F0F2F6;border-bottom:1px solid rgba(14,17,22,.12)">
+    <div style="max-width:1300px;margin:0 auto;padding:0 32px;height:74px;display:flex;align-items:center;justify-content:space-between">
+      <a href="Etusivu.dc.html" style="display:flex;align-items:center">
+        <img src="assets/ppr-mark.png" alt="PPR" style="height:27px;width:auto;display:block">
+      </a>
+      <div data-navlinks style="display:flex;align-items:center;gap:36px;font-size:16px;font-weight:500">
+        <a href="Palvelut.dc.html" style-hover="color:#015AFF">Palvelut</a>
+        <a href="Referenssit.dc.html" style-hover="color:#015AFF">Referenssit</a>
+        <a href="Yritys.dc.html" style-hover="color:#015AFF">Yritys</a>
+        <a href="Ura.dc.html" style-hover="color:#015AFF">Ura</a>
+        <a href="Yhteystiedot.dc.html" style-hover="color:#015AFF">Yhteystiedot</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px">
+        <a href="Yhteystiedot.dc.html" style="background:#015AFF;color:#fff;font-weight:600;font-size:15px;padding:11px 22px" style-hover="background:#01266A">Pyydä tarjous</a>
+        <button data-menubtn onClick="{{ toggleMenu }}" style="display:none;align-items:center;justify-content:center;width:46px;height:44px;background:transparent;border:1px solid rgba(14,17,22,.2);color:#14181F;cursor:pointer;font-size:20px">≡</button>
+      </div>
+    </div>
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="border-top:1px solid rgba(14,17,22,.12);background:#F0F2F6">
+        <div style="max-width:1300px;margin:0 auto;padding:8px 24px 20px 24px;display:flex;flex-direction:column">
+          <a href="Palvelut.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">Palvelut</a>
+          <a href="Referenssit.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">Referenssit</a>
+          <a href="Yritys.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">Yritys</a>
+          <a href="Ura.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">Ura</a>
+          <a href="Yhteystiedot.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500">Yhteystiedot</a>
+        </div>
+      </div>
+    </sc-if>
+  </nav>
+
+  <!-- HERO -->
+  <header style="position:relative;background:#0E1116;color:#F0F2F6">
+    <div style="position:relative;height:clamp(560px,82vh,820px);overflow:hidden">
+      <div style="position:absolute;inset:0;background:#171C24"></div>
+      <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.05) 0 1px,transparent 1px 16px)"></div>
+      <div style="position:absolute;right:26px;top:22px;font-size:12px;color:#46505F" class="lbl">Valokuva: Kilpilahden prosessialue</div>
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,17,22,.94) 0%,rgba(14,17,22,.74) 46%,rgba(14,17,22,.32) 100%)"></div>
+      <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 32px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:64px">
+        <div style="max-width:840px">
+          <div class="lbl" style="font-size:13px;color:#5C97FF;margin-bottom:24px;font-weight:600">Teollisuusrakentaminen Etelä-Suomessa</div>
+          <h1 data-hero-h1 style="font-size:clamp(44px,6.6vw,96px);line-height:.98;font-weight:800;letter-spacing:-.025em;margin:0">Rakennuspalvelut teollisuudelle.</h1>
+          <p style="font-size:clamp(17px,1.5vw,20px);line-height:1.55;color:#C2CBDB;max-width:620px;margin:28px 0 0 0">Porvoon Paalurakenne Oy tuottaa rakentamispalveluja teollisuudelle sekä julkisille asiakkaille. Ydinosaamistamme on teollisuusrakentaminen Kilpilahden alueella.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:36px">
+            <a href="Palvelut.dc.html" style="background:#015AFF;color:#fff;font-weight:600;font-size:16px;padding:15px 28px" style-hover="background:#2b74ff">Tutustu palveluihin</a>
+            <a href="Referenssit.dc.html" style="border:1px solid rgba(240,242,246,.3);color:#F0F2F6;font-weight:500;font-size:16px;padding:15px 28px" style-hover="border-color:#fff;background:rgba(255,255,255,.05)">Katso referenssit</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="background:#0E1116;border-top:1px solid rgba(128,147,181,.16)">
+      <div style="max-width:1300px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;align-items:center;gap:0">
+        <sc-for list="{{ creds }}" as="c" hint-placeholder-count="4">
+          <div style="flex:1;min-width:180px;padding:20px 0;font-size:15px;color:#C2CBDB;border-left:1px solid rgba(128,147,181,.16);padding-left:20px;margin-left:-1px">
+            <span style="color:#fff;font-weight:600">{{ c.name }}</span> {{ c.sub }}
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <section data-sec style="background:#F0F2F6">
+    <div style="max-width:1300px;margin:0 auto;padding:104px 32px">
+      <div data-split style="display:grid;grid-template-columns:0.9fr 1.1fr;gap:80px;align-items:start">
+        <div>
+          <div class="lbl" style="font-size:13px;color:#015AFF;font-weight:600;margin-bottom:20px">Yritys</div>
+          <h2 style="font-size:clamp(28px,3.4vw,44px);line-height:1.1;font-weight:700;letter-spacing:-.02em;margin:0">Kokenutta rakentamista vuodesta 2006.</h2>
+        </div>
+        <div style="padding-top:6px">
+          <p style="font-size:18px;line-height:1.62;color:#3A4150;margin:0 0 20px 0">Yrityksemme työnjohtohenkilöstöllä on jo vuosikymmenien kokemus sekä vaativista teollisuusrakentamisen että muista rakennusalan töistä. Panostamme kaikessa toiminnassamme korkeaan laatuun sekä turvallisiin työtapoihin.</p>
+          <p style="font-size:18px;line-height:1.62;color:#3A4150;margin:0 0 32px 0">Toimiva ja testattu rakentamisen alihankintaverkosto Itä-Uudenmaan alueella takaa laadukkaan lopputuloksen sekä pitävät aikataulut.</p>
+          <a href="Yritys.dc.html" style="font-weight:600;font-size:16px;color:#015AFF;border-bottom:2px solid #015AFF;padding-bottom:3px" style-hover="color:#01266A;border-color:#01266A">Lue lisää yrityksestä</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES INDEX -->
+  <section data-sec id="palvelut" style="background:#fff;border-top:1px solid rgba(14,17,22,.10)">
+    <div style="max-width:1300px;margin:0 auto;padding:104px 32px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;margin-bottom:52px">
+        <div>
+          <div class="lbl" style="font-size:13px;color:#015AFF;font-weight:600;margin-bottom:20px">Palvelut</div>
+          <h2 style="font-size:clamp(28px,3.4vw,44px);line-height:1.08;font-weight:700;letter-spacing:-.02em;margin:0;max-width:560px">Rakentamispalvelut teollisuudelle ja julkisille tilaajille.</h2>
+        </div>
+        <a href="Palvelut.dc.html" style="font-weight:600;font-size:16px;color:#14181F;border-bottom:2px solid #14181F;padding-bottom:3px" style-hover="color:#015AFF;border-color:#015AFF">Kaikki palvelut</a>
+      </div>
+      <div style="border-top:1px solid rgba(14,17,22,.14)">
+        <sc-for list="{{ services }}" as="s" hint-placeholder-count="6">
+          <a href="Palvelut.dc.html" data-srow style="display:grid;grid-template-columns:1fr 1.4fr auto;gap:48px;align-items:center;padding:30px 0;border-bottom:1px solid rgba(14,17,22,.14)" style-hover="background:rgba(1,90,255,.03)">
+            <h3 style="font-size:clamp(21px,2vw,27px);font-weight:600;letter-spacing:-.01em;margin:0;line-height:1.15">{{ s.title }}</h3>
+            <p style="font-size:16px;line-height:1.55;color:#56607A;margin:0">{{ s.desc }}</p>
+            <span style="font-size:22px;color:#8093B5;justify-self:end">→</span>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- KILPILAHTI -->
+  <section data-sec style="background:#0E1116;color:#F0F2F6">
+    <div style="max-width:1300px;margin:0 auto;padding:104px 32px">
+      <div data-split style="display:grid;grid-template-columns:1.05fr 0.95fr;gap:72px;align-items:center">
+        <div>
+          <div class="lbl" style="font-size:13px;color:#5C97FF;font-weight:600;margin-bottom:22px">Erikoisosaaminen</div>
+          <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.08;font-weight:700;letter-spacing:-.02em;margin:0 0 26px 0">Teollisuusrakentaminen Kilpilahden alueella.</h2>
+          <p style="font-size:18px;line-height:1.6;color:#C2CBDB;margin:0 0 22px 0;max-width:540px">Toimimme Kilpilahdessa Neste Oilin ja Borealiksen specifikaatioiden, määräysten ja työtapojen mukaisesti. Henkilöstöllämme on voimassa olevat työturvallisuus- ja tulityökortit.</p>
+          <p style="font-size:18px;line-height:1.6;color:#C2CBDB;margin:0 0 34px 0;max-width:540px">Turvallisuus ja laatu ovat työmme perusta jokaisessa kohteessa.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <span class="lbl" style="font-size:12.5px;border:1px solid rgba(146,170,220,.32);padding:9px 15px;color:#D4DCEC">Neste</span>
+            <span class="lbl" style="font-size:12.5px;border:1px solid rgba(146,170,220,.32);padding:9px 15px;color:#D4DCEC">Borealis</span>
+            <span class="lbl" style="font-size:12.5px;border:1px solid rgba(146,170,220,.32);padding:9px 15px;color:#D4DCEC">Työturvallisuuskortti</span>
+            <span class="lbl" style="font-size:12.5px;border:1px solid rgba(146,170,220,.32);padding:9px 15px;color:#D4DCEC">Tulityökortti</span>
+          </div>
+        </div>
+        <div style="position:relative;aspect-ratio:4/5;background:#171C24;overflow:hidden;border:1px solid rgba(128,147,181,.18)">
+          <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.06) 0 1px,transparent 1px 15px)"></div>
+          <div style="position:absolute;left:18px;bottom:16px;right:18px;font-size:13px;line-height:1.5;color:#5A6678" class="lbl">Valokuva: työryhmä prosessialueella</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REFERENCES -->
+  <section data-sec style="background:#F0F2F6">
+    <div style="max-width:1300px;margin:0 auto;padding:104px 32px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;margin-bottom:48px">
+        <div>
+          <div class="lbl" style="font-size:13px;color:#015AFF;font-weight:600;margin-bottom:20px">Referenssit</div>
+          <h2 style="font-size:clamp(28px,3.4vw,44px);line-height:1.08;font-weight:700;letter-spacing:-.02em;margin:0;max-width:520px">Valittuja kohteita.</h2>
+        </div>
+        <a href="Referenssit.dc.html" style="font-weight:600;font-size:16px;color:#14181F;border-bottom:2px solid #14181F;padding-bottom:3px" style-hover="color:#015AFF;border-color:#015AFF">Kaikki referenssit</a>
+      </div>
+      <div data-grid3 style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="3">
+          <a href="Referenssit.dc.html" style="display:flex;flex-direction:column;background:#fff;border:1px solid rgba(14,17,22,.10)" style-hover="border-color:#015AFF">
+            <div style="position:relative;aspect-ratio:3/2;background:#171C24;overflow:hidden">
+              <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.06) 0 1px,transparent 1px 14px)"></div>
+              <div style="position:absolute;left:16px;bottom:14px;right:16px;font-size:12px;line-height:1.45;color:#4A5566" class="lbl">{{ p.shot }}</div>
+            </div>
+            <div style="padding:24px 24px 26px 24px;display:flex;flex-direction:column;flex:1">
+              <div class="lbl" style="font-size:12px;color:#015AFF;font-weight:600;margin-bottom:12px">{{ p.sector }}</div>
+              <h3 style="font-size:20px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:0 0 16px 0">{{ p.title }}</h3>
+              <div style="display:flex;justify-content:space-between;font-size:14px;color:#8093B5;border-top:1px solid rgba(14,17,22,.10);padding-top:14px;margin-top:auto">
+                <span>{{ p.loc }}</span>
+                <span>{{ p.year }}</span>
+              </div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAREERS -->
+  <section data-sec style="background:#E9E7E1">
+    <div style="max-width:1300px;margin:0 auto;padding:96px 32px">
+      <div data-split style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center">
+        <div>
+          <div class="lbl" style="font-size:13px;color:#015AFF;font-weight:600;margin-bottom:20px">Ura</div>
+          <h2 style="font-size:clamp(26px,3.2vw,40px);line-height:1.1;font-weight:700;letter-spacing:-.02em;margin:0 0 22px 0">Tule rakentamaan kanssamme.</h2>
+          <p style="font-size:18px;line-height:1.6;color:#3A4150;margin:0 0 30px 0;max-width:480px">Etsimme ammattitaitoisia tekijöitä ja työnjohtajia teollisuusrakentamisen vaativiin kohteisiin. Meillä työ tehdään turvallisesti ja kerralla kunnolla.</p>
+          <a href="Ura.dc.html" style="background:#0E1116;color:#fff;font-weight:600;font-size:16px;padding:14px 26px;display:inline-block" style-hover="background:#015AFF">Avoimet työpaikat</a>
+        </div>
+        <div style="position:relative;aspect-ratio:3/2;background:#171C24;overflow:hidden">
+          <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.07) 0 1px,transparent 1px 15px)"></div>
+          <div style="position:absolute;left:18px;bottom:16px;right:18px;font-size:13px;line-height:1.5;color:#5A6678" class="lbl">Valokuva: työmaa, suojavarusteet</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT STRIP -->
+  <section style="background:#01266A;color:#F0F2F6">
+    <div style="max-width:1300px;margin:0 auto;padding:64px 32px">
+      <div data-split style="display:grid;grid-template-columns:1fr auto;gap:36px;align-items:center">
+        <div>
+          <h2 style="font-size:clamp(24px,2.8vw,38px);line-height:1.12;font-weight:700;letter-spacing:-.02em;margin:0">Keskustellaan kohteestasi.</h2>
+          <p style="font-size:17px;color:#B6C6F0;margin:14px 0 0 0">Pyydä tarjous tai soita. Kilpilahden 24h päivystys palvelee ympäri vuorokauden.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+          <a href="tel:+358405666074" style="background:#015AFF;color:#fff;font-weight:600;font-size:18px;padding:16px 28px;display:inline-flex;align-items:center;gap:12px" style-hover="background:#fff;color:#01266A">
+            <span style="width:9px;height:9px;border-radius:50%;background:#fff;display:inline-block"></span>
+            24h päivystys 040 566 6074
+          </a>
+          <a href="tel:+358196630666" style="color:#B6C6F0;font-size:16px;padding-left:4px" style-hover="color:#fff">Toimisto (019) 663 0666</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#0E1116;color:#9AA6BD">
+    <div style="max-width:1300px;margin:0 auto;padding:80px 32px 36px 32px">
+      <div data-footcols style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1.3fr;gap:48px;padding-bottom:56px;border-bottom:1px solid rgba(128,147,181,.18)">
+        <div>
+          <img src="assets/ppr-mark-white.png" alt="PPR" style="height:30px;width:auto;display:block;margin-bottom:22px">
+          <p style="font-size:15px;line-height:1.65;color:#9AA6BD;margin:0 0 22px 0;max-width:300px">Porvoon Paalurakenne Oy tuottaa rakentamispalveluja teollisuudelle sekä julkisille asiakkaille Etelä-Suomen alueella.</p>
+          <div style="font-size:14px;color:#6B7588">Y-tunnus 2026187-3</div>
+        </div>
+        <div>
+          <div class="lbl" style="font-size:12px;color:#F0F2F6;margin-bottom:18px;font-weight:600">Sivut</div>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px;font-size:15px">
+            <li><a href="Palvelut.dc.html" style-hover="color:#fff">Palvelut</a></li>
+            <li><a href="Referenssit.dc.html" style-hover="color:#fff">Referenssit</a></li>
+            <li><a href="Yritys.dc.html" style-hover="color:#fff">Yritys</a></li>
+            <li><a href="Ura.dc.html" style-hover="color:#fff">Ura</a></li>
+            <li><a href="Yhteystiedot.dc.html" style-hover="color:#fff">Yhteystiedot</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="lbl" style="font-size:12px;color:#F0F2F6;margin-bottom:18px;font-weight:600">Toimisto</div>
+          <div style="font-size:15px;line-height:1.7">
+            <div style="color:#C7D0E0;margin-bottom:2px">Pappilantie 2</div>
+            <div style="color:#C7D0E0;margin-bottom:12px">07500 Askola</div>
+            <div><a href="tel:+358196630666" style-hover="color:#fff">(019) 663 0666</a></div>
+            <div><a href="mailto:toimisto@ppr.fi" style="color:#5C97FF" style-hover="color:#fff">toimisto@ppr.fi</a></div>
+          </div>
+        </div>
+        <div>
+          <div class="lbl" style="font-size:12px;color:#F0F2F6;margin-bottom:18px;font-weight:600">Varikko / Kilpilahti</div>
+          <div style="font-size:15px;line-height:1.7">
+            <div style="color:#C7D0E0;margin-bottom:2px">Nybyntie 16</div>
+            <div style="color:#C7D0E0;margin-bottom:12px">06850 Kulloo</div>
+            <div style="color:#fff;font-weight:600">24h päivystys</div>
+            <div><a href="tel:+358405666074" style="color:#5C97FF" style-hover="color:#fff">040 566 6074</a></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding-top:26px;font-size:13px;color:#6B7588">
+        <span>© 2026 Porvoon Paalurakenne Oy</span>
+        <span style="display:flex;gap:22px;align-items:center">
+          <a href="Yhteystiedot.dc.html" style-hover="color:#fff">Laskutus ja OVT</a>
+          <a href="https://app.easywhistle.com/report/ppr/" style-hover="color:#fff">Whistleblowing-ilmoituskanava</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { menuOpen: false };
+  renderVals() {
+    return {
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
+      creds: [
+        { name: 'RALA-pätevyys', sub: 'arvioitu toimija' },
+        { name: 'ISO 9001', sub: 'Bureau Veritas' },
+        { name: 'Luotettava Kumppani', sub: 'Tilaajavastuu.fi' },
+        { name: 'AA-luottoluokitus', sub: 'vakaa talous' }
+      ],
+      services: [
+        { title: 'Teollisuusrakentaminen', desc: 'Vaativat kohteet Kilpilahden alueella Neste Oilin ja Borealiksen työtapojen mukaisesti.' },
+        { title: 'Betonirakenteet', desc: 'Perustukset, laiteperustukset, vallitilapinnoitukset ja säiliöiden pohjalaatat.' },
+        { title: 'Kunnallistekniset työt', desc: 'Viemäröintityöt sekä palovesi- ja juomavesiverkoston rakennustyöt.' },
+        { title: 'Korjausrakentaminen', desc: 'Julkisivu- ja parvekesaneeraukset, sokkelien vesieristeet ja salaojat, sisätilamuutokset.' },
+        { title: 'Uudisrakentaminen', desc: 'Pientalot, teollisuushallit, toimisto- ja koulurakennukset.' },
+        { title: 'Investointi ja kunnossapito', desc: 'Teiden ja viheralueiden kunnossapito sekä puhdistus- ja siivouspalvelut.' }
+      ],
+      projects: [
+        { sector: 'Prosessiteollisuus', title: 'Säiliöperustukset ja vallitila-alueen pinnoitus', loc: 'Kilpilahti', year: '2023', shot: 'Säiliökenttä, pohjalaatat, vallitilarakenne' },
+        { sector: 'Teollisuusrakentaminen', title: 'Laiteperustukset, prosessilaitos', loc: 'Kilpilahti', year: '2022', shot: 'Laiteperustukset, raudoitus, valutyö' },
+        { sector: 'Uudisrakentaminen', title: 'Teollisuushalli, runko ja perustukset', loc: 'Itä-Uusimaa', year: '2021', shot: 'Teräsrunkoinen halli, perustukset' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
