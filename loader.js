@@ -11,6 +11,22 @@
 (function () {
   window.__pprLoader = true;
 
+  // Self-heal transient image load failures (flaky network / host): when an
+  // <img> errors, retry a couple of times with a cache-buster so it recovers
+  // itself instead of leaving a blank. Capture phase — image errors don't
+  // bubble — and registered now so it's listening before any image loads.
+  document.addEventListener('error', function (e) {
+    var img = e.target;
+    if (!img || img.tagName !== 'IMG' || !img.src) return;
+    var tries = +(img.getAttribute('data-retry') || 0);
+    if (tries >= 2) return;
+    img.setAttribute('data-retry', tries + 1);
+    var base = img.src.split('#')[0].split('?')[0];
+    setTimeout(function () {
+      img.src = base + '?r=' + (tries + 1);
+    }, 500 * (tries + 1));
+  }, true);
+
   var MIN_MS = 400;   // keep the curtain up at least this long (no flicker)
   var FADE_MS = 550;  // fade-out duration
   var CAP_MS = 12000; // hard cap so we never trap the page behind the curtain
