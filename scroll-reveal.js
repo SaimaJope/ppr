@@ -1,5 +1,16 @@
 (function () {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isDesktopViewport = window.matchMedia('(min-width: 981px)').matches;
+  const mobileRevealViewport = {
+    viewFactor: 0.12,
+    viewOffset: { top: 0, right: 0, bottom: 40, left: 0 }
+  };
+  const desktopRevealViewport = {
+    viewFactor: 0.08,
+    viewOffset: { top: 0, right: 0, bottom: -180, left: 0 }
+  };
+
+  const revealViewport = isDesktopViewport ? desktopRevealViewport : mobileRevealViewport;
 
   function markRevealTargets() {
     document.querySelectorAll('[data-sec] > div').forEach((el) => {
@@ -32,8 +43,8 @@
       delay: 0,
       opacity: 0,
       easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-      viewFactor: 0.12,
-      viewOffset: { top: 0, right: 0, bottom: 40, left: 0 }
+      viewFactor: revealViewport.viewFactor,
+      viewOffset: revealViewport.viewOffset
     });
 
     sr.reveal('.reveal-soft', {

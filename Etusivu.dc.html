@@ -43,10 +43,10 @@
   [data-cert-grid]{overscroll-behavior-x:contain}
   [data-cert-card],[data-cert-card] img{user-select:none;-webkit-user-drag:none}
   [data-billing-target]{scroll-margin-top:105px}
-  [data-billing-title].is-billing-highlight{animation:pprBillingHighlight 4s cubic-bezier(.22,1,.36,1)}
+  [data-billing-title].is-billing-highlight{animation:pprBillingHighlight 3s cubic-bezier(.22,1,.36,1)}
   @keyframes pprBillingHighlight{
     0%{color:#015AFF;text-shadow:0 0 0 rgba(255,176,0,0)}
-    25%,75%{color:#FFB000;text-shadow:0 0 20px rgba(255,176,0,.45)}
+    33.333%,66.667%{color:#FFB000;text-shadow:0 0 20px rgba(255,176,0,.45)}
     100%{color:#015AFF;text-shadow:0 0 0 rgba(255,176,0,0)}
   }
   @media (min-width:981px){
@@ -465,7 +465,7 @@ class Component extends DCLogic {
     target.title.classList.add(CLASS);
     removeTimer = window.setTimeout(() => {
       target.title.classList.remove(CLASS);
-    }, 4200);
+    }, 3200);
 
     return true;
   }
