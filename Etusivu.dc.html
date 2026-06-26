@@ -28,6 +28,7 @@
     html{scroll-behavior:auto}
     .reveal-soft,.reveal-up,.reveal-stagger,.reveal-invert{opacity:1 !important;transform:none !important;visibility:visible !important;transition:none !important}
   }
+  [data-hero-image]{transform:scale(1.025) translate3d(var(--hero-x,0),var(--hero-y,0),0) rotateX(var(--hero-rx,0)) rotateY(var(--hero-ry,0));transform-origin:center;transition:transform .9s cubic-bezier(.22,1,.36,1);will-change:transform}
   [data-cert-next]{-webkit-tap-highlight-color:transparent}
   [data-cert-next]:focus{outline:none}
   [data-cert-next]:focus-visible{outline:2px solid #015AFF;outline-offset:4px}
@@ -125,8 +126,8 @@
 
   <!-- HERO -->
   <header style="position:relative;background:#0E1116;color:#F0F2F6">
-    <div style="position:relative;height:clamp(560px,82vh,820px);overflow:hidden">
-      <div style="position:absolute;inset:0;background:#0E1116 url('Kilpi_lahti.jpg') center 52% / cover no-repeat;transform:scale(1.015);filter:saturate(.88) contrast(1.06) brightness(.82)"></div>
+    <div data-hero-scene style="position:relative;height:clamp(560px,82vh,820px);overflow:hidden;perspective:1200px">
+      <div data-hero-image style="position:absolute;inset:0;background:#0E1116 url('Kilpi_lahti.jpg') center 52% / cover no-repeat;filter:saturate(.88) contrast(1.06) brightness(.82)"></div>
       <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,12,18,.96) 0%,rgba(8,12,18,.84) 32%,rgba(8,12,18,.56) 58%,rgba(8,12,18,.20) 100%)"></div>
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,12,18,.42) 0%,rgba(8,12,18,.08) 42%,rgba(8,12,18,.74) 100%)"></div>
       <div style="position:absolute;inset:0;background:radial-gradient(circle at 74% 34%,rgba(92,151,255,.12),transparent 34%),linear-gradient(135deg,rgba(1,90,255,.08),transparent 46%)"></div>
@@ -324,6 +325,50 @@ class Component extends DCLogic {
     };
   }
 }
+</script>
+<script>
+(function () {
+  const scene = document.querySelector('[data-hero-scene]');
+  const image = document.querySelector('[data-hero-image]');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!scene || !image || reduceMotion) return;
+
+  let frame = 0;
+
+  function setHeroMotion(clientX, clientY) {
+    const rect = scene.getBoundingClientRect();
+    const x = ((clientX - rect.left) / rect.width - 0.5) * 2;
+    const y = ((clientY - rect.top) / rect.height - 0.5) * 2;
+
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => {
+      image.style.setProperty('--hero-x', `${(-x * 7).toFixed(2)}px`);
+      image.style.setProperty('--hero-y', `${(-y * 5).toFixed(2)}px`);
+      image.style.setProperty('--hero-rx', `${(y * 0.45).toFixed(3)}deg`);
+      image.style.setProperty('--hero-ry', `${(-x * 0.55).toFixed(3)}deg`);
+    });
+  }
+
+  function resetHeroMotion() {
+    image.style.setProperty('--hero-x', '0px');
+    image.style.setProperty('--hero-y', '0px');
+    image.style.setProperty('--hero-rx', '0deg');
+    image.style.setProperty('--hero-ry', '0deg');
+  }
+
+  scene.addEventListener('pointermove', (event) => {
+    if (event.pointerType === 'touch') return;
+    setHeroMotion(event.clientX, event.clientY);
+  }, { passive: true });
+
+  scene.addEventListener('touchmove', (event) => {
+    const touch = event.touches && event.touches[0];
+    if (touch) setHeroMotion(touch.clientX, touch.clientY);
+  }, { passive: true });
+
+  scene.addEventListener('pointerleave', resetHeroMotion);
+  scene.addEventListener('touchend', resetHeroMotion, { passive: true });
+})();
 </script>
 </body>
 </html>
