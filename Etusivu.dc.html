@@ -22,10 +22,45 @@
   a{color:inherit;text-decoration:none}
   ::selection{background:#015AFF;color:#fff}
   .lbl{font-family:'Archivo Narrow',sans-serif;text-transform:uppercase;letter-spacing:.14em}
+  @keyframes ppr-skeleton-wave{0%{background-position:120% 0}100%{background-position:-120% 0}}
+  @keyframes ppr-loader-float{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-8px,0)}}
+  html.ppr-is-loading body{overflow:hidden}
+  .ppr-skeleton{position:relative;overflow:hidden;isolation:isolate}
+  .ppr-skeleton-line,.ppr-skeleton-badge,.ppr-skeleton-logo{display:block;border-radius:999px;background:linear-gradient(105deg,var(--skel-base,#18202A) 0%,var(--skel-base,#18202A) 29%,var(--skel-a,#015AFF) 43%,var(--skel-b,#00BFA6) 52%,var(--skel-c,#FFB03A) 62%,var(--skel-base,#18202A) 76%,var(--skel-base,#18202A) 100%);background-size:260% 100%;animation:ppr-skeleton-wave 1.55s cubic-bezier(.45,0,.2,1) infinite;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 12px 28px -24px var(--skel-a,#015AFF)}
+  .ppr-loader-screen{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:32px;background:#0B1017;color:#F0F2F6;overflow:hidden}
+  .ppr-loader-screen::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,12,18,.97),rgba(8,12,18,.86) 42%,rgba(8,12,18,.64)),url('Kilpi_lahti.jpg') center 52%/cover no-repeat;filter:saturate(.8) contrast(1.05) brightness(.62);transform:scale(1.04)}
+  .ppr-loader-screen::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 22% 24%,rgba(1,90,255,.24),transparent 28%),radial-gradient(circle at 74% 42%,rgba(0,191,166,.16),transparent 26%),repeating-linear-gradient(135deg,rgba(240,242,246,.04) 0 1px,transparent 1px 18px)}
+  .ppr-loader-panel{position:relative;z-index:1;width:min(1080px,100%);display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;animation:ppr-loader-float 3.4s ease-in-out infinite}
+  .ppr-loader-mark{width:74px;height:74px;border:1px solid rgba(240,242,246,.18);display:flex;align-items:center;justify-content:center;background:rgba(240,242,246,.07);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);margin-bottom:34px}
+  .ppr-loader-mark img{width:42px;height:auto;display:block;filter:drop-shadow(0 14px 24px rgba(1,90,255,.32))}
+  .ppr-loader-kicker{width:230px;height:13px;margin-bottom:24px;--skel-base:rgba(92,151,255,.2);--skel-a:#5C97FF;--skel-b:#00D2B8;--skel-c:#FFB03A}
+  .ppr-loader-title{height:72px;width:min(620px,100%);margin-bottom:16px;--skel-base:rgba(240,242,246,.13);--skel-a:#015AFF;--skel-b:#00BFA6;--skel-c:#FFB03A;border-radius:14px}
+  .ppr-loader-title:nth-of-type(3){width:min(460px,84%)}
+  .ppr-loader-copy{height:15px;margin-top:14px;--skel-base:rgba(194,203,219,.16);--skel-a:#3957D8;--skel-b:#39B7D4;--skel-c:#F26D4F}
+  .ppr-loader-copy.is-short{width:68%}
+  .ppr-loader-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .ppr-loader-card{height:142px;border:1px solid rgba(240,242,246,.14);background:rgba(240,242,246,.06);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);padding:20px;display:flex;flex-direction:column;justify-content:space-between}
+  .ppr-loader-card:nth-child(2){--skel-a:#00BFA6;--skel-b:#015AFF;--skel-c:#F26D4F}
+  .ppr-loader-card:nth-child(3){--skel-a:#FFB03A;--skel-b:#5C97FF;--skel-c:#00BFA6}
+  .ppr-loader-card:nth-child(4){--skel-a:#F26D4F;--skel-b:#00BFA6;--skel-c:#3957D8}
+  .ppr-loader-card span:first-child{height:18px;width:72%;--skel-base:rgba(240,242,246,.14)}
+  .ppr-loader-card span:last-child{height:48px;width:100%;border-radius:8px;--skel-base:rgba(240,242,246,.1)}
+  .ppr-skeleton-row{--skel-base:#D8DEE8;--skel-a:#015AFF;--skel-b:#00A98F;--skel-c:#F4A124;display:grid;grid-template-columns:1fr 1.4fr auto;gap:48px;align-items:center;padding:30px 0;border-bottom:1px solid rgba(14,17,22,.14)}
+  .ppr-skeleton-row:nth-child(2n){--skel-a:#3957D8;--skel-b:#39B7D4;--skel-c:#F26D4F}
+  .ppr-skeleton-title{height:25px;width:min(270px,78%)}
+  .ppr-skeleton-copy{height:14px;margin-bottom:10px}
+  .ppr-skeleton-copy:last-child{width:68%;margin-bottom:0}
+  .ppr-skeleton-arrow{width:26px;height:26px;justify-self:end}
+  .ppr-skeleton-cert{--skel-base:#E2E7F0;--skel-a:#015AFF;--skel-b:#00BFA6;--skel-c:#F7B23E;display:flex;align-items:center;justify-content:center;height:138px;padding:26px 30px;background:linear-gradient(145deg,#fff,rgba(240,242,246,.8));border:1px solid rgba(14,17,22,.12)}
+  .ppr-skeleton-cert:nth-child(3n+2){--skel-a:#3858D6;--skel-b:#2ED3BD;--skel-c:#F06A4F}
+  .ppr-skeleton-logo{height:58px;width:min(168px,82%);border-radius:10px}
+  html.sc-dc-streaming .sc-placeholder,html.sc-dc-streaming .sc-interp.sc-missing{border-color:transparent;background:linear-gradient(105deg,#D8DEE8 0%,#D8DEE8 30%,#015AFF 43%,#00A98F 54%,#FFB03A 64%,#D8DEE8 78%);background-size:260% 100%;animation:ppr-skeleton-wave 1.55s cubic-bezier(.45,0,.2,1) infinite}
+  html.sc-dc-streaming .sc-placeholder::before,html.sc-dc-streaming .sc-interp.sc-missing::before{display:none}
   .reveal-soft,.reveal-up,.reveal-stagger,.reveal-invert{will-change:transform,opacity;backface-visibility:hidden}
   .reveal-motion-off .reveal-soft,.reveal-motion-off .reveal-up,.reveal-motion-off .reveal-stagger,.reveal-motion-off .reveal-invert{opacity:1 !important;transform:none !important;visibility:visible !important}
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
+    .ppr-loader-panel,.ppr-skeleton-line,.ppr-skeleton-badge,.ppr-skeleton-logo,html.sc-dc-streaming .sc-placeholder,html.sc-dc-streaming .sc-interp.sc-missing{animation:none;background-position:50% 0}
     .reveal-soft,.reveal-up,.reveal-stagger,.reveal-invert{opacity:1 !important;transform:none !important;visibility:visible !important;transition:none !important}
   }
   [data-hero-image]{transform:scale(1.025) translate3d(var(--hero-x,0),var(--hero-y,0),0) rotateX(var(--hero-rx,0)) rotateY(var(--hero-ry,0));transform-origin:center;transition:transform .9s cubic-bezier(.22,1,.36,1);will-change:transform}
@@ -38,6 +73,8 @@
   @media (max-width:980px){
     [data-split]{grid-template-columns:1fr !important;gap:34px !important}
     [data-srow]{grid-template-columns:1fr !important;gap:6px !important}
+    .ppr-skeleton-row{grid-template-columns:1fr !important;gap:12px !important}
+    .ppr-skeleton-arrow{display:none}
     [data-grid3]{grid-template-columns:1fr 1fr !important}
     [data-hero-h1]{font-size:50px !important}
     [data-util-left]{display:none !important}
@@ -47,6 +84,8 @@
   @media (max-width:860px){
     [data-navlinks]{display:none !important}
     [data-menubtn]{display:inline-flex !important}
+    .ppr-loader-panel{grid-template-columns:1fr;gap:34px}
+    .ppr-loader-grid{grid-template-columns:1fr 1fr}
   }
   @media (max-width:600px){
     [data-split]{gap:28px !important}
@@ -62,6 +101,12 @@
     [data-nav-logo]{height:24px !important}
     [data-nav-actions]{gap:10px !important}
     [data-menubtn]{width:42px !important;height:42px !important}
+    .ppr-loader-screen{padding:24px}
+    .ppr-loader-mark{width:60px;height:60px;margin-bottom:28px}
+    .ppr-loader-mark img{width:34px}
+    .ppr-loader-title{height:48px}
+    .ppr-loader-grid{gap:12px}
+    .ppr-loader-card{height:112px;padding:16px}
     [data-cert-heading]{display:grid !important;grid-template-columns:1fr auto !important;gap:18px !important;align-items:end !important}
     [data-cert-next]{display:inline-flex !important}
     [data-cert-grid]{display:flex !important;grid-template-columns:none !important;gap:12px !important;overflow-x:auto !important;overflow-y:hidden !important;scroll-snap-type:x mandatory !important;scrollbar-width:none !important;-webkit-overflow-scrolling:touch !important}
@@ -74,6 +119,40 @@
 </helmet>
 
 <div style="background:#F0F2F6">
+  <sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}">
+    <div class="ppr-loader-screen" role="status" aria-live="polite" aria-label="Sivua ladataan">
+      <div class="ppr-loader-panel" aria-hidden="true">
+        <div>
+          <div class="ppr-loader-mark">
+            <img src="assets/ppr-mark-white.png" alt="">
+          </div>
+          <span class="ppr-skeleton-line ppr-loader-kicker"></span>
+          <span class="ppr-skeleton-line ppr-loader-title"></span>
+          <span class="ppr-skeleton-line ppr-loader-title"></span>
+          <span class="ppr-skeleton-line ppr-loader-copy"></span>
+          <span class="ppr-skeleton-line ppr-loader-copy is-short"></span>
+        </div>
+        <div class="ppr-loader-grid">
+          <div class="ppr-loader-card">
+            <span class="ppr-skeleton-line"></span>
+            <span class="ppr-skeleton-line"></span>
+          </div>
+          <div class="ppr-loader-card">
+            <span class="ppr-skeleton-line"></span>
+            <span class="ppr-skeleton-line"></span>
+          </div>
+          <div class="ppr-loader-card">
+            <span class="ppr-skeleton-line"></span>
+            <span class="ppr-skeleton-line"></span>
+          </div>
+          <div class="ppr-loader-card">
+            <span class="ppr-skeleton-line"></span>
+            <span class="ppr-skeleton-line"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
 
   <!-- TOP BAR -->
   <div style="background:#0E1116;color:#9AA6BD;font-size:13px">
@@ -175,13 +254,29 @@
         <a href="Palvelut.dc.html" style="font-weight:600;font-size:16px;color:#14181F;border-bottom:2px solid #14181F;padding-bottom:3px" style-hover="color:#015AFF;border-color:#015AFF">Kaikki palvelut</a>
       </div>
       <div style="border-top:1px solid rgba(14,17,22,.14)">
-        <sc-for list="{{ services }}" as="s" hint-placeholder-count="6">
-          <a href="Palvelut.dc.html" data-srow style="display:grid;grid-template-columns:1fr 1.4fr auto;gap:48px;align-items:center;padding:30px 0;border-bottom:1px solid rgba(14,17,22,.14)" style-hover="background:rgba(1,90,255,.03)">
-            <h3 style="font-size:clamp(21px,2vw,27px);font-weight:600;letter-spacing:-.01em;margin:0;line-height:1.15">{{ s.title }}</h3>
-            <p style="font-size:16px;line-height:1.55;color:#56607A;margin:0">{{ s.desc }}</p>
-            <span style="font-size:22px;color:#8093B5;justify-self:end">→</span>
-          </a>
-        </sc-for>
+        <sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}">
+          <div aria-hidden="true">
+            <sc-for list="{{ skeletonRows }}" as="row" hint-placeholder-count="6">
+              <div class="ppr-skeleton ppr-skeleton-row">
+                <span class="ppr-skeleton-line ppr-skeleton-title"></span>
+                <span>
+                  <span class="ppr-skeleton-line ppr-skeleton-copy"></span>
+                  <span class="ppr-skeleton-line ppr-skeleton-copy"></span>
+                </span>
+                <span class="ppr-skeleton-line ppr-skeleton-arrow"></span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ contentReady }}" hint-placeholder-val="{{ false }}">
+          <sc-for list="{{ services }}" as="s" hint-placeholder-count="6">
+            <a href="Palvelut.dc.html" data-srow style="display:grid;grid-template-columns:1fr 1.4fr auto;gap:48px;align-items:center;padding:30px 0;border-bottom:1px solid rgba(14,17,22,.14)" style-hover="background:rgba(1,90,255,.03)">
+              <h3 style="font-size:clamp(21px,2vw,27px);font-weight:600;letter-spacing:-.01em;margin:0;line-height:1.15">{{ s.title }}</h3>
+              <p style="font-size:16px;line-height:1.55;color:#56607A;margin:0">{{ s.desc }}</p>
+              <span style="font-size:22px;color:#8093B5;justify-self:end">→</span>
+            </a>
+          </sc-for>
+        </sc-if>
       </div>
     </div>
   </section>
@@ -199,13 +294,24 @@
         </button>
       </div>
 
-      <div data-grid3 data-cert-grid style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
-        <sc-for list="{{ certs }}" as="c" hint-placeholder-count="4">
-          <div data-cert-card style="display:flex;align-items:center;justify-content:center;height:138px;padding:26px 30px;background:#fff;border:1px solid rgba(14,17,22,.12)">
-            <img src="{{ c.img }}" alt="{{ c.alt }}" style="max-height:78px;max-width:100%;width:auto;object-fit:contain;display:block">
-          </div>
-        </sc-for>
-      </div>
+      <sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}">
+        <div data-grid3 data-cert-grid aria-hidden="true" style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+          <sc-for list="{{ skeletonCerts }}" as="cert" hint-placeholder-count="4">
+            <div class="ppr-skeleton ppr-skeleton-cert">
+              <span class="ppr-skeleton-logo"></span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ contentReady }}" hint-placeholder-val="{{ false }}">
+        <div data-grid3 data-cert-grid style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+          <sc-for list="{{ certs }}" as="c" hint-placeholder-count="4">
+            <div data-cert-card style="display:flex;align-items:center;justify-content:center;height:138px;padding:26px 30px;background:#fff;border:1px solid rgba(14,17,22,.12)">
+              <img src="{{ c.img }}" alt="{{ c.alt }}" style="max-height:78px;max-width:100%;width:auto;object-fit:contain;display:block">
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
 
       <div data-split style="display:grid;grid-template-columns:1fr 1fr 1.35fr;gap:56px;margin-top:72px;padding-top:60px;border-top:1px solid rgba(14,17,22,.12)">
         <div>
@@ -292,10 +398,26 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { menuOpen: false };
+  state = { menuOpen: false, loading: true };
+  componentDidMount() {
+    document.documentElement.classList.add('ppr-is-loading');
+    this.loadingTimer = window.setTimeout(() => {
+      document.documentElement.classList.remove('ppr-is-loading');
+      this.setState({ loading: false });
+    }, 1600);
+  }
+  componentWillUnmount() {
+    window.clearTimeout(this.loadingTimer);
+    document.documentElement.classList.remove('ppr-is-loading');
+  }
   renderVals() {
+    const contentReady = !this.state.loading;
     return {
       menuOpen: this.state.menuOpen,
+      loading: this.state.loading,
+      contentReady,
+      skeletonRows: Array.from({ length: 6 }, (_, index) => index),
+      skeletonCerts: Array.from({ length: 4 }, (_, index) => index),
       toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
       nextCerts: () => {
         const row = document.querySelector('[data-cert-grid]');
