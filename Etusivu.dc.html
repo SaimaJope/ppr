@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<script defer src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
+<script defer src="./scroll-reveal.js"></script>
 </head>
 <body>
 <x-dc>
@@ -20,6 +22,12 @@
   a{color:inherit;text-decoration:none}
   ::selection{background:#015AFF;color:#fff}
   .lbl{font-family:'Archivo Narrow',sans-serif;text-transform:uppercase;letter-spacing:.14em}
+  .reveal-soft,.reveal-up,.reveal-stagger,.reveal-invert{will-change:transform,opacity;backface-visibility:hidden}
+  .reveal-motion-off .reveal-soft,.reveal-motion-off .reveal-up,.reveal-motion-off .reveal-stagger,.reveal-motion-off .reveal-invert{opacity:1 !important;transform:none !important;visibility:visible !important}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal-soft,.reveal-up,.reveal-stagger,.reveal-invert{opacity:1 !important;transform:none !important;visibility:visible !important;transition:none !important}
+  }
   [data-cert-next]{-webkit-tap-highlight-color:transparent}
   [data-cert-next]:focus{outline:none}
   [data-cert-next]:focus-visible{outline:2px solid #015AFF;outline-offset:4px}
@@ -30,7 +38,8 @@
     [data-grid3]{grid-template-columns:1fr 1fr !important}
     [data-hero-h1]{font-size:50px !important}
     [data-util-left]{display:none !important}
-    [data-sec]{padding-top:64px !important;padding-bottom:64px !important}
+    [data-sec]{padding-top:0 !important;padding-bottom:0 !important}
+    [data-section-inner]{padding-top:56px !important;padding-bottom:56px !important}
   }
   @media (max-width:860px){
     [data-navlinks]{display:none !important}
@@ -40,6 +49,7 @@
     [data-grid3]{grid-template-columns:1fr !important}
     [data-hero-h1]{font-size:38px !important}
     [data-footcols]{grid-template-columns:1fr 1fr !important}
+    [data-section-inner]{padding:46px 32px !important}
     [data-topbar-inner]{height:36px !important;padding:0 16px !important;justify-content:center !important}
     [data-topbar-actions]{width:100% !important;justify-content:center !important;gap:0 !important}
     [data-topbar-office],[data-topbar-lang]{display:none !important}
@@ -136,7 +146,7 @@
 
   <!-- INTRO -->
   <section data-sec style="background:#F0F2F6">
-    <div style="max-width:1300px;margin:0 auto;padding:104px 32px">
+    <div data-section-inner style="max-width:1300px;margin:0 auto;padding:72px 32px">
       <div data-split style="display:grid;grid-template-columns:0.9fr 1.1fr;gap:80px;align-items:start">
         <div>
           <div class="lbl" style="font-size:13px;color:#015AFF;font-weight:600;margin-bottom:20px">Yritys</div>
@@ -153,7 +163,7 @@
 
   <!-- SERVICES INDEX -->
   <section data-sec id="palvelut" style="background:#fff;border-top:1px solid rgba(14,17,22,.10)">
-    <div style="max-width:1300px;margin:0 auto;padding:104px 32px">
+    <div data-section-inner style="max-width:1300px;margin:0 auto;padding:72px 32px">
       <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;margin-bottom:52px">
         <div>
           <div class="lbl" style="font-size:13px;color:#015AFF;font-weight:600;margin-bottom:20px">Palvelut</div>
@@ -175,7 +185,7 @@
 
   <!-- CERTIFICATIONS + CONTACT -->
   <section data-sec style="background:#fff;border-top:1px solid rgba(14,17,22,.10)">
-    <div style="max-width:1300px;margin:0 auto;padding:100px 32px">
+    <div data-section-inner style="max-width:1300px;margin:0 auto;padding:72px 32px">
       <div data-cert-heading style="max-width:600px;margin-bottom:46px">
         <div>
           <div class="lbl" style="font-size:13px;color:#015AFF;font-weight:600;margin-bottom:18px">Pätevyydet ja sertifikaatit</div>
