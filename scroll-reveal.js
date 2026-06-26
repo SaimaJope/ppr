@@ -58,9 +58,7 @@
   }
 
   // The page is rendered by React (support.js) *after* it async-loads React
-  // from a CDN, so the reveal targets don't exist at DOMContentLoaded. Wait
-  // until the rendered content (and the ScrollReveal lib) is actually present
-  // before binding — otherwise on a cold load we bind to nothing.
+  // from a CDN, so the reveal targets don't exist at DOMContentLoaded.
   function contentReady() {
     return document.querySelector('[data-sec], [data-split], [data-grid3], [data-srow], [data-cert-card]');
   }
@@ -68,15 +66,31 @@
     return reduceMotion || typeof window.ScrollReveal === 'function';
   }
 
-  const startedAt = Date.now();
-  (function whenReady() {
-    if (contentReady() && libReady()) {
-      window.requestAnimationFrame(initScrollReveal);
-    } else if (Date.now() - startedAt > 8000) {
-      // Give up waiting and reveal statically rather than hide content forever.
-      window.requestAnimationFrame(initScrollReveal);
-    } else {
-      setTimeout(whenReady, 50);
-    }
-  })();
+  function start() {
+    window.requestAnimationFrame(initScrollReveal);
+  }
+
+  if (window.__pprLoader) {
+    // loader.js owns the cold-load curtain and detects when content is ready.
+    // Bind the reveal as it lifts so the hero animates in with the fade,
+    // instead of playing hidden behind the curtain or flashing then re-animating.
+    let fired = false;
+    const go = function () {
+      if (fired) return;
+      fired = true;
+      start();
+    };
+    document.addEventListener('ppr:loaded', go, { once: true });
+    setTimeout(go, 12000); // fallback if the curtain never lifts
+  } else {
+    // No loader present — wait for the rendered content (and the lib) ourselves.
+    const startedAt = Date.now();
+    (function whenReady() {
+      if ((contentReady() && libReady()) || Date.now() - startedAt > 8000) {
+        start();
+      } else {
+        setTimeout(whenReady, 50);
+      }
+    })();
+  }
 })();
