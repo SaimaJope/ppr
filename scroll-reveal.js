@@ -13,10 +13,6 @@
     document.querySelectorAll('[data-grid3] > *, [data-srow], [data-cert-card]').forEach((el) => {
       el.classList.add('reveal-stagger');
     });
-
-    document.querySelectorAll('[data-sec]:nth-of-type(even) > div').forEach((el) => {
-      el.classList.add('reveal-invert');
-    });
   }
 
   function initScrollReveal() {
@@ -28,56 +24,59 @@
     }
 
     const sr = window.ScrollReveal({
-      reset: true,
-      cleanup: false,
+      reset: false,
+      cleanup: true,
       mobile: true,
-      distance: '7px',
-      duration: 560,
+      distance: '14px',
+      duration: 620,
       delay: 0,
-      opacity: 0.94,
+      opacity: 0,
       easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-      viewFactor: 0.16,
-      viewOffset: { top: 72, right: 0, bottom: 42, left: 0 }
+      viewFactor: 0.12,
+      viewOffset: { top: 0, right: 0, bottom: 40, left: 0 }
     });
 
     sr.reveal('.reveal-soft', {
-      reset: true,
-      distance: '6px',
-      opacity: 0.95,
-      duration: 540,
+      distance: '10px',
+      duration: 600,
       origin: 'bottom'
     });
 
     sr.reveal('.reveal-up', {
-      reset: true,
-      distance: '8px',
-      opacity: 0.94,
-      duration: 600,
+      distance: '16px',
+      duration: 620,
       origin: 'bottom',
-      interval: 40
+      interval: 60
     });
 
     sr.reveal('.reveal-stagger', {
-      reset: true,
-      distance: '9px',
-      opacity: 0.93,
-      duration: 580,
+      distance: '14px',
+      duration: 600,
       origin: 'bottom',
-      interval: 45
-    });
-
-    sr.reveal('.reveal-invert', {
-      reset: true,
-      distance: '7px',
-      opacity: 0.95,
-      duration: 540,
-      origin: 'top'
+      interval: 80
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => window.requestAnimationFrame(initScrollReveal));
-  } else {
-    window.requestAnimationFrame(initScrollReveal);
+  // The page is rendered by React (support.js) *after* it async-loads React
+  // from a CDN, so the reveal targets don't exist at DOMContentLoaded. Wait
+  // until the rendered content (and the ScrollReveal lib) is actually present
+  // before binding — otherwise on a cold load we bind to nothing.
+  function contentReady() {
+    return document.querySelector('[data-sec], [data-split], [data-grid3], [data-srow], [data-cert-card]');
   }
+  function libReady() {
+    return reduceMotion || typeof window.ScrollReveal === 'function';
+  }
+
+  const startedAt = Date.now();
+  (function whenReady() {
+    if (contentReady() && libReady()) {
+      window.requestAnimationFrame(initScrollReveal);
+    } else if (Date.now() - startedAt > 8000) {
+      // Give up waiting and reveal statically rather than hide content forever.
+      window.requestAnimationFrame(initScrollReveal);
+    } else {
+      setTimeout(whenReady, 50);
+    }
+  })();
 })();

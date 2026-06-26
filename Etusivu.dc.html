@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet">
+<style>html,body{background:#F0F2F6;margin:0}body{font-family:'Archivo',system-ui,sans-serif}</style>
 <script src="./support.js"></script>
 <script defer src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
 <script defer src="./scroll-reveal.js"></script>
@@ -28,13 +32,16 @@
     html{scroll-behavior:auto}
     .reveal-soft,.reveal-up,.reveal-stagger,.reveal-invert{opacity:1 !important;transform:none !important;visibility:visible !important;transition:none !important}
   }
-  [data-hero-image]{transform:scale(1.025) translate3d(var(--hero-x,0),var(--hero-y,0),0) rotateX(var(--hero-rx,0)) rotateY(var(--hero-ry,0));transform-origin:center;transition:transform .9s cubic-bezier(.22,1,.36,1);will-change:transform}
+  [data-hero-image]{transform:scale(1.035) translate3d(var(--hero-x,0),var(--hero-y,0),0) rotateX(var(--hero-rx,0)) rotateY(var(--hero-ry,0));transform-origin:center;transition:transform .25s cubic-bezier(.22,1,.36,1);will-change:transform}
   [data-cert-next]{-webkit-tap-highlight-color:transparent}
   [data-cert-next]:focus{outline:none}
   [data-cert-next]:focus-visible{outline:2px solid #015AFF;outline-offset:4px}
   [data-cert-next]:active img{filter:grayscale(1);opacity:.55}
   [data-cert-grid]{overscroll-behavior-x:contain}
   [data-cert-card],[data-cert-card] img{user-select:none;-webkit-user-drag:none}
+  @media (min-width:981px){
+    body{zoom:0.9}
+  }
   @media (max-width:980px){
     [data-split]{grid-template-columns:1fr !important;gap:34px !important}
     [data-srow]{grid-template-columns:1fr !important;gap:6px !important}
@@ -132,7 +139,7 @@
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,12,18,.42) 0%,rgba(8,12,18,.08) 42%,rgba(8,12,18,.74) 100%)"></div>
       <div style="position:absolute;inset:0;background:radial-gradient(circle at 74% 34%,rgba(92,151,255,.12),transparent 34%),linear-gradient(135deg,rgba(1,90,255,.08),transparent 46%)"></div>
       <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(240,242,246,.035) 0 1px,transparent 1px 18px);mix-blend-mode:soft-light"></div>
-      <div style="position:absolute;right:26px;top:22px;font-size:12px;color:rgba(240,242,246,.34)" class="lbl">Valokuva: Kilpilahden prosessialue</div>
+      <div style="position:absolute;right:26px;top:22px;font-size:12px;color:rgba(240,242,246,.34)" class="lbl"> </div>
       <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 32px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:64px">
         <div style="max-width:840px">
           <div class="lbl" style="font-size:13px;color:#5C97FF;margin-bottom:24px;font-weight:600">Teollisuusrakentaminen Etelä-Suomessa</div>
@@ -333,41 +340,88 @@ class Component extends DCLogic {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!scene || !image || reduceMotion) return;
 
-  let frame = 0;
+  // Normalised input target (-1..1) and eased current values.
+  let targetX = 0, targetY = 0;
+  let curX = 0, curY = 0;
+  let running = false;
 
-  function setHeroMotion(clientX, clientY) {
+  const EASE = 0.09;     // smoothing — lower is more floaty
+  const SHIFT = 8;       // max translate in px
+  const TILT = 0.6;      // max rotation in deg
+
+  function render() {
+    curX += (targetX - curX) * EASE;
+    curY += (targetY - curY) * EASE;
+
+    image.style.setProperty('--hero-x', `${(-curX * SHIFT).toFixed(2)}px`);
+    image.style.setProperty('--hero-y', `${(-curY * SHIFT * 0.7).toFixed(2)}px`);
+    image.style.setProperty('--hero-rx', `${(curY * TILT).toFixed(3)}deg`);
+    image.style.setProperty('--hero-ry', `${(-curX * TILT).toFixed(3)}deg`);
+
+    if (Math.abs(targetX - curX) > 0.0008 || Math.abs(targetY - curY) > 0.0008) {
+      requestAnimationFrame(render);
+    } else {
+      running = false;
+    }
+  }
+
+  function setTarget(x, y) {
+    targetX = Math.max(-1, Math.min(1, x));
+    targetY = Math.max(-1, Math.min(1, y));
+    if (!running) { running = true; requestAnimationFrame(render); }
+  }
+
+  function setFromPoint(clientX, clientY) {
     const rect = scene.getBoundingClientRect();
-    const x = ((clientX - rect.left) / rect.width - 0.5) * 2;
-    const y = ((clientY - rect.top) / rect.height - 0.5) * 2;
-
-    cancelAnimationFrame(frame);
-    frame = requestAnimationFrame(() => {
-      image.style.setProperty('--hero-x', `${(-x * 7).toFixed(2)}px`);
-      image.style.setProperty('--hero-y', `${(-y * 5).toFixed(2)}px`);
-      image.style.setProperty('--hero-rx', `${(y * 0.45).toFixed(3)}deg`);
-      image.style.setProperty('--hero-ry', `${(-x * 0.55).toFixed(3)}deg`);
-    });
+    setTarget(
+      ((clientX - rect.left) / rect.width - 0.5) * 2,
+      ((clientY - rect.top) / rect.height - 0.5) * 2
+    );
   }
 
-  function resetHeroMotion() {
-    image.style.setProperty('--hero-x', '0px');
-    image.style.setProperty('--hero-y', '0px');
-    image.style.setProperty('--hero-rx', '0deg');
-    image.style.setProperty('--hero-ry', '0deg');
-  }
+  const reset = () => setTarget(0, 0);
 
+  // Desktop: mouse / pen.
   scene.addEventListener('pointermove', (event) => {
     if (event.pointerType === 'touch') return;
-    setHeroMotion(event.clientX, event.clientY);
+    setFromPoint(event.clientX, event.clientY);
   }, { passive: true });
+  scene.addEventListener('pointerleave', reset);
 
+  // Mobile: subtle gyroscope tilt, calibrated to however the phone is held.
+  let gyroOn = false;
+  let baseGamma = null, baseBeta = null;
+  function enableGyro() {
+    if (gyroOn) return;
+    gyroOn = true;
+    window.addEventListener('deviceorientation', (event) => {
+      if (event.gamma == null || event.beta == null) return;
+      if (baseGamma === null) { baseGamma = event.gamma; baseBeta = event.beta; }
+      setTarget((event.gamma - baseGamma) / 24, (event.beta - baseBeta) / 24);
+    }, { passive: true });
+  }
+
+  const DOE = window.DeviceOrientationEvent;
+  if (DOE && typeof DOE.requestPermission === 'function') {
+    // iOS 13+ needs a user gesture to grant motion access.
+    const ask = () => {
+      window.removeEventListener('touchend', ask);
+      DOE.requestPermission().then((state) => {
+        if (state === 'granted') enableGyro();
+      }).catch(() => {});
+    };
+    window.addEventListener('touchend', ask, { passive: true });
+  } else if (DOE) {
+    enableGyro();
+  }
+
+  // Fallback for phones without usable gyro: drag across the hero.
   scene.addEventListener('touchmove', (event) => {
+    if (gyroOn) return;
     const touch = event.touches && event.touches[0];
-    if (touch) setHeroMotion(touch.clientX, touch.clientY);
+    if (touch) setFromPoint(touch.clientX, touch.clientY);
   }, { passive: true });
-
-  scene.addEventListener('pointerleave', resetHeroMotion);
-  scene.addEventListener('touchend', resetHeroMotion, { passive: true });
+  scene.addEventListener('touchend', () => { if (!gyroOn) reset(); }, { passive: true });
 })();
 </script>
 </body>
