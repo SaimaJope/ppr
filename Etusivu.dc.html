@@ -20,6 +20,10 @@
   a{color:inherit;text-decoration:none}
   ::selection{background:#015AFF;color:#fff}
   .lbl{font-family:'Archivo Narrow',sans-serif;text-transform:uppercase;letter-spacing:.14em}
+  [data-cert-next]{-webkit-tap-highlight-color:transparent}
+  [data-cert-next]:focus{outline:none}
+  [data-cert-next]:focus-visible{outline:2px solid #015AFF;outline-offset:4px}
+  [data-cert-next]:active img{filter:grayscale(1);opacity:.55}
   @media (max-width:980px){
     [data-split]{grid-template-columns:1fr !important}
     [data-srow]{grid-template-columns:1fr !important;gap:6px !important}
@@ -177,7 +181,9 @@
           <div class="lbl" style="font-size:13px;color:#015AFF;font-weight:600;margin-bottom:18px">Pätevyydet ja sertifikaatit</div>
           <h2 style="font-size:clamp(26px,3vw,40px);line-height:1.1;font-weight:700;letter-spacing:-.02em;margin:0">Luotettava ja sertifioitu kumppani.</h2>
         </div>
-        <button data-cert-next onClick="{{ nextCerts }}" aria-label="Seuraavat sertifikaatit" style="display:none;align-items:center;justify-content:center;width:42px;height:42px;border:0;border-radius:50%;background:#015AFF;color:#fff;font-size:22px;line-height:1;box-shadow:0 10px 24px -14px rgba(1,90,255,.65);cursor:pointer">→</button>
+        <button data-cert-next onClick="{{ nextCerts }}" aria-label="Seuraavat sertifikaatit" style="display:none;align-items:center;justify-content:center;width:42px;height:42px;border:0;background:transparent;padding:0;cursor:pointer">
+          <img src="arrow-right-from-line-svgrepo-com.svg" alt="" style="width:28px;height:28px;display:block">
+        </button>
       </div>
 
       <div data-grid3 data-cert-grid style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
