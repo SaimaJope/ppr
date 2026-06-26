@@ -42,6 +42,13 @@
   [data-cert-next]:active img{filter:grayscale(1);opacity:.55}
   [data-cert-grid]{overscroll-behavior-x:contain}
   [data-cert-card],[data-cert-card] img{user-select:none;-webkit-user-drag:none}
+  [data-billing-target]{scroll-margin-top:105px}
+  [data-billing-title].is-billing-highlight{animation:pprBillingHighlight 4s cubic-bezier(.22,1,.36,1)}
+  @keyframes pprBillingHighlight{
+    0%{color:#015AFF;text-shadow:0 0 0 rgba(92,151,255,0)}
+    25%,75%{color:#5C97FF;text-shadow:0 0 18px rgba(92,151,255,.35)}
+    100%{color:#015AFF;text-shadow:0 0 0 rgba(92,151,255,0)}
+  }
   @media (min-width:981px){
     body{zoom:0.9}
   }
@@ -152,7 +159,7 @@
           <p style="font-size:clamp(17px,1.5vw,20px);line-height:1.55;color:#C2CBDB;max-width:620px;margin:28px 0 0 0">Porvoon Paalurakenne Oy tuottaa rakentamispalveluja teollisuudelle sekä julkisille asiakkaille. Ydinosaamistamme on teollisuusrakentaminen Kilpilahden alueella.</p>
           <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:36px">
             <a href="Palvelut.dc.html" style="background:#015AFF;color:#fff;font-weight:600;font-size:16px;padding:15px 28px" style-hover="background:#2b74ff">Tutustu palveluihin</a>
-            <a href="Referenssit.dc.html" style="border:1px solid rgba(240,242,246,.3);color:#F0F2F6;font-weight:500;font-size:16px;padding:15px 28px" style-hover="border-color:#fff;background:rgba(255,255,255,.05)">Katso referenssit</a>
+            <a href="#laskutustiedot" style="border:1px solid rgba(240,242,246,.3);color:#F0F2F6;font-weight:500;font-size:16px;padding:15px 28px" style-hover="border-color:#5C97FF;color:#fff;background:rgba(92,151,255,.10)">Laskutustiedot</a>
           </div>
         </div>
       </div>
@@ -240,8 +247,8 @@
             <a href="tel:+358405666074" style="color:#015AFF" style-hover="color:#01266A">040 566 6074</a>
           </div>
         </div>
-        <div>
-          <div class="lbl" style="font-size:12px;color:#015AFF;font-weight:600;margin-bottom:18px">Laskutus</div>
+        <div id="laskutustiedot" data-billing-target>
+          <div data-billing-title class="lbl" style="font-size:12px;color:#015AFF;font-weight:600;margin-bottom:18px">Laskutus</div>
           <div data-srow style="display:grid;grid-template-columns:1fr 1fr;gap:20px 36px;font-size:15px;line-height:1.5;color:#28303C">
             <div><div style="color:#7E89A0;font-size:13px;margin-bottom:4px">Verkkolaskuosoite / OVT</div><div style="font-weight:600;color:#14181F">003720261873</div></div>
             <div><div style="color:#7E89A0;font-size:13px;margin-bottom:4px">Operaattori / OVT</div><div style="font-weight:600;color:#14181F">PAGERO 003723609900</div></div>
@@ -429,6 +436,69 @@ class Component extends DCLogic {
     if (touch) setFromPoint(touch.clientX, touch.clientY);
   }, { passive: true });
   scene.addEventListener('touchend', () => { if (!gyroOn) reset(); }, { passive: true });
+})();
+</script>
+<script>
+(function () {
+  const HASH = '#laskutustiedot';
+  const CLASS = 'is-billing-highlight';
+  let removeTimer = null;
+
+  function getTarget() {
+    const block = Array.from(document.querySelectorAll('#laskutustiedot'))
+      .find((element) => !element.closest('x-dc'));
+    const title = block && block.querySelector('[data-billing-title]');
+    return block && title ? { block, title } : null;
+  }
+
+  function flashBilling() {
+    const target = getTarget();
+    if (!target) return false;
+
+    if (window.location.hash === HASH) {
+      target.block.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }
+
+    window.clearTimeout(removeTimer);
+    target.title.classList.remove(CLASS);
+    void target.title.offsetWidth;
+    target.title.classList.add(CLASS);
+    removeTimer = window.setTimeout(() => {
+      target.title.classList.remove(CLASS);
+    }, 4200);
+
+    return true;
+  }
+
+  function flashWhenReady() {
+    const startedAt = Date.now();
+    (function waitForBilling() {
+      if (flashBilling()) return;
+      if (Date.now() - startedAt < 8000) {
+        window.setTimeout(waitForBilling, 50);
+      }
+    })();
+  }
+
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest && event.target.closest('a[href="#laskutustiedot"]');
+    if (!link) return;
+    window.setTimeout(flashWhenReady, 350);
+  });
+
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash === HASH) {
+      window.setTimeout(flashWhenReady, 350);
+    }
+  });
+
+  if (window.location.hash === HASH) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => window.setTimeout(flashWhenReady, 350), { once: true });
+    } else {
+      window.setTimeout(flashWhenReady, 350);
+    }
+  }
 })();
 </script>
 </body>
