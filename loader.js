@@ -68,6 +68,24 @@
     kickFonts();
   }
 
+  // Hold the curtain until critical images (declared as <link rel="preload"
+  // as="image">, e.g. the hero) have finished downloading, so they don't pop
+  // in after the curtain lifts on a slow connection.
+  var imagesDone = false;
+  (function awaitImages() {
+    var links = document.querySelectorAll('link[rel="preload"][as="image"]');
+    if (!links.length) { imagesDone = true; return; }
+    var pending = links.length;
+    var one = function () { if (--pending <= 0) imagesDone = true; };
+    Array.prototype.forEach.call(links, function (l) {
+      var img = new Image();
+      img.onload = one;
+      img.onerror = one;
+      img.src = l.href;
+      if (img.complete) one(); // already cached
+    });
+  })();
+
   function lift() {
     el.classList.add('ppr-hide');
     // Signal scroll-reveal to start so the hero animates as the curtain fades.
@@ -77,8 +95,8 @@
 
   (function check() {
     var waited = Date.now() - start;
-    if (contentReady() && fontsDone && waited >= MIN_MS) return lift();
-    if (waited > CAP_MS) return lift(); // hard cap wins even if fonts stall
+    if (contentReady() && fontsDone && imagesDone && waited >= MIN_MS) return lift();
+    if (waited > CAP_MS) return lift(); // hard cap wins even if something stalls
     setTimeout(check, 50);
   })();
 })();
