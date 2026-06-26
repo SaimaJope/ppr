@@ -17,6 +17,8 @@
     const style = document.createElement('style');
     style.id = 'ppr-active-nav-style';
     style.textContent = [
+      'nav [data-navlinks] a{transition:color .16s ease}',
+      'nav [data-navlinks] a:hover{color:#015AFF!important}',
       '.ppr-nav-active{color:#015AFF!important;font-weight:700!important}',
       '.ppr-nav-active-desktop{position:relative}',
       '.ppr-nav-active-desktop::after{content:"";position:absolute;left:0;right:0;bottom:-9px;height:2px;background:#015AFF;border-radius:999px;opacity:.95}',
