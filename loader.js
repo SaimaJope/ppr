@@ -46,6 +46,28 @@
     return document.querySelector('[data-sec], [data-split], [data-grid3], [data-srow], [data-cert-card]');
   }
 
+  // Hold the curtain until the real fonts are loaded, so the text behind it is
+  // already Archivo when it lifts — no fallback-to-webfont swap on screen.
+  var fontsDone = false;
+  function kickFonts() {
+    if (!document.fonts || !document.fonts.load) { fontsDone = true; return; }
+    Promise.all([
+      document.fonts.load('400 1em Archivo'),
+      document.fonts.load('700 1em Archivo'),
+      document.fonts.load('600 1em "Archivo Narrow"')
+    ]).then(function () { fontsDone = true; }, function () { fontsDone = true; });
+  }
+  var fontCss = document.querySelector('link[rel="stylesheet"][href*="fonts.googleapis.com"]');
+  if (fontCss && !fontCss.sheet) {
+    // Wait for the Google stylesheet so the @font-face rules exist before we
+    // ask for the files (otherwise load() resolves against nothing too early).
+    fontCss.addEventListener('load', kickFonts);
+    fontCss.addEventListener('error', function () { fontsDone = true; });
+    setTimeout(kickFonts, 1500); // safety: in case the load event already fired
+  } else {
+    kickFonts();
+  }
+
   function lift() {
     el.classList.add('ppr-hide');
     // Signal scroll-reveal to start so the hero animates as the curtain fades.
@@ -55,8 +77,8 @@
 
   (function check() {
     var waited = Date.now() - start;
-    if (contentReady() && waited >= MIN_MS) return lift();
-    if (waited > CAP_MS) return lift();
+    if (contentReady() && fontsDone && waited >= MIN_MS) return lift();
+    if (waited > CAP_MS) return lift(); // hard cap wins even if fonts stall
     setTimeout(check, 50);
   })();
 })();
