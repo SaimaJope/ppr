@@ -60,7 +60,6 @@
     [data-nav-inner]{height:64px !important;padding:0 16px !important}
     [data-nav-logo]{height:24px !important}
     [data-nav-actions]{gap:10px !important}
-    [data-quote-btn]{font-size:14px !important;padding:10px 14px !important}
     [data-menubtn]{width:42px !important;height:42px !important}
     [data-cert-heading]{display:grid !important;grid-template-columns:1fr auto !important;gap:18px !important;align-items:end !important}
     [data-cert-next]{display:inline-flex !important}
@@ -69,7 +68,6 @@
     [data-cert-card]{height:112px !important;padding:20px !important;flex:0 0 calc((100% - 12px)/2) !important;scroll-snap-align:start !important;overflow:hidden !important}
   }
   @media (max-width:370px){
-    [data-quote-btn]{display:none !important}
   }
 </style>
 </helmet>
@@ -103,13 +101,12 @@
       </a>
       <div data-navlinks style="display:flex;align-items:center;gap:36px;font-size:16px;font-weight:500">
         <a href="Palvelut.dc.html" style-hover="color:#015AFF">Palvelut</a>
-        <a href="Referenssit.dc.html" style-hover="color:#015AFF">Referenssit</a>
+        <a href="Yhteystiedot.dc.html" style-hover="color:#015AFF">Yhteystiedot</a>
         <a href="Yritys.dc.html" style-hover="color:#015AFF">Yritys</a>
         <a href="Ura.dc.html" style-hover="color:#015AFF">Ura</a>
-        <a href="Yhteystiedot.dc.html" style-hover="color:#015AFF">Yhteystiedot</a>
+        <a href="Referenssit.dc.html" style-hover="color:#015AFF">Referenssit</a>
       </div>
       <div data-nav-actions style="display:flex;align-items:center;gap:14px">
-        <a data-quote-btn href="Yhteystiedot.dc.html" style="background:#015AFF;color:#fff;font-weight:600;font-size:15px;padding:11px 22px" style-hover="background:#01266A">Pyydä tarjous</a>
         <button data-menubtn onClick="{{ toggleMenu }}" style="display:none;align-items:center;justify-content:center;width:46px;height:44px;background:transparent;border:1px solid rgba(14,17,22,.2);color:#14181F;cursor:pointer;font-size:20px">≡</button>
       </div>
     </div>
@@ -117,10 +114,10 @@
       <div style="border-top:1px solid rgba(255,255,255,.5);background:rgba(240,242,246,.9);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%)">
         <div style="max-width:1300px;margin:0 auto;padding:8px 24px 20px 24px;display:flex;flex-direction:column">
           <a href="Palvelut.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">Palvelut</a>
-          <a href="Referenssit.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">Referenssit</a>
+          <a href="Yhteystiedot.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">Yhteystiedot</a>
           <a href="Yritys.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">Yritys</a>
           <a href="Ura.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">Ura</a>
-          <a href="Yhteystiedot.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500">Yhteystiedot</a>
+          <a href="Referenssit.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500">Referenssit</a>
         </div>
       </div>
     </sc-if>
