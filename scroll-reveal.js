@@ -78,7 +78,18 @@
     const go = function () {
       if (fired) return;
       fired = true;
-      start();
+      // The ScrollReveal lib is CDN-loaded with `defer` and the curtain doesn't
+      // wait for it — on a cold load it can still be downloading when the
+      // curtain lifts. Starting now would find ScrollReveal undefined and bail
+      // (no effect). Poll until the lib is ready, with a cap so we never hang.
+      const startedAt = Date.now();
+      (function whenLibReady() {
+        if (libReady() || Date.now() - startedAt > 4000) {
+          start();
+        } else {
+          setTimeout(whenLibReady, 50);
+        }
+      })();
     };
     document.addEventListener('ppr:loaded', go, { once: true });
     setTimeout(go, 12000); // fallback if the curtain never lifts

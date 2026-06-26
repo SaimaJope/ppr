@@ -110,6 +110,7 @@
         <img data-nav-logo src="assets/ppr-mark.png" alt="PPR" style="height:27px;width:auto;display:block">
       </a>
       <div data-navlinks style="display:flex;align-items:center;gap:36px;font-size:16px;font-weight:500">
+        <a href="Etusivu.dc.html" aria-label="Etusivu" title="Etusivu" style="display:flex;align-items:center" style-hover="color:#015AFF"><img src="assets/home-svgrepo-com.svg" alt="Etusivu" style="width:18px;height:18px;display:block"></a>
         <a href="Palvelut.dc.html" style-hover="color:#015AFF">Palvelut</a>
         <a href="Yhteystiedot.dc.html" style-hover="color:#015AFF">Yhteystiedot</a>
         <a href="Yritys.dc.html" style-hover="color:#015AFF">Yritys</a>
@@ -211,7 +212,9 @@
       <div data-grid3 data-cert-grid style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
         <sc-for list="{{ certs }}" as="c" hint-placeholder-count="4">
           <div data-cert-card style="display:flex;align-items:center;justify-content:center;height:138px;padding:26px 30px;background:#fff;border:1px solid rgba(14,17,22,.12)">
-            <img src="{{ c.img }}" alt="{{ c.alt }}" style="max-height:78px;max-width:100%;width:auto;object-fit:contain;display:block">
+            <a href="{{ c.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ c.alt }}" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%">
+              <img src="{{ c.img }}" alt="{{ c.alt }}" style="max-height:78px;max-width:100%;width:auto;object-fit:contain;display:block">
+            </a>
           </div>
         </sc-for>
       </div>
@@ -313,10 +316,10 @@ class Component extends DCLogic {
         row.scrollTo({ left: atEnd ? 0 : row.scrollLeft + row.clientWidth, behavior: 'smooth' });
       },
       certs: [
-        { img: 'assets/cert-rala.png', alt: 'RALA-pätevyys' },
-        { img: 'assets/cert-iso9001.webp', alt: 'ISO 9001:2015 sertifioitu' },
-        { img: 'assets/cert-luotettava-kumppani.png', alt: 'Luotettava Kumppani – Tilaajavastuu.fi' },
-        { img: 'assets/cert-luottokelpoisuus.png', alt: 'Hyvä luottokelpoisuus' }
+        { img: 'assets/cert-rala.png', alt: 'RALA-pätevyys', url: 'https://www.rala.fi/fi/palvelut/rala-patevyys' },
+        { img: 'assets/cert-iso9001.webp', alt: 'ISO 9001:2015 sertifioitu', url: 'https://sfs.fi/standardeista/tutustu-standardeihin/suositut-standardit/iso-9001-laadunhallinta/' },
+        { img: 'assets/cert-luotettava-kumppani.png', alt: 'Luotettava Kumppani – Tilaajavastuu.fi', url: 'https://www.vastuugroup.fi/palvelut/luotettava-kumppani' },
+        { img: 'assets/cert-luottokelpoisuus.png', alt: 'Hyvä luottokelpoisuus', url: 'https://www.rahalaitos.fi/talous/luottoluokitus' }
       ],
       services: [
         { title: 'Teollisuusrakentaminen', desc: 'Vaativat kohteet Kilpilahden alueella Neste Oilin ja Borealiksen työtapojen mukaisesti.' },
