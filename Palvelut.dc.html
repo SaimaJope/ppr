@@ -64,6 +64,10 @@
     [data-page-breadcrumb],[data-page-eyebrow]{display:none !important}
     [data-page-hero-inner]{padding:0 32px !important}
     [data-page-hero-copy]{padding:28px 0 44px 0 !important}
+    [data-detail-bullets]{grid-template-columns:1fr !important;gap:12px !important}
+    [data-page-hero-copy] .reveal-up{opacity:1 !important;visibility:visible !important;transform:none !important}
+    [data-page-hero-copy] p,[data-split] p{max-width:min(100%,31ch) !important}
+    p{text-wrap:auto !important}
     [data-nav-inner]{height:64px !important;padding:0 16px !important}
     [data-nav-logo]{height:24px !important}
     [data-nav-actions]{gap:10px !important}
@@ -148,7 +152,7 @@
           <div>
             <h2 style="font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.02em;margin:0 0 18px 0;line-height:1.08">{{ d.title }}</h2>
             <p style="font-size:18px;line-height:1.6;color:#3A4150;margin:0 0 26px 0;max-width:520px">{{ d.desc }}</p>
-            <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:12px 28px">
+            <ul data-detail-bullets style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:12px 28px">
               <sc-for list="{{ d.bullets }}" as="b" hint-placeholder-count="4">
                 <li style="display:flex;gap:12px;font-size:15.5px;color:#28303C;line-height:1.4"><span style="flex:none;width:7px;height:7px;background:#015AFF;margin-top:6px"></span>{{ b }}</li>
               </sc-for>
