@@ -200,9 +200,17 @@ export const ADMIN_HTML = `<!doctype html>
   .field input:focus, .field textarea:focus { outline: 2px solid var(--blue); outline-offset: -1px; }
 
   /* kytkin (checkbox) */
-  .switch-row { display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .field > label.switch-row, label.switch-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    margin: 0;
+  }
   .switch-row input { position: absolute; opacity: 0; pointer-events: none; }
   .switch-track {
+    display: inline-block;
     width: 46px; height: 24px; flex: none;
     background: #C6CEDD;
     position: relative;
