@@ -11,6 +11,66 @@
 (function () {
   window.__pprLoader = true;
 
+  // ---- Site content ---------------------------------------------------------
+  // Every editable string on the site lives in content/fi.json; the page logic
+  // classes (script[data-dc-script]) render from it and hold their template
+  // behind `ready` until it has arrived, which keeps the curtain below covering
+  // the load. The fetch starts here — this file is loaded synchronously in
+  // <head> — so the JSON races the React CDN load instead of waiting for it.
+  // Cache is busted both ways (query param + no-store): GitHub Pages caches
+  // aggressively and an edit must be visible on the very next load.
+  window.__pprContent = (function load(attempt) {
+    return fetch('content/fi.json?v=' + Date.now(), { cache: 'no-store' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .catch(function (err) {
+        if (attempt < 2) {
+          return new Promise(function (resolve) {
+            setTimeout(resolve, 400 * (attempt + 1));
+          }).then(function () { return load(attempt + 1); });
+        }
+        console.error('[ppr] content/fi.json load failed:', err);
+        return null;
+      });
+  })(0);
+
+  // Helpers for the page logic classes.
+  // Display number -> tel: href, e.g. "(019) 663 0666" -> "tel:+358196630666".
+  window.pprTel = function (phone) {
+    var digits = String(phone || '').replace(/\D/g, '');
+    if (digits.indexOf('358') === 0) return 'tel:+' + digits;
+    if (digits.charAt(0) === '0') return 'tel:+358' + digits.slice(1);
+    return 'tel:' + digits;
+  };
+  // Paragraph stacks end with a different bottom margin than the paragraphs
+  // above them, so map plain strings to {text, style} rows for sc-for.
+  window.pprParas = function (texts, style, lastStyle) {
+    var arr = Array.isArray(texts) ? texts : [];
+    return arr.map(function (text, i) {
+      return { text: text, style: i === arr.length - 1 ? lastStyle : style };
+    });
+  };
+  // The render values every page shares (header, footer, contact, billing).
+  window.pprCommonVals = function (content) {
+    var common = content.common || {};
+    var contact = common.contact || {};
+    var office = contact.office || {};
+    var depot = contact.depot || {};
+    return {
+      company: common.company,
+      nav: common.nav,
+      office: office,
+      depot: depot,
+      billing: common.billing,
+      footer: common.footer,
+      telOffice: window.pprTel(office.phone),
+      telDepot: window.pprTel(depot.phone),
+      mailtoOffice: 'mailto:' + (office.email || '')
+    };
+  };
+
   // Self-heal transient image load failures (flaky network / host): when an
   // <img> errors, retry a couple of times with a cache-buster so it recovers
   // itself instead of leaving a blank. Capture phase — image errors don't

@@ -1,0 +1,529 @@
+{
+  "locale": "fi",
+  "common": {
+    "company": {
+      "name": "Porvoon Paalurakenne Oy",
+      "businessId": "2026187-3"
+    },
+    "nav": {
+      "etusivu": "Etusivu",
+      "koti": "Koti",
+      "palvelut": "Palvelut",
+      "yhteystiedot": "Yhteystiedot",
+      "yritys": "Yritys",
+      "ura": "Ura",
+      "referenssit": "Referenssit"
+    },
+    "contact": {
+      "office": {
+        "label": "Toimisto",
+        "street": "Pappilantie 2",
+        "postalCity": "07500 Askola",
+        "phone": "(019) 663 0666",
+        "email": "toimisto@ppr.fi"
+      },
+      "depot": {
+        "name": "Kulloo, Kilpilahti",
+        "street": "Nybyntie 16",
+        "postalCity": "06850 Kulloo",
+        "phone": "040 566 6074",
+        "emergencyLabel": "24h päivystys"
+      }
+    },
+    "billing": {
+      "labels": {
+        "businessId": "Y-tunnus",
+        "ovt": "Verkkolaskuosoite / OVT",
+        "operator": "Operaattori / OVT",
+        "email": "Sähköpostilasku",
+        "paper": "Paperilasku"
+      },
+      "ovt": "003720261873",
+      "operator": "PAGERO 003723609900",
+      "emailInvoice": "003720261873@xbs-salo.com",
+      "paperLine1": "PL 908",
+      "paperLine2": "02066 DOCUSCAN"
+    },
+    "footer": {
+      "description": "Porvoon Paalurakenne Oy tuottaa rakentamispalveluja teollisuudelle sekä julkisille asiakkaille Etelä-Suomen alueella.",
+      "pagesTitle": "Sivut",
+      "depotTitle": "Varikko / Kilpilahti",
+      "copyright": "© 2026 Porvoon Paalurakenne Oy",
+      "billingLinkLabel": "Laskutus ja OVT",
+      "whistleblowingLabel": "Whistleblowing-ilmoituskanava",
+      "whistleblowingUrl": "https://app.easywhistle.com/report/ppr/"
+    }
+  },
+  "etusivu": {
+    "hero": {
+      "eyebrow": "Teollisuusrakentaminen Etelä-Suomessa",
+      "title": "Rakennuspalvelut teollisuudelle.",
+      "lead": "Porvoon Paalurakenne Oy tuottaa rakentamispalveluja teollisuudelle sekä julkisille asiakkaille. Ydinosaamistamme on teollisuusrakentaminen Kilpilahden alueella.",
+      "ctaPrimary": "Tutustu palveluihin",
+      "ctaSecondary": "Laskutustiedot"
+    },
+    "intro": {
+      "eyebrow": "Yritys",
+      "title": "Kokenutta rakentamista vuodesta 2006.",
+      "paragraphs": [
+        "Yrityksemme työnjohtohenkilöstöllä on jo vuosikymmenien kokemus sekä vaativista teollisuusrakentamisen että muista rakennusalan töistä. Panostamme kaikessa toiminnassamme korkeaan laatuun sekä turvallisiin työtapoihin.",
+        "Toimiva ja testattu rakentamisen alihankintaverkosto Itä-Uudenmaan alueella takaa laadukkaan lopputuloksen sekä pitävät aikataulut."
+      ],
+      "linkLabel": "Lue lisää yrityksestä"
+    },
+    "services": {
+      "eyebrow": "Palvelut",
+      "title": "Rakentamispalvelut teollisuudelle ja julkisille tilaajille.",
+      "linkLabel": "Kaikki palvelut",
+      "items": [
+        {
+          "title": "Teollisuusrakentaminen",
+          "desc": "Vaativat kohteet Kilpilahden alueella Neste Oilin ja Borealiksen työtapojen mukaisesti."
+        },
+        {
+          "title": "Betonirakenteet",
+          "desc": "Perustukset, laiteperustukset, vallitilapinnoitukset ja säiliöiden pohjalaatat."
+        },
+        {
+          "title": "Kunnallistekniset työt",
+          "desc": "Viemäröintityöt sekä palovesi- ja juomavesiverkoston rakennustyöt."
+        },
+        {
+          "title": "Korjausrakentaminen",
+          "desc": "Julkisivu- ja parvekesaneeraukset, sokkelien vesieristeet ja salaojat, sisätilamuutokset."
+        },
+        {
+          "title": "Uudisrakentaminen",
+          "desc": "Pientalot, teollisuushallit, toimisto- ja koulurakennukset."
+        },
+        {
+          "title": "Investointi ja kunnossapito",
+          "desc": "Teiden ja viheralueiden kunnossapito sekä puhdistus- ja siivouspalvelut."
+        }
+      ]
+    },
+    "certs": {
+      "eyebrow": "Pätevyydet ja sertifikaatit",
+      "title": "Luotettava ja sertifioitu kumppani.",
+      "items": [
+        {
+          "img": "assets/cert-rala.png",
+          "alt": "RALA-pätevyys",
+          "url": "https://www.rala.fi/fi/palvelut/rala-patevyys"
+        },
+        {
+          "img": "assets/cert-iso9001.webp",
+          "alt": "ISO 9001:2015 sertifioitu",
+          "url": "https://sfs.fi/standardeista/tutustu-standardeihin/suositut-standardit/iso-9001-laadunhallinta/"
+        },
+        {
+          "img": "assets/cert-luotettava-kumppani.png",
+          "alt": "Luotettava Kumppani – Tilaajavastuu.fi",
+          "url": "https://www.vastuugroup.fi/palvelut/luotettava-kumppani"
+        },
+        {
+          "img": "assets/cert-luottokelpoisuus.png",
+          "alt": "Hyvä luottokelpoisuus",
+          "url": "https://www.rahalaitos.fi/talous/luottoluokitus"
+        }
+      ]
+    },
+    "contact": {
+      "depotLabel": "Varasto ja varikko",
+      "billingLabel": "Laskutus",
+      "phonePrefix": "Puh."
+    }
+  },
+  "palvelut": {
+    "hero": {
+      "eyebrow": "Palvelut",
+      "title": "Teollisuuden rakennuspalvelut ammattitaidolla.",
+      "lead": "Tuotamme rakennusalan töitä teollisuudelle, yrityksille, yhdistyksille ja julkishallinnolle. Laadun takaa kokenut ja ammattitaitoinen henkilökunta."
+    },
+    "details": [
+      {
+        "title": "Teollisuusrakentaminen",
+        "desc": "Ydinosaamistamme ovat vaativat kohteet Kilpilahden teollisuusalueella, Neste Oilin ja Borealiksen specifikaatioiden, määräysten ja työtapojen mukaisesti.",
+        "shot": "Valokuva: prosessialue, putkistot, työryhmä",
+        "bullets": [
+          "Kilpilahden teollisuusalue",
+          "Neste Oil ja Borealis specifikaatiot",
+          "Työturvallisuus- ja tulityökortit",
+          "Seisokit ja investointihankkeet"
+        ]
+      },
+      {
+        "title": "Betonirakenteet",
+        "desc": "Perustuksista pinnoituksiin: vaativat valutyöt ja teollisuuden betonirakenteet ammattitaidolla toteutettuna.",
+        "shot": "Valokuva: raudoitus ja betonivalu",
+        "bullets": [
+          "Perustukset",
+          "Rakennukset",
+          "Laiteperustukset",
+          "Vallitilapinnoitukset",
+          "Säiliöiden pohjalaatat"
+        ]
+      },
+      {
+        "title": "Kunnallistekniset työt",
+        "desc": "Vesihuollon verkostot ja maanrakennustyöt julkisille tilaajille sekä teollisuudelle.",
+        "shot": "Valokuva: kaivanto, putkilinja",
+        "bullets": [
+          "Viemäröintityöt",
+          "Palovesiverkostot",
+          "Juomavesiverkostot"
+        ]
+      },
+      {
+        "title": "Korjausrakentaminen",
+        "desc": "Julkisivujen ja rakenteiden saneeraukset sekä sisätilojen muutostyöt pitkällä käyttöiällä ja laadulla.",
+        "shot": "Valokuva: julkisivutyömaa, sääsuojaus",
+        "bullets": [
+          "Julkisivusaneeraukset",
+          "Parvekesaneeraukset",
+          "Sokkelien vesieristeet ja salaojat",
+          "Sisätilojen saneeraus- ja muutostyöt"
+        ]
+      },
+      {
+        "title": "Uudisrakentaminen",
+        "desc": "Uudiskohteet pientaloista teollisuushalleihin ja julkisiin rakennuksiin, sujuvasti perustuksista valmiiksi.",
+        "shot": "Valokuva: teräsrunkoinen halli, perustukset",
+        "bullets": [
+          "Pientalot",
+          "Teollisuushallit",
+          "Toimistorakennukset",
+          "Koulurakennukset"
+        ]
+      },
+      {
+        "title": "Teollisuuden investointi- ja kunnossapitopalvelut",
+        "desc": "Jatkuvat ja projektiluontoiset palvelut teollisuusasiakkaille sekä alueiden ja infran kunnossapito.",
+        "shot": "Valokuva: tiealue, viheralueet",
+        "bullets": [
+          "Rakentamispalvelut teollisuusasiakkaille",
+          "Teiden ja viheralueiden kunnossapito",
+          "Puhdistus- ja siivouspalvelut"
+        ]
+      }
+    ]
+  },
+  "yritys": {
+    "hero": {
+      "eyebrow": "Yritys",
+      "title": "Rakennusalan osaaja vuodesta 2006.",
+      "lead": "Porvoon Paalurakenne Oy tarjoaa rakentamispalveluja teollisuudelle sekä julkisille asiakkaille Etelä-Suomen alueella."
+    },
+    "story": {
+      "title": "Ydinosaamistamme on tarjota rakentamispalveluja teollisuudelle ja julkisille asiakkaille.",
+      "stats": [
+        {
+          "value": "2006",
+          "label": "Perustettu"
+        },
+        {
+          "value": "Kilpilahti",
+          "label": "Erikoisala"
+        },
+        {
+          "value": "Etelä-Suomi",
+          "label": "Toimialue"
+        }
+      ],
+      "paragraphs": [
+        "Erikoisosaamistamme on teollisuusrakentaminen Kilpilahden alueella, jossa toimimme Neste Oilin ja Borealiksen specifikaatioiden, määräysten ja työtapojen mukaisesti.",
+        "Yrityksemme työnjohtohenkilöstöllä on jo vuosikymmenien kokemus sekä vaativista teollisuusrakentamisen että muista rakennusalan töistä.",
+        "Laadun takaa kokenut ja ammattitaitoinen henkilökunta."
+      ]
+    },
+    "quality": {
+      "eyebrow": "Laatu ja turvallisuus",
+      "title": "Turvallisuus on työmme perusta.",
+      "paragraphs": [
+        "Yrityksemme panostaa kaikessa toiminnassaan korkeaan laatuun sekä työturvallisuuteen. Henkilöstöllämme on voimassa olevat työturvallisuus- ja tulityökortit.",
+        "Kilpilahden alueella noudatamme Neste Oilin ja Borealiksen määräyksiä ja työtapoja jokaisessa työvaiheessa."
+      ],
+      "badges": [
+        "Työturvallisuuskortti",
+        "Tulityökortti",
+        "Neste työtavat",
+        "Borealis työtavat"
+      ]
+    },
+    "creds": {
+      "eyebrow": "Pätevyydet",
+      "title": "Sertifikaatit ja pätevyydet.",
+      "items": [
+        {
+          "name": "RALA-pätevyys",
+          "desc": "Rakentamisen Laatu RALA ry:n arvioima ja hyväksymä toimija."
+        },
+        {
+          "name": "ISO 9001",
+          "desc": "Laadunhallintajärjestelmä, sertifioijana Bureau Veritas."
+        },
+        {
+          "name": "Luotettava Kumppani",
+          "desc": "Tilaajavastuu.fi, velvoitteet hoidettu ajantasaisesti."
+        },
+        {
+          "name": "AA-luottoluokitus",
+          "desc": "Vakaa ja luotettava taloudellinen asema."
+        }
+      ]
+    },
+    "expertise": {
+      "eyebrow": "Erikoisosaaminen",
+      "title": "Teollisuusrakentaminen Kilpilahden alueella.",
+      "paragraphs": [
+        "Toimimme Kilpilahdessa Neste Oilin ja Borealiksen specifikaatioiden, määräysten ja työtapojen mukaisesti. Henkilöstöllämme on voimassa olevat työturvallisuus- ja tulityökortit.",
+        "Turvallisuus ja laatu ovat työmme perusta jokaisessa kohteessa."
+      ],
+      "badges": [
+        "Neste",
+        "Borealis",
+        "Työturvallisuuskortti",
+        "Tulityökortti"
+      ],
+      "photoCaption": "Valokuva: työryhmä prosessialueella"
+    },
+    "network": {
+      "title": "Laaja ja testattu alihankintaverkosto.",
+      "text": "Toimiva ja testattu rakentamisen alihankinta- ja yhteistyöverkosto Itä-Uudenmaan alueella mahdollistaa suuretkin työkokonaisuudet sekä takaa laadukkaan lopputuloksen ja pitävät aikataulut."
+    },
+    "career": {
+      "eyebrow": "Ura",
+      "title": "Tule rakentamaan kanssamme.",
+      "text": "Etsimme ammattitaitoisia tekijöitä ja työnjohtajia teollisuusrakentamisen vaativiin kohteisiin. Meillä työ tehdään turvallisesti ja kerralla kunnolla.",
+      "ctaLabel": "Avoimet työpaikat",
+      "photoCaption": "Valokuva: työmaa, suojavarusteet"
+    }
+  },
+  "referenssit": {
+    "hero": {
+      "eyebrow": "Referenssit",
+      "title": "Toteutuneet työt kertovat osaamisesta.",
+      "lead": "Valikoima kohteitamme teollisuus-, kunnallistekniikka-, korjaus- ja uudisrakentamisesta Itä-Uudellamaalla. Täydennämme sivua kohdekuvilla ja yksityiskohdilla."
+    },
+    "filters": {
+      "allLabel": "Kaikki",
+      "categories": [
+        "Prosessiteollisuus",
+        "Betonirakenteet",
+        "Kunnallistekniikka",
+        "Uudisrakentaminen",
+        "Korjausrakentaminen"
+      ],
+      "countSuffix": "kohdetta"
+    },
+    "projects": [
+      {
+        "sector": "Prosessiteollisuus",
+        "title": "Säiliöperustukset ja vallitila-alueen pinnoitus",
+        "scope": "Betonipohjalaatat, vallitilan nestetiivis pinnoitus ja perustustyöt prosessialueella.",
+        "loc": "Kilpilahti",
+        "year": "2023",
+        "shot": "Valokuva: säiliökenttä, pohjalaatat",
+        "img": ""
+      },
+      {
+        "sector": "Teollisuusrakentaminen",
+        "title": "Laiteperustukset, prosessilaitos",
+        "scope": "Laiteperustusten valutyöt Neste Oilin specifikaatioiden ja työtapojen mukaisesti.",
+        "loc": "Kilpilahti",
+        "year": "2022",
+        "shot": "Valokuva: laiteperustukset, raudoitus",
+        "img": ""
+      },
+      {
+        "sector": "Uudisrakentaminen",
+        "title": "Teollisuushalli, runko ja perustukset",
+        "scope": "Teräsrunkoisen teollisuushallin perustukset ja maanrakennustyöt.",
+        "loc": "Itä-Uusimaa",
+        "year": "2021",
+        "shot": "Valokuva: teräsrunkoinen halli, työmaa",
+        "img": ""
+      },
+      {
+        "sector": "Kunnallistekniikka",
+        "title": "Palovesiverkoston rakennustyöt",
+        "scope": "Palovesi- ja juomavesiverkoston rakennustyöt sekä kaivannot julkiselle tilaajalle.",
+        "loc": "Porvoo",
+        "year": "2022",
+        "shot": "Valokuva: kaivanto, putkilinja",
+        "img": ""
+      },
+      {
+        "sector": "Korjausrakentaminen",
+        "title": "Julkisivu- ja parvekesaneeraus",
+        "scope": "Asuinkerrostalon julkisivujen ja parvekkeiden saneeraus sääsuojattuna.",
+        "loc": "Porvoo",
+        "year": "2020",
+        "shot": "Valokuva: julkisivutyömaa, parveke",
+        "img": ""
+      },
+      {
+        "sector": "Uudisrakentaminen",
+        "title": "Koulurakennuksen perustukset ja betonirakenteet",
+        "scope": "Julkisen rakennuksen perustukset, pohjalaatat ja kantavat betonirakenteet.",
+        "loc": "Askola",
+        "year": "2019",
+        "shot": "Valokuva: pohjalaatta, betonirakenteet",
+        "img": ""
+      },
+      {
+        "sector": "Kunnallistekniikka",
+        "title": "Viemäröinti- ja juomavesiverkosto",
+        "scope": "Viemäröintityöt ja vesihuollon verkostojen rakentaminen taajama-alueella.",
+        "loc": "Itä-Uusimaa",
+        "year": "2021",
+        "shot": "Valokuva: maanrakennus, viemärilinja",
+        "img": ""
+      },
+      {
+        "sector": "Korjausrakentaminen",
+        "title": "Sokkelien vesieristys ja salaojat",
+        "scope": "Perustusten kosteudeneristys, salaojitus ja kuivatuksen parannustyöt.",
+        "loc": "Askola",
+        "year": "2023",
+        "shot": "Valokuva: sokkelin kaivu, salaoja",
+        "img": ""
+      },
+      {
+        "sector": "Investointi ja kunnossapito",
+        "title": "Teiden ja viheralueiden kunnossapito",
+        "scope": "Teollisuusalueen tie- ja viheralueiden jatkuva kunnossapito sekä puhtaanapito.",
+        "loc": "Kilpilahti",
+        "year": "Jatkuva",
+        "shot": "Valokuva: tiealue, huoltokalusto",
+        "img": ""
+      }
+    ]
+  },
+  "ura": {
+    "hero": {
+      "eyebrow": "Ura",
+      "title": "Tule rakentamaan kanssamme.",
+      "lead": "Etsimme ammattitaitoisia tekijöitä ja työnjohtajia teollisuusrakentamisen vaativiin kohteisiin. Meillä työ tehdään turvallisesti ja kerralla kunnolla."
+    },
+    "why": {
+      "eyebrow": "Miksi PPR",
+      "title": "Vakaata työtä luotettavassa porukassa.",
+      "items": [
+        {
+          "title": "Turvallisuus edellä",
+          "desc": "Voimassa olevat kortit ja perehdytys jokaiseen kohteeseen."
+        },
+        {
+          "title": "Kokenut työnjohto",
+          "desc": "Työnjohtohenkilöstöllä on vuosikymmenien kokemus alalta."
+        },
+        {
+          "title": "Vakaat työmaat",
+          "desc": "Pitkäjänteistä työtä Itä-Uudenmaan alueella."
+        }
+      ]
+    },
+    "roles": {
+      "title": "Tehtävät, joihin rekrytoimme",
+      "note": "Avoimet paikat vaihtelevat kohteiden mukaan. Lähetä avoin hakemus, niin olemme yhteydessä.",
+      "items": [
+        {
+          "title": "Rakennustyöntekijät",
+          "note": "Teollisuus- ja betonirakentaminen"
+        },
+        {
+          "title": "Kirvesmiehet",
+          "note": "Uudis- ja korjausrakentaminen"
+        },
+        {
+          "title": "Betonimiehet",
+          "note": "Perustukset ja pohjalaatat"
+        },
+        {
+          "title": "Kärkimiehet ja työnjohtajat",
+          "note": "Kokemus teollisuuskohteista eduksi"
+        }
+      ]
+    },
+    "apply": {
+      "title": "Kiinnostuitko? Lähetä avoin hakemus.",
+      "text": "Kerro osaamisestasi ja korteistasi. Käsittelemme hakemukset luottamuksellisesti."
+    }
+  },
+  "yhteystiedot": {
+    "hero": {
+      "eyebrow": "Yhteystiedot",
+      "title": "Ota yhteyttä.",
+      "lead": "Toimisto Askolassa ja varikko Kilpilahden Kulloossa. Kilpilahden 24h päivystys palvelee ympäri vuorokauden."
+    },
+    "locations": {
+      "officeTitle": "Askola",
+      "depotLabel": "Varikko ja varasto"
+    },
+    "team": {
+      "eyebrow": "Avainhenkilöt",
+      "title": "Ota yhteyttä suoraan.",
+      "members": [
+        {
+          "name": "Marko Paavola",
+          "role": "Hallituksen puheenjohtaja, rakennusmestari",
+          "phone": "0400 714 532",
+          "email": "marko.paavola@ppr.fi"
+        },
+        {
+          "name": "Jaani Karavirta",
+          "role": "Toimitusjohtaja, rakennusmestari",
+          "phone": "0400 840 912",
+          "email": "jaani.karavirta@ppr.fi"
+        },
+        {
+          "name": "Camilla Paavola",
+          "role": "Talouspäällikkö",
+          "phone": "0400 351 804",
+          "email": "camilla.paavola@ppr.fi"
+        },
+        {
+          "name": "Tomi Hyppönen",
+          "role": "Työsuojelupäällikkö / varastopäällikkö",
+          "phone": "0400 310 257",
+          "email": "tomi.hypponen@ppr.fi"
+        },
+        {
+          "name": "Mikko Myllynen",
+          "role": "Työmaapäällikkö, rakennusinsinööri",
+          "phone": "040 755 5133",
+          "email": "mikko.myllynen@ppr.fi"
+        },
+        {
+          "name": "Mikael Tapanainen",
+          "role": "Työmaapäällikkö, rakennusinsinööri",
+          "phone": "040 775 5006",
+          "email": "mikael.tapanainen@ppr.fi"
+        },
+        {
+          "name": "Juha Yletyinen",
+          "role": "Kärkimies",
+          "phone": "040 513 7781",
+          "email": "juha.yletyinen@ppr.fi"
+        },
+        {
+          "name": "Tarmo Kukkonen",
+          "role": "Kärkimies",
+          "phone": "0400 920 891",
+          "email": "tarmo.kukkonen@ppr.fi"
+        },
+        {
+          "name": "Mika Viitanen",
+          "role": "Kärkimies",
+          "phone": "044 203 8822",
+          "email": "mika.viitanen@ppr.fi"
+        }
+      ]
+    },
+    "invoicing": {
+      "eyebrow": "Laskutus",
+      "title": "Laskutustiedot"
+    }
+  }
+}
