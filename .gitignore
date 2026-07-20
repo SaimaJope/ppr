@@ -12,3 +12,7 @@ desktop.ini
 node_modules/
 dist/
 build/
+
+# Wrangler local secrets and state
+worker/.dev.vars
+worker/.wrangler/

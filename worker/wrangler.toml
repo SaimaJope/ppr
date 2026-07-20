@@ -1,0 +1,17 @@
+name = "ppr-admin"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+# Julkiset asetukset (eivät ole salaisuuksia).
+# Salaisuudet asetetaan komennolla:  npx wrangler secret put <NIMI>
+#   ADMIN_PASSWORD  – hallintapaneelin salasana
+#   SESSION_SECRET  – pitkä satunnainen merkkijono istuntoevästeiden allekirjoitukseen
+#   GITHUB_TOKEN    – fine-grained PAT, contents:write vain SaimaJope/ppr-repoon
+[vars]
+GITHUB_OWNER = "SaimaJope"
+GITHUB_REPO = "ppr"
+GITHUB_BRANCH = "main"
+CONTENT_PATH = "content/fi.json"
+ASSETS_DIR = "assets"
+SITE_URL = "https://saimajope.github.io/ppr/"
