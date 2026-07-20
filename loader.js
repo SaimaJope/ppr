@@ -114,13 +114,21 @@
       var s = document.createElement('style');
       s.id = 'ppr-slide-style';
       s.textContent =
+        // Hidden by default; hover over the photo area (or keyboard focus)
+        // fades them in. Touch devices never see them and swipe instead.
         '.ppr-slide-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:6;' +
         'width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.4);' +
         'display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;' +
         'color:#fff;background:rgba(255,255,255,.18);' +
         'backdrop-filter:blur(12px) saturate(160%);-webkit-backdrop-filter:blur(12px) saturate(160%);' +
         'box-shadow:0 6px 20px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.45);' +
-        'transition:background .18s ease,transform .18s ease;-webkit-tap-highlight-color:transparent}' +
+        'opacity:0;pointer-events:none;' +
+        'transition:opacity .25s ease,background .18s ease,transform .18s ease;' +
+        '-webkit-tap-highlight-color:transparent}' +
+        '@media (hover:hover){' +
+        '.ppr-slide-host:hover>.ppr-slide-arrow,.ppr-slide-arrow:focus-visible{opacity:1;pointer-events:auto}' +
+        '}' +
+        '@media (hover:none){.ppr-slide-arrow{display:none}}' +
         '.ppr-slide-arrow:hover{background:rgba(255,255,255,.34)}' +
         '.ppr-slide-arrow:active{transform:translateY(-50%) scale(.94)}' +
         '.ppr-slide-arrow:focus{outline:none}' +
@@ -186,11 +194,31 @@
         return b;
       }
       function ensureArrows() {
+        host.classList.add('ppr-slide-host');
         if (!host.querySelector('.ppr-slide-prev')) {
           host.appendChild(makeArrow(-1));
           host.appendChild(makeArrow(1));
         }
       }
+
+      // Touch devices browse by swiping the photo area. Passive listeners:
+      // vertical page scrolling is untouched, and a real swipe suppresses the
+      // click so reference-card links do not navigate.
+      var touchX = 0, touchY = 0;
+      host.addEventListener('touchstart', function (e) {
+        var t = e.touches[0];
+        if (t) { touchX = t.clientX; touchY = t.clientY; }
+      }, { passive: true });
+      host.addEventListener('touchend', function (e) {
+        var t = e.changedTouches[0];
+        if (!t) return;
+        var dx = t.clientX - touchX;
+        var dy = t.clientY - touchY;
+        if (Math.abs(dx) > 45 && Math.abs(dx) > 1.6 * Math.abs(dy)) {
+          step(dx < 0 ? 1 : -1);
+          restartAuto();
+        }
+      }, { passive: true });
 
       ensureArrows();
       restartAuto();
