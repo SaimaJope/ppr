@@ -78,6 +78,7 @@
 <div style="background:#F0F2F6">
 
   <!-- TOP BAR -->
+  <sc-if value="{{ topbarVisible }}">
   <div style="background:#0E1116;color:#9AA6BD;font-size:13px">
     <div data-topbar-inner style="max-width:1300px;margin:0 auto;padding:0 32px;height:42px;display:flex;align-items:center;justify-content:space-between">
       <div data-util-left>{{ company.name }}</div>
@@ -95,6 +96,7 @@
       </div>
     </div>
   </div>
+  </sc-if>
 
   <!-- NAV -->
   <nav style="position:sticky;top:0;z-index:50;background:rgba(240,242,246,.65);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);border-bottom:1px solid rgba(255,255,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 30px -18px rgba(14,17,22,.32)">
@@ -215,8 +217,17 @@
           </div>
         </div>
         <div style="position:relative;aspect-ratio:4/5;background:#171C24;overflow:hidden;border:1px solid rgba(128,147,181,.18)">
-          <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.06) 0 1px,transparent 1px 15px)"></div>
-          <div style="position:absolute;left:18px;bottom:16px;right:18px;font-size:13px;line-height:1.5;color:#5A6678" class="lbl">{{ page.expertise.photoCaption }}</div>
+          <sc-if value="{{ expertiseSlides.0 }}">
+            <div data-slideshow data-slideshow-interval="{{ slideshowInterval }}" style="position:absolute;inset:0">
+              <sc-for list="{{ expertiseSlides }}" as="sl">
+                <img data-slide="{{ sl.i }}" src="{{ sl.src }}" alt="{{ page.expertise.title }}" style="{{ sl.style }}">
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ !expertiseSlides.0 }}">
+            <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.06) 0 1px,transparent 1px 15px)"></div>
+            <div style="position:absolute;left:18px;bottom:16px;right:18px;font-size:13px;line-height:1.5;color:#5A6678" class="lbl">{{ page.expertise.photoCaption }}</div>
+          </sc-if>
         </div>
       </div>
     </div>
@@ -244,8 +255,17 @@
           <a href="Ura.dc.html" style="background:#0E1116;color:#fff;font-weight:600;font-size:16px;padding:14px 26px;display:inline-block" style-hover="background:#015AFF">{{ page.career.ctaLabel }}</a>
         </div>
         <div style="position:relative;aspect-ratio:3/2;background:#171C24;overflow:hidden">
-          <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.07) 0 1px,transparent 1px 15px)"></div>
-          <div style="position:absolute;left:18px;bottom:16px;right:18px;font-size:13px;line-height:1.5;color:#5A6678" class="lbl">{{ page.career.photoCaption }}</div>
+          <sc-if value="{{ careerSlides.0 }}">
+            <div data-slideshow data-slideshow-interval="{{ slideshowInterval }}" style="position:absolute;inset:0">
+              <sc-for list="{{ careerSlides }}" as="sl">
+                <img data-slide="{{ sl.i }}" src="{{ sl.src }}" alt="{{ page.career.title }}" style="{{ sl.style }}">
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ !careerSlides.0 }}">
+            <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.07) 0 1px,transparent 1px 15px)"></div>
+            <div style="position:absolute;left:18px;bottom:16px;right:18px;font-size:13px;line-height:1.5;color:#5A6678" class="lbl">{{ page.career.photoCaption }}</div>
+          </sc-if>
         </div>
       </div>
     </div>
@@ -320,7 +340,9 @@ class Component extends DCLogic {
       page: c.yritys,
       storyParas: pprParas(c.yritys.story.paragraphs, LIGHT + 'margin:0 0 20px 0', LIGHT + 'margin:0'),
       qualityParas: pprParas(c.yritys.quality.paragraphs, DARK + 'margin:0 0 22px 0;max-width:520px', DARK + 'margin:0;max-width:520px'),
-      expertiseParas: pprParas(c.yritys.expertise.paragraphs, DARK + 'margin:0 0 22px 0;max-width:540px', DARK + 'margin:0 0 34px 0;max-width:540px')
+      expertiseParas: pprParas(c.yritys.expertise.paragraphs, DARK + 'margin:0 0 22px 0;max-width:540px', DARK + 'margin:0 0 34px 0;max-width:540px'),
+      expertiseSlides: pprSlides(c.yritys.expertise.images),
+      careerSlides: pprSlides(c.yritys.career.images)
     }, pprCommonVals(c));
   }
 }

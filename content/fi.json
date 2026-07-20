@@ -5,6 +5,12 @@
       "name": "Porvoon Paalurakenne Oy",
       "businessId": "2026187-3"
     },
+    "topbar": {
+      "visible": true
+    },
+    "slideshow": {
+      "intervalSeconds": 7
+    },
     "nav": {
       "etusivu": "Etusivu",
       "koti": "Koti",
@@ -60,7 +66,10 @@
       "title": "Rakennuspalvelut teollisuudelle.",
       "lead": "Porvoon Paalurakenne Oy tuottaa rakentamispalveluja teollisuudelle sekä julkisille asiakkaille. Ydinosaamistamme on teollisuusrakentaminen Kilpilahden alueella.",
       "ctaPrimary": "Tutustu palveluihin",
-      "ctaSecondary": "Laskutustiedot"
+      "ctaSecondary": "Laskutustiedot",
+      "images": [
+        "Kilpi_lahti.jpg"
+      ]
     },
     "intro": {
       "eyebrow": "Yritys",
@@ -150,7 +159,8 @@
           "Neste Oil ja Borealis specifikaatiot",
           "Työturvallisuus- ja tulityökortit",
           "Seisokit ja investointihankkeet"
-        ]
+        ],
+        "images": []
       },
       {
         "title": "Betonirakenteet",
@@ -162,7 +172,8 @@
           "Laiteperustukset",
           "Vallitilapinnoitukset",
           "Säiliöiden pohjalaatat"
-        ]
+        ],
+        "images": []
       },
       {
         "title": "Kunnallistekniset työt",
@@ -172,7 +183,8 @@
           "Viemäröintityöt",
           "Palovesiverkostot",
           "Juomavesiverkostot"
-        ]
+        ],
+        "images": []
       },
       {
         "title": "Korjausrakentaminen",
@@ -183,7 +195,8 @@
           "Parvekesaneeraukset",
           "Sokkelien vesieristeet ja salaojat",
           "Sisätilojen saneeraus- ja muutostyöt"
-        ]
+        ],
+        "images": []
       },
       {
         "title": "Uudisrakentaminen",
@@ -194,7 +207,8 @@
           "Teollisuushallit",
           "Toimistorakennukset",
           "Koulurakennukset"
-        ]
+        ],
+        "images": []
       },
       {
         "title": "Teollisuuden investointi- ja kunnossapitopalvelut",
@@ -204,7 +218,8 @@
           "Rakentamispalvelut teollisuusasiakkaille",
           "Teiden ja viheralueiden kunnossapito",
           "Puhdistus- ja siivouspalvelut"
-        ]
+        ],
+        "images": []
       }
     ]
   },
@@ -285,7 +300,8 @@
         "Työturvallisuuskortti",
         "Tulityökortti"
       ],
-      "photoCaption": "Valokuva: työryhmä prosessialueella"
+      "photoCaption": "Valokuva: työryhmä prosessialueella",
+      "images": []
     },
     "network": {
       "title": "Laaja ja testattu alihankintaverkosto.",
@@ -296,7 +312,8 @@
       "title": "Tule rakentamaan kanssamme.",
       "text": "Etsimme ammattitaitoisia tekijöitä ja työnjohtajia teollisuusrakentamisen vaativiin kohteisiin. Meillä työ tehdään turvallisesti ja kerralla kunnolla.",
       "ctaLabel": "Avoimet työpaikat",
-      "photoCaption": "Valokuva: työmaa, suojavarusteet"
+      "photoCaption": "Valokuva: työmaa, suojavarusteet",
+      "images": []
     }
   },
   "referenssit": {
@@ -324,7 +341,7 @@
         "loc": "Kilpilahti",
         "year": "2023",
         "shot": "Valokuva: säiliökenttä, pohjalaatat",
-        "img": ""
+        "images": []
       },
       {
         "sector": "Teollisuusrakentaminen",
@@ -333,7 +350,7 @@
         "loc": "Kilpilahti",
         "year": "2022",
         "shot": "Valokuva: laiteperustukset, raudoitus",
-        "img": ""
+        "images": []
       },
       {
         "sector": "Uudisrakentaminen",
@@ -342,7 +359,7 @@
         "loc": "Itä-Uusimaa",
         "year": "2021",
         "shot": "Valokuva: teräsrunkoinen halli, työmaa",
-        "img": ""
+        "images": []
       },
       {
         "sector": "Kunnallistekniikka",
@@ -351,7 +368,7 @@
         "loc": "Porvoo",
         "year": "2022",
         "shot": "Valokuva: kaivanto, putkilinja",
-        "img": ""
+        "images": []
       },
       {
         "sector": "Korjausrakentaminen",
@@ -360,7 +377,7 @@
         "loc": "Porvoo",
         "year": "2020",
         "shot": "Valokuva: julkisivutyömaa, parveke",
-        "img": ""
+        "images": []
       },
       {
         "sector": "Uudisrakentaminen",
@@ -369,7 +386,7 @@
         "loc": "Askola",
         "year": "2019",
         "shot": "Valokuva: pohjalaatta, betonirakenteet",
-        "img": ""
+        "images": []
       },
       {
         "sector": "Kunnallistekniikka",
@@ -378,7 +395,7 @@
         "loc": "Itä-Uusimaa",
         "year": "2021",
         "shot": "Valokuva: maanrakennus, viemärilinja",
-        "img": ""
+        "images": []
       },
       {
         "sector": "Korjausrakentaminen",
@@ -387,7 +404,7 @@
         "loc": "Askola",
         "year": "2023",
         "shot": "Valokuva: sokkelin kaivu, salaoja",
-        "img": ""
+        "images": []
       },
       {
         "sector": "Investointi ja kunnossapito",
@@ -396,7 +413,7 @@
         "loc": "Kilpilahti",
         "year": "Jatkuva",
         "shot": "Valokuva: tiealue, huoltokalusto",
-        "img": ""
+        "images": []
       }
     ]
   },

@@ -82,6 +82,7 @@
 <div style="background:#F0F2F6">
 
   <!-- TOP BAR -->
+  <sc-if value="{{ topbarVisible }}">
   <div style="background:#0E1116;color:#9AA6BD;font-size:13px">
     <div data-topbar-inner style="max-width:1300px;margin:0 auto;padding:0 32px;height:42px;display:flex;align-items:center;justify-content:space-between">
       <div data-util-left>{{ company.name }}</div>
@@ -99,6 +100,7 @@
       </div>
     </div>
   </div>
+  </sc-if>
 
   <!-- NAV -->
   <nav style="position:sticky;top:0;z-index:50;background:rgba(240,242,246,.65);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);border-bottom:1px solid rgba(255,255,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 30px -18px rgba(14,17,22,.32)">
@@ -148,7 +150,7 @@
   <!-- DETAIL LIST -->
   <section data-sec style="background:#fff">
     <div style="max-width:1300px;margin:0 auto;padding:96px 32px">
-      <sc-for list="{{ page.details }}" as="d" hint-placeholder-count="6">
+      <sc-for list="{{ details }}" as="d" hint-placeholder-count="6">
         <div data-split style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:64px;padding:56px 0;border-top:1px solid rgba(14,17,22,.14);align-items:start">
           <div>
             <h2 style="font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.02em;margin:0 0 18px 0;line-height:1.08">{{ d.title }}</h2>
@@ -160,8 +162,17 @@
             </ul>
           </div>
           <div style="position:relative;aspect-ratio:4/3;background:#171C24;overflow:hidden">
-            <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.06) 0 1px,transparent 1px 14px)"></div>
-            <div style="position:absolute;left:16px;bottom:14px;right:16px;font-size:12px;line-height:1.45;color:#4A5566" class="lbl">{{ d.shot }}</div>
+            <sc-if value="{{ d.slides.0 }}">
+              <div data-slideshow data-slideshow-interval="{{ slideshowInterval }}" style="position:absolute;inset:0">
+                <sc-for list="{{ d.slides }}" as="sl">
+                  <img data-slide="{{ sl.i }}" src="{{ sl.src }}" alt="{{ d.title }}" style="{{ sl.style }}">
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ !d.slides.0 }}">
+              <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.06) 0 1px,transparent 1px 14px)"></div>
+              <div style="position:absolute;left:16px;bottom:14px;right:16px;font-size:12px;line-height:1.45;color:#4A5566" class="lbl">{{ d.shot }}</div>
+            </sc-if>
           </div>
         </div>
       </sc-for>
@@ -234,7 +245,8 @@ class Component extends DCLogic {
       ready: true,
       menuOpen: this.state.menuOpen,
       toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
-      page: c.palvelut
+      page: c.palvelut,
+      details: (c.palvelut.details || []).map((d) => Object.assign({}, d, { slides: pprSlides(d.images) }))
     }, pprCommonVals(c));
   }
 }

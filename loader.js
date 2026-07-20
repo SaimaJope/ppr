@@ -52,12 +52,26 @@
       return { text: text, style: i === arr.length - 1 ? lastStyle : style };
     });
   };
+  // Photo lists -> stacked slide <img> descriptors for the slideshow engine
+  // below. One image renders static; two or more crossfade.
+  window.pprSlides = function (images, objectPosition) {
+    var arr = Array.isArray(images) ? images.filter(Boolean) : [];
+    var base =
+      'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;' +
+      'object-position:' + (objectPosition || 'center') + ';' +
+      'transition:opacity 1.2s ease;';
+    return arr.map(function (src, i) {
+      return { i: i, src: src, style: base + (i === 0 ? 'opacity:1' : 'opacity:0') };
+    });
+  };
+
   // The render values every page shares (header, footer, contact, billing).
   window.pprCommonVals = function (content) {
     var common = content.common || {};
     var contact = common.contact || {};
     var office = contact.office || {};
     var depot = contact.depot || {};
+    var interval = common.slideshow && Number(common.slideshow.intervalSeconds);
     return {
       company: common.company,
       nav: common.nav,
@@ -67,9 +81,47 @@
       footer: common.footer,
       telOffice: window.pprTel(office.phone),
       telDepot: window.pprTel(depot.phone),
-      mailtoOffice: 'mailto:' + (office.email || '')
+      mailtoOffice: 'mailto:' + (office.email || ''),
+      topbarVisible: !(common.topbar && common.topbar.visible === false),
+      slideshowInterval: Math.min(60, Math.max(2, interval || 7))
     };
   };
+
+  // ---- Slideshow engine -----------------------------------------------------
+  // Rotates the stacked <img data-slide> children of every [data-slideshow]
+  // container. Runs outside React on purpose: a re-render (e.g. the mobile
+  // menu opening) resets inline opacities to the template values, and the next
+  // tick simply reasserts them. Containers appear only after content renders,
+  // so keep scanning for a while and after the curtain lifts.
+  (function () {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var timers = new WeakMap();
+    function initContainer(el) {
+      if (timers.has(el)) return;
+      var seconds = Math.min(60, Math.max(2, Number(el.getAttribute('data-slideshow-interval')) || 7));
+      var state = { idx: 0 };
+      timers.set(el, state);
+      setInterval(function () {
+        if (!el.isConnected) return;
+        var imgs = el.querySelectorAll('img[data-slide]');
+        if (imgs.length < 2) return;
+        state.idx = (state.idx + 1) % imgs.length;
+        for (var i = 0; i < imgs.length; i++) {
+          imgs[i].style.opacity = i === state.idx ? '1' : '0';
+        }
+      }, seconds * 1000);
+    }
+    function scan() {
+      var els = document.querySelectorAll('[data-slideshow]');
+      for (var i = 0; i < els.length; i++) initContainer(els[i]);
+    }
+    var started = Date.now();
+    (function poll() {
+      scan();
+      if (Date.now() - started < 30000) setTimeout(poll, 1000);
+    })();
+    document.addEventListener('ppr:loaded', scan);
+  })();
 
   // Self-heal transient image load failures (flaky network / host): when an
   // <img> errors, retry a couple of times with a cache-buster so it recovers
@@ -122,6 +174,15 @@
     return document.querySelector('[data-sec], [data-split], [data-grid3], [data-srow], [data-cert-card]');
   }
 
+  // If the hero renders a content-driven slideshow, hold the curtain until its
+  // first photo has finished loading (it is the LCP; without this a changed
+  // hero image would pop in after the curtain lifts).
+  function heroImageReady() {
+    var img = document.querySelector('[data-hero-scene] [data-slideshow] img[data-slide="0"]');
+    if (!img) return true;
+    return img.complete;
+  }
+
   // Hold the curtain until the real fonts are loaded, so the text behind it is
   // already Archivo when it lifts — no fallback-to-webfont swap on screen.
   var fontsDone = false;
@@ -171,7 +232,7 @@
 
   (function check() {
     var waited = Date.now() - start;
-    if (contentReady() && fontsDone && imagesDone && waited >= MIN_MS) return lift();
+    if (contentReady() && heroImageReady() && fontsDone && imagesDone && waited >= MIN_MS) return lift();
     if (waited > CAP_MS) return lift(); // hard cap wins even if something stalls
     setTimeout(check, 50);
   })();

@@ -1,4 +1,6 @@
 // Hallintapaneelin käyttöliittymä yhtenä HTML-merkkijonona.
+// Ulkoasu seuraa julkisen sivuston tyyliä: Archivo-fontit, terävät kulmat,
+// tummansininen/teräksinen väripaletti.
 // HUOM: sisäinen JavaScript ei käytä takahipsuja eikä ${ -merkintää,
 // jotta se voidaan upottaa tähän template-literaaliin turvallisesti.
 
@@ -8,29 +10,43 @@ export const ADMIN_HTML = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>PPR – Sisällönhallinta</title>
+<title>PPR | Sisällönhallinta</title>
+<link rel="icon" type="image/png" href="https://saimajope.github.io/ppr/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --navy: #0E1116;
+    --navy-2: #171C24;
     --blue: #015AFF;
+    --blue-hover: #2b74ff;
     --blue-dark: #01266A;
     --steel: #56607A;
+    --steel-light: #8093B5;
     --bg: #F0F2F6;
     --card: #ffffff;
     --line: rgba(14, 17, 22, .12);
-    --ok: #0B7A3E;
+    --line-strong: rgba(14, 17, 22, .18);
     --err: #B00020;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; }
   body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Archivo', system-ui, sans-serif;
     background: var(--bg);
     color: #14181F;
     font-size: 16px;
+    -webkit-font-smoothing: antialiased;
   }
   button { font: inherit; cursor: pointer; }
-  input, textarea, select { font: inherit; }
+  input, textarea, select { font: inherit; color: #14181F; }
+  ::selection { background: var(--blue); color: #fff; }
+  .lbl {
+    font-family: 'Archivo Narrow', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+  }
 
   /* ---------- kirjautuminen ---------- */
   #login-view {
@@ -39,39 +55,44 @@ export const ADMIN_HTML = `<!doctype html>
     align-items: center;
     justify-content: center;
     padding: 24px;
-    background: linear-gradient(160deg, #0E1116 0%, #1a2230 60%, #01266A 130%);
+    background: var(--navy);
+    background-image:
+      radial-gradient(circle at 74% 24%, rgba(92, 151, 255, .14), transparent 40%),
+      linear-gradient(135deg, rgba(1, 90, 255, .10), transparent 52%),
+      repeating-linear-gradient(135deg, rgba(240, 242, 246, .035) 0 1px, transparent 1px 18px);
   }
   .login-card {
     background: var(--card);
     width: 100%;
-    max-width: 420px;
-    padding: 40px 36px;
-    border-radius: 10px;
-    box-shadow: 0 24px 60px -24px rgba(0, 0, 0, .55);
+    max-width: 430px;
+    padding: 44px 40px;
+    border-top: 3px solid var(--blue);
+    box-shadow: 0 30px 70px -30px rgba(0, 0, 0, .8);
   }
-  .login-card h1 { margin: 0 0 6px 0; font-size: 22px; letter-spacing: -.01em; }
-  .login-card .sub { color: var(--steel); font-size: 14.5px; margin: 0 0 26px 0; }
-  .login-card label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+  .login-card img.logo { height: 30px; width: auto; display: block; margin-bottom: 26px; }
+  .login-card .eyebrow { font-size: 12.5px; color: var(--blue); font-weight: 600; margin-bottom: 10px; }
+  .login-card h1 { margin: 0 0 6px 0; font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
+  .login-card .sub { color: var(--steel); font-size: 15px; margin: 0 0 28px 0; line-height: 1.5; }
+  .login-card label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
   .login-card input {
     width: 100%;
-    padding: 13px 14px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
+    padding: 14px;
+    border: 1px solid var(--line-strong);
     font-size: 16px;
+    background: #fff;
   }
-  .login-card input:focus { outline: 2px solid var(--blue); outline-offset: 1px; border-color: transparent; }
+  .login-card input:focus { outline: 2px solid var(--blue); outline-offset: -1px; }
   .login-card button {
     width: 100%;
-    margin-top: 18px;
-    padding: 13px;
+    margin-top: 20px;
+    padding: 15px;
     background: var(--blue);
     color: #fff;
     border: 0;
-    border-radius: 8px;
     font-weight: 600;
     font-size: 16px;
   }
-  .login-card button:hover { background: #2b74ff; }
+  .login-card button:hover { background: var(--blue-hover); }
   .login-card button:disabled { opacity: .6; cursor: default; }
   #login-error { color: var(--err); font-size: 14.5px; margin-top: 14px; min-height: 20px; }
 
@@ -82,197 +103,282 @@ export const ADMIN_HTML = `<!doctype html>
     top: 0;
     z-index: 20;
     background: var(--navy);
+    background-image: repeating-linear-gradient(135deg, rgba(240, 242, 246, .03) 0 1px, transparent 1px 16px);
     color: #F0F2F6;
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 0 22px;
-    height: 58px;
+    gap: 14px;
+    padding: 0 24px;
+    height: 62px;
+    border-bottom: 2px solid var(--blue);
   }
-  header.topbar .brand { font-weight: 700; font-size: 15.5px; letter-spacing: .01em; white-space: nowrap; }
-  header.topbar .brand small { display: block; font-weight: 400; font-size: 11.5px; color: #9AA6BD; }
+  header.topbar .brand { display: flex; flex-direction: column; gap: 2px; white-space: nowrap; }
+  header.topbar .brand .b1 { font-weight: 700; font-size: 15.5px; letter-spacing: -.01em; }
+  header.topbar .brand .b2 { font-size: 11px; color: #9AA6BD; }
   header.topbar .spacer { flex: 1; }
+  header.topbar img.logo { height: 26px; width: auto; display: block; margin-left: 6px; }
   #dirty-pill {
     display: none;
-    font-size: 12.5px;
-    background: rgba(255, 176, 0, .15);
+    font-size: 11.5px;
     color: #FFB000;
-    border: 1px solid rgba(255, 176, 0, .4);
-    padding: 4px 10px;
-    border-radius: 99px;
+    border: 1px solid rgba(255, 176, 0, .45);
+    padding: 5px 10px;
     white-space: nowrap;
+    font-weight: 600;
   }
   .btn {
     border: 1px solid transparent;
-    border-radius: 8px;
-    padding: 9px 16px;
+    padding: 10px 18px;
     font-weight: 600;
     font-size: 14.5px;
     white-space: nowrap;
   }
   .btn-primary { background: var(--blue); color: #fff; }
-  .btn-primary:hover { background: #2b74ff; }
-  .btn-primary:disabled { opacity: .55; cursor: default; }
+  .btn-primary:hover { background: var(--blue-hover); }
+  .btn-primary:disabled { opacity: .5; cursor: default; }
   .btn-ghost { background: transparent; color: #C7D0E0; border-color: rgba(199, 208, 224, .35); }
   .btn-ghost:hover { color: #fff; border-color: #fff; }
   .btn-ghost:disabled { opacity: .5; cursor: default; }
 
-  .layout { display: flex; min-height: calc(100vh - 58px); }
+  .layout { display: flex; min-height: calc(100vh - 62px); }
   nav.side {
-    width: 232px;
+    width: 236px;
     flex: none;
     background: #fff;
     border-right: 1px solid var(--line);
-    padding: 18px 12px;
+    padding: 22px 0;
   }
-  nav.side .nav-title { font-size: 11.5px; text-transform: uppercase; letter-spacing: .1em; color: var(--steel); padding: 4px 10px 10px 10px; }
+  nav.side .nav-title { font-size: 11px; color: var(--steel-light); font-weight: 600; padding: 0 24px 12px 24px; }
   nav.side button {
     display: block;
     width: 100%;
     text-align: left;
     background: transparent;
     border: 0;
-    border-radius: 8px;
-    padding: 11px 12px;
-    font-size: 15px;
+    padding: 13px 24px;
+    font-size: 15.5px;
+    font-weight: 500;
     color: #28303C;
-    margin-bottom: 2px;
+    border-left: 3px solid transparent;
   }
-  nav.side button:hover { background: rgba(1, 90, 255, .06); }
-  nav.side button.active { background: rgba(1, 90, 255, .1); color: var(--blue-dark); font-weight: 700; box-shadow: inset 3px 0 0 var(--blue); }
+  nav.side button:hover { color: var(--blue); }
+  nav.side button.active {
+    color: var(--blue-dark);
+    font-weight: 700;
+    border-left-color: var(--blue);
+    background: rgba(1, 90, 255, .06);
+  }
 
-  main.content { flex: 1; padding: 28px 30px 90px 30px; max-width: 980px; }
-  main.content h2.page-title { margin: 0 0 4px 0; font-size: 24px; letter-spacing: -.01em; }
-  main.content .page-desc { color: var(--steel); font-size: 14.5px; margin: 0 0 24px 0; }
+  main.content { flex: 1; padding: 34px 36px 100px 36px; max-width: 1020px; }
+  main.content .page-eyebrow { font-size: 12.5px; color: var(--blue); font-weight: 600; margin: 0 0 10px 0; }
+  main.content h2.page-title { margin: 0 0 6px 0; font-size: 30px; font-weight: 700; letter-spacing: -.02em; }
+  main.content .page-desc { color: var(--steel); font-size: 15px; margin: 0 0 28px 0; max-width: 640px; line-height: 1.55; }
 
   .group {
     background: var(--card);
     border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 22px;
-    margin-bottom: 20px;
+    border-top: 2px solid var(--navy);
+    padding: 26px 26px 20px 26px;
+    margin-bottom: 22px;
   }
-  .group > h3 { margin: 0 0 4px 0; font-size: 17px; }
-  .group > .group-desc { color: var(--steel); font-size: 13.5px; margin: 0 0 16px 0; }
+  .group > h3 { margin: 0 0 4px 0; font-size: 18px; font-weight: 700; letter-spacing: -.01em; }
+  .group > .group-desc { color: var(--steel); font-size: 13.5px; margin: 0 0 18px 0; line-height: 1.5; }
+  .group > h3 + .field, .group > h3 + div { margin-top: 18px; }
 
-  .field { margin-bottom: 16px; }
-  .field label { display: block; font-size: 13.5px; font-weight: 600; margin-bottom: 6px; color: #28303C; }
-  .field .hint { font-weight: 400; color: var(--steel); }
-  .field input[type=text], .field textarea, .field select {
+  .field { margin-bottom: 18px; }
+  .field > label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 7px; color: #28303C; }
+  .field .hint { font-weight: 400; color: var(--steel-light); }
+  .field input[type=text], .field input[type=number], .field textarea {
     width: 100%;
-    padding: 11px 12px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
+    padding: 12px 13px;
+    border: 1px solid var(--line-strong);
     font-size: 15.5px;
     background: #fff;
   }
-  .field textarea { resize: vertical; min-height: 74px; line-height: 1.5; }
-  .field input:focus, .field textarea:focus { outline: 2px solid var(--blue); outline-offset: 1px; border-color: transparent; }
+  .field input[type=number] { max-width: 140px; }
+  .field textarea { resize: vertical; min-height: 78px; line-height: 1.55; }
+  .field input:focus, .field textarea:focus { outline: 2px solid var(--blue); outline-offset: -1px; }
+
+  /* kytkin (checkbox) */
+  .switch-row { display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .switch-row input { position: absolute; opacity: 0; pointer-events: none; }
+  .switch-track {
+    width: 46px; height: 24px; flex: none;
+    background: #C6CEDD;
+    position: relative;
+    transition: background .15s ease;
+  }
+  .switch-track::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 18px; height: 18px;
+    background: #fff;
+    transition: left .15s ease;
+  }
+  .switch-row input:checked + .switch-track { background: var(--blue); }
+  .switch-row input:checked + .switch-track::after { left: 25px; }
+  .switch-row .switch-label { font-size: 15px; font-weight: 500; }
 
   .item-card {
     border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 12px;
+    border-left: 3px solid var(--line-strong);
+    padding: 18px;
+    margin-bottom: 14px;
     background: #FAFBFD;
   }
-  .item-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-  .item-head .item-title { font-weight: 700; font-size: 14px; color: var(--blue-dark); flex: 1; }
+  .item-card:hover { border-left-color: var(--blue); }
+  .item-head { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .item-head .item-title { font-weight: 700; font-size: 13.5px; color: var(--blue-dark); flex: 1; }
   .icon-btn {
-    border: 1px solid var(--line);
+    border: 1px solid var(--line-strong);
     background: #fff;
-    border-radius: 6px;
     width: 32px;
     height: 32px;
     font-size: 15px;
     line-height: 1;
     color: #28303C;
+    padding: 0;
   }
   .icon-btn:hover { border-color: var(--blue); color: var(--blue); }
   .icon-btn:disabled { opacity: .35; cursor: default; }
   .icon-btn.danger:hover { border-color: var(--err); color: var(--err); }
   .add-btn {
-    border: 1px dashed rgba(1, 90, 255, .5);
+    border: 1px dashed rgba(1, 90, 255, .55);
     color: var(--blue);
     background: rgba(1, 90, 255, .04);
-    border-radius: 8px;
-    padding: 10px 16px;
+    padding: 12px 18px;
     font-weight: 600;
     font-size: 14.5px;
     width: 100%;
   }
   .add-btn:hover { background: rgba(1, 90, 255, .09); }
 
-  .string-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
-  .string-row input { flex: 1; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 15px; }
-  .string-row textarea { flex: 1; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 15px; min-height: 66px; resize: vertical; line-height: 1.5; }
+  .string-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: flex-start; }
+  .string-row input, .string-row textarea {
+    flex: 1;
+    padding: 11px 12px;
+    border: 1px solid var(--line-strong);
+    font-size: 15px;
+    background: #fff;
+  }
+  .string-row textarea { min-height: 70px; resize: vertical; line-height: 1.55; }
+  .string-row input:focus, .string-row textarea:focus { outline: 2px solid var(--blue); outline-offset: -1px; }
 
-  .image-field { display: flex; gap: 14px; align-items: flex-start; }
-  .image-thumb {
-    width: 110px;
-    height: 74px;
-    flex: none;
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    background: #EDF0F5 center/contain no-repeat;
+  /* kuvalista */
+  .images-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+  .image-tile {
+    width: 148px;
+    border: 1px solid var(--line-strong);
+    background: #fff;
+  }
+  .image-tile .thumb {
+    height: 96px;
+    background: var(--navy-2) center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--steel);
+    color: var(--steel-light);
     font-size: 11px;
     overflow: hidden;
   }
-  .image-thumb img { width: 100%; height: 100%; object-fit: contain; }
-  .image-controls { flex: 1; }
-  .image-controls .path { font-size: 12.5px; color: var(--steel); word-break: break-all; margin-top: 6px; }
-  .mini-btn {
-    border: 1px solid var(--line);
+  .image-tile .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .image-tile .tile-actions { display: flex; border-top: 1px solid var(--line); }
+  .image-tile .tile-actions button {
+    flex: 1;
+    border: 0;
     background: #fff;
-    border-radius: 6px;
-    padding: 7px 12px;
-    font-size: 13.5px;
-    font-weight: 600;
+    padding: 8px 0;
+    font-size: 13px;
     color: #28303C;
-    margin-right: 8px;
   }
-  .mini-btn:hover { border-color: var(--blue); color: var(--blue); }
-  .mini-btn:disabled { opacity: .5; cursor: default; }
+  .image-tile .tile-actions button + button { border-left: 1px solid var(--line); }
+  .image-tile .tile-actions button:hover { color: var(--blue); background: rgba(1, 90, 255, .05); }
+  .image-tile .tile-actions button.danger:hover { color: var(--err); background: rgba(176, 0, 32, .05); }
+  .image-tile .tile-actions button:disabled { opacity: .35; cursor: default; }
+  .upload-tile {
+    width: 148px;
+    height: 131px;
+    border: 1px dashed rgba(1, 90, 255, .55);
+    background: rgba(1, 90, 255, .04);
+    color: var(--blue);
+    font-weight: 600;
+    font-size: 13.5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .upload-tile:hover { background: rgba(1, 90, 255, .09); }
+  .upload-tile:disabled { opacity: .6; cursor: default; }
+  .upload-tile .plus { font-size: 24px; line-height: 1; font-weight: 400; }
 
   footer.app-footer {
     border-top: 1px solid var(--line);
     background: #fff;
-    padding: 16px 30px;
+    padding: 18px 36px;
     font-size: 13px;
     color: var(--steel);
+    line-height: 1.55;
   }
+
+  /* ---------- vahvistusikkuna ---------- */
+  #modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(14, 17, 22, .55);
+    padding: 24px;
+  }
+  .modal {
+    background: #fff;
+    border-top: 3px solid var(--err);
+    max-width: 460px;
+    width: 100%;
+    padding: 28px;
+    box-shadow: 0 30px 70px -25px rgba(0, 0, 0, .6);
+  }
+  .modal h4 { margin: 0 0 8px 0; font-size: 18px; font-weight: 700; }
+  .modal p { margin: 0 0 22px 0; color: var(--steel); font-size: 15px; line-height: 1.55; }
+  .modal .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .modal button { padding: 11px 20px; font-weight: 600; font-size: 14.5px; border: 1px solid var(--line-strong); background: #fff; }
+  .modal button:hover { border-color: var(--navy); }
+  .modal button.confirm { background: var(--err); border-color: var(--err); color: #fff; }
+  .modal button.confirm:hover { background: #8f001a; }
 
   #toast {
     position: fixed;
     left: 50%;
-    bottom: 26px;
+    bottom: 28px;
     transform: translateX(-50%);
-    z-index: 50;
+    z-index: 95;
     display: none;
-    max-width: min(560px, calc(100vw - 40px));
+    max-width: min(600px, calc(100vw - 40px));
     background: var(--navy);
     color: #fff;
-    border-radius: 10px;
-    padding: 14px 20px;
+    border-left: 3px solid var(--blue);
+    padding: 15px 22px;
     font-size: 15px;
     box-shadow: 0 18px 44px -14px rgba(0, 0, 0, .5);
+    line-height: 1.5;
   }
-  #toast.ok { border-left: 4px solid #27C46D; }
-  #toast.err { border-left: 4px solid #FF5C5C; background: #2a1215; }
+  #toast.ok { border-left-color: #27C46D; }
+  #toast.err { border-left-color: #FF5C5C; }
   #toast a { color: #7FB0FF; font-weight: 600; }
 
-  @media (max-width: 860px) {
+  @media (max-width: 900px) {
     .layout { flex-direction: column; }
-    nav.side { width: 100%; display: flex; overflow-x: auto; padding: 8px; border-right: 0; border-bottom: 1px solid var(--line); }
+    nav.side { width: 100%; display: flex; overflow-x: auto; padding: 0; border-right: 0; border-bottom: 1px solid var(--line); }
     nav.side .nav-title { display: none; }
-    nav.side button { width: auto; white-space: nowrap; }
-    nav.side button.active { box-shadow: inset 0 -3px 0 var(--blue); }
-    main.content { padding: 20px 16px 80px 16px; }
+    nav.side button { width: auto; white-space: nowrap; border-left: 0; border-bottom: 3px solid transparent; padding: 13px 16px; }
+    nav.side button.active { border-left: 0; border-bottom-color: var(--blue); background: transparent; }
+    main.content { padding: 22px 16px 90px 16px; }
     header.topbar { flex-wrap: wrap; height: auto; padding: 10px 14px; row-gap: 8px; }
+    header.topbar img.logo { display: none; }
   }
 </style>
 </head>
@@ -280,8 +386,10 @@ export const ADMIN_HTML = `<!doctype html>
 
 <div id="login-view">
   <div class="login-card">
-    <h1>Porvoon Paalurakenne Oy</h1>
-    <p class="sub">Sivuston sisällönhallinta – kirjaudu sisään.</p>
+    <img class="logo" src="https://saimajope.github.io/ppr/assets/ppr-mark.png" alt="PPR">
+    <div class="lbl eyebrow">Sisällönhallinta</div>
+    <h1>Kirjaudu sisään</h1>
+    <p class="sub">Porvoon Paalurakenne Oy:n sivuston hallintapaneeli.</p>
     <form id="login-form">
       <label for="password">Salasana</label>
       <input type="password" id="password" name="password" autocomplete="current-password" required autofocus>
@@ -293,24 +401,39 @@ export const ADMIN_HTML = `<!doctype html>
 
 <div id="app-view">
   <header class="topbar">
-    <div class="brand">PPR – Sisällönhallinta<small>Porvoon Paalurakenne Oy</small></div>
+    <div class="brand">
+      <span class="b1">Sisällönhallinta</span>
+      <span class="b2">Porvoon Paalurakenne Oy</span>
+    </div>
     <div class="spacer"></div>
-    <span id="dirty-pill">Tallentamattomia muutoksia</span>
+    <span id="dirty-pill" class="lbl">Tallentamattomia muutoksia</span>
     <button class="btn btn-ghost" id="discard-btn" style="display:none">Hylkää muutokset</button>
     <button class="btn btn-ghost" id="preview-btn">Esikatselu</button>
     <button class="btn btn-primary" id="save-btn" disabled>Tallenna muutokset</button>
     <button class="btn btn-ghost" id="logout-btn">Kirjaudu ulos</button>
+    <img class="logo" src="https://saimajope.github.io/ppr/assets/ppr-mark-white.png" alt="PPR">
   </header>
   <div class="layout">
     <nav class="side" id="side-nav">
-      <div class="nav-title">Sivut</div>
+      <div class="nav-title lbl">Sivut</div>
     </nav>
     <main class="content" id="content-area"></main>
   </div>
   <footer class="app-footer">
     Palautushistoria: jokainen tallennus säilyy sivuston versionhistoriassa (Git), joten aiempi
-    versio voidaan aina palauttaa. Palautukset hoitaa ylläpito – ota tarvittaessa yhteyttä.
+    versio voidaan aina palauttaa. Palautukset hoitaa ylläpito.
   </footer>
+</div>
+
+<div id="modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <h4 id="modal-title">Vahvista</h4>
+    <p id="modal-text"></p>
+    <div class="modal-actions">
+      <button type="button" id="modal-cancel">Peruuta</button>
+      <button type="button" class="confirm" id="modal-confirm">Poista</button>
+    </div>
+  </div>
 </div>
 
 <div id="toast"></div>
@@ -336,10 +459,9 @@ var state = {
 
 var SITE_URL = 'https://saimajope.github.io/ppr/';
 
+var IMAGES_HINT = 'Yksi kuva näkyy sellaisenaan. Kaksi tai useampi kuva vaihtuu automaattisesti kuvaesityksenä.';
+
 /* ------------------------------ skeema ------------------------------ */
-/* Jokainen paneeli kuvaa joukon lomakeryhmiä; kentät osoittavat suoraan
-   content/fi.json-polkuihin. Tyypit: text, textarea, strings (tekstilista),
-   list (olioiden lista), image (kuvapolku + lataus). */
 
 function heroGroup(prefix, extra) {
   var fields = [
@@ -357,6 +479,7 @@ var SCHEMA = [
     desc: 'Etusivun sisältö: iso yläbanneri, yritysesittely, palvelulistaus, sertifikaatit ja yhteystieto-osio.',
     groups: [
       heroGroup('etusivu', [
+        { path: 'etusivu.hero.images', label: 'Yläbannerin kuvat', type: 'images', hint: IMAGES_HINT },
         { path: 'etusivu.hero.ctaPrimary', label: 'Sininen painike', type: 'text' },
         { path: 'etusivu.hero.ctaSecondary', label: 'Toinen painike', type: 'text' }
       ]),
@@ -404,7 +527,7 @@ var SCHEMA = [
       },
       {
         title: 'Yhteystieto-osion otsikot',
-        desc: 'Varsinaiset osoitteet ja puhelinnumerot muokataan Yhteiset tiedot -välilehdellä.',
+        desc: 'Varsinaiset osoitteet ja puhelinnumerot muokataan Yleiset-välilehdellä.',
         fields: [
           { path: 'etusivu.contact.depotLabel', label: 'Varikko-palstan otsikko', type: 'text' },
           { path: 'etusivu.contact.billingLabel', label: 'Laskutus-palstan otsikko', type: 'text' },
@@ -428,9 +551,10 @@ var SCHEMA = [
               { key: 'title', label: 'Otsikko', type: 'text' },
               { key: 'desc', label: 'Kuvaus', type: 'textarea' },
               { key: 'bullets', label: 'Luettelokohdat', type: 'strings', itemLabel: 'kohta' },
-              { key: 'shot', label: 'Kuvapaikan teksti', type: 'text', hint: 'näkyy tummassa kuvapaikassa' }
+              { key: 'images', label: 'Kuvat', type: 'images', hint: IMAGES_HINT },
+              { key: 'shot', label: 'Kuvapaikan teksti', type: 'text', hint: 'näkyy vain jos kuvia ei ole' }
             ],
-            blank: { title: '', desc: '', shot: '', bullets: [] }
+            blank: { title: '', desc: '', shot: '', bullets: [], images: [] }
           }
         ]
       }
@@ -488,7 +612,8 @@ var SCHEMA = [
           { path: 'yritys.expertise.title', label: 'Otsikko', type: 'text' },
           { path: 'yritys.expertise.paragraphs', label: 'Kappaleet', type: 'strings', rows: true, itemLabel: 'kappale' },
           { path: 'yritys.expertise.badges', label: 'Merkinnät (laatikot)', type: 'strings', itemLabel: 'merkintä' },
-          { path: 'yritys.expertise.photoCaption', label: 'Kuvapaikan teksti', type: 'text' }
+          { path: 'yritys.expertise.images', label: 'Kuvat', type: 'images', hint: IMAGES_HINT },
+          { path: 'yritys.expertise.photoCaption', label: 'Kuvapaikan teksti', type: 'text', hint: 'näkyy vain jos kuvia ei ole' }
         ]
       },
       {
@@ -505,7 +630,8 @@ var SCHEMA = [
           { path: 'yritys.career.title', label: 'Otsikko', type: 'text' },
           { path: 'yritys.career.text', label: 'Teksti', type: 'textarea' },
           { path: 'yritys.career.ctaLabel', label: 'Painikkeen teksti', type: 'text' },
-          { path: 'yritys.career.photoCaption', label: 'Kuvapaikan teksti', type: 'text' }
+          { path: 'yritys.career.images', label: 'Kuvat', type: 'images', hint: IMAGES_HINT },
+          { path: 'yritys.career.photoCaption', label: 'Kuvapaikan teksti', type: 'text', hint: 'näkyy vain jos kuvia ei ole' }
         ]
       }
     ]
@@ -521,7 +647,7 @@ var SCHEMA = [
         fields: [
           { path: 'referenssit.filters.allLabel', label: '"Kaikki"-napin teksti', type: 'text' },
           { path: 'referenssit.filters.categories', label: 'Kategoriat', type: 'strings', itemLabel: 'kategoria' },
-          { path: 'referenssit.filters.countSuffix', label: 'Lukumäärän pääte', type: 'text', hint: 'esim. "kohdetta" → "9 kohdetta"' }
+          { path: 'referenssit.filters.countSuffix', label: 'Lukumäärän pääte', type: 'text', hint: 'esim. "kohdetta", jolloin sivulla lukee "9 kohdetta"' }
         ]
       },
       {
@@ -535,10 +661,10 @@ var SCHEMA = [
               { key: 'scope', label: 'Kuvaus', type: 'textarea' },
               { key: 'loc', label: 'Sijainti', type: 'text' },
               { key: 'year', label: 'Vuosi', type: 'text' },
-              { key: 'img', label: 'Kuva (valinnainen)', type: 'image', optional: true },
-              { key: 'shot', label: 'Kuvapaikan teksti (jos kuvaa ei ole)', type: 'text' }
+              { key: 'images', label: 'Kuvat', type: 'images', hint: IMAGES_HINT },
+              { key: 'shot', label: 'Kuvapaikan teksti', type: 'text', hint: 'näkyy vain jos kuvia ei ole' }
             ],
-            blank: { sector: '', title: '', scope: '', loc: '', year: '', shot: '', img: '' }
+            blank: { sector: '', title: '', scope: '', loc: '', year: '', shot: '', images: [] }
           }
         ]
       }
@@ -592,7 +718,7 @@ var SCHEMA = [
   {
     id: 'yhteystiedot',
     title: 'Yhteystiedot',
-    desc: 'Yhteystiedot-sivun sisältö. Osoitteet ja puhelinnumerot muokataan Yhteiset tiedot -välilehdellä.',
+    desc: 'Yhteystiedot-sivun sisältö. Osoitteet ja puhelinnumerot muokataan Yleiset-välilehdellä.',
     groups: [
       heroGroup('yhteystiedot'),
       {
@@ -612,7 +738,7 @@ var SCHEMA = [
             fields: [
               { key: 'name', label: 'Nimi', type: 'text' },
               { key: 'role', label: 'Tehtävänimike', type: 'text' },
-              { key: 'phone', label: 'Puhelin', type: 'text', hint: 'esim. "0400 714 532" – linkki muodostuu automaattisesti' },
+              { key: 'phone', label: 'Puhelin', type: 'text', hint: 'esim. "0400 714 532", soittolinkki muodostuu automaattisesti' },
               { key: 'email', label: 'Sähköposti', type: 'text' }
             ],
             blank: { name: '', role: '', phone: '', email: '' }
@@ -621,7 +747,7 @@ var SCHEMA = [
       },
       {
         title: 'Laskutus-osion otsikot',
-        desc: 'Varsinaiset laskutustiedot muokataan Yhteiset tiedot -välilehdellä.',
+        desc: 'Varsinaiset laskutustiedot muokataan Yleiset-välilehdellä.',
         fields: [
           { path: 'yhteystiedot.invoicing.eyebrow', label: 'Pieni yläotsikko', type: 'text' },
           { path: 'yhteystiedot.invoicing.title', label: 'Otsikko', type: 'text' }
@@ -631,9 +757,23 @@ var SCHEMA = [
   },
   {
     id: 'common',
-    title: 'Yhteiset tiedot',
+    title: 'Yleiset',
     desc: 'Nämä tiedot näkyvät kaikilla sivuilla: yläpalkissa, alatunnisteessa, yhteystiedoissa ja laskutusosioissa. Muutos päivittyy kerralla joka paikkaan.',
     groups: [
+      {
+        title: 'Yläpalkki',
+        desc: 'Sivun ylälaidan tumma palkki, jossa näkyvät yrityksen nimi, toimiston numero ja päivystysnumero. Tekstit tulevat alla olevista Toimisto- ja Varikko-kentistä.',
+        fields: [
+          { path: 'common.topbar.visible', label: 'Näytä yläpalkki sivustolla', type: 'checkbox' }
+        ]
+      },
+      {
+        title: 'Kuvaesitys',
+        desc: 'Koskee kaikkia sivuston kuvaesityksiä (kohdat, joihin on lisätty vähintään kaksi kuvaa).',
+        fields: [
+          { path: 'common.slideshow.intervalSeconds', label: 'Kuvan vaihtumisväli sekunneissa', type: 'number', min: 2, max: 60, hint: 'esim. 5 tai 10' }
+        ]
+      },
       {
         title: 'Yritys',
         fields: [
@@ -696,7 +836,7 @@ var SCHEMA = [
       },
       {
         title: 'Valikon tekstit',
-        desc: 'Sivuston ylävalikon ja alatunnisteen linkkitekstit. Muuta vain jos olet varma – sivujen osoitteet eivät muutu.',
+        desc: 'Sivuston ylävalikon ja alatunnisteen linkkitekstit. Sivujen osoitteet eivät muutu.',
         fields: [
           { path: 'common.nav.etusivu', label: 'Etusivu', type: 'text' },
           { path: 'common.nav.koti', label: 'Etusivu mobiilivalikossa', type: 'text' },
@@ -771,10 +911,69 @@ function showToast(html, kind, sticky) {
   if (!sticky) toastTimer = setTimeout(function () { el.style.display = 'none'; }, 7000);
 }
 
+/* Oma vahvistusikkuna selaimen confirm()-ruudun tilalle. */
+var modalResolve = null;
+function confirmDialog(text, confirmLabel) {
+  return new Promise(function (resolve) {
+    modalResolve = resolve;
+    $('modal-text').textContent = text;
+    $('modal-confirm').textContent = confirmLabel || 'Poista';
+    $('modal-overlay').style.display = 'flex';
+    $('modal-cancel').focus();
+  });
+}
+function closeModal(result) {
+  $('modal-overlay').style.display = 'none';
+  if (modalResolve) { modalResolve(result); modalResolve = null; }
+}
+$('modal-confirm').addEventListener('click', function () { closeModal(true); });
+$('modal-cancel').addEventListener('click', function () { closeModal(false); });
+$('modal-overlay').addEventListener('click', function (e) {
+  if (e.target === $('modal-overlay')) closeModal(false);
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && $('modal-overlay').style.display === 'flex') closeModal(false);
+});
+
 function apiError(res, fallback) {
   return res.json().then(function (data) {
     return (data && data.error) || fallback;
   }).catch(function () { return fallback; });
+}
+
+/* Yhteinen kuvanlatain. Palauttaa polun assets-kansiossa. */
+function uploadFile(file) {
+  return new Promise(function (resolve, reject) {
+    if (!/\.(jpe?g|png|webp)$/i.test(file.name)) {
+      return reject(new Error('Sallitut tiedostomuodot ovat JPG, PNG ja WEBP.'));
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      return reject(new Error('Kuva on liian suuri. Enimmäiskoko on 2 Mt.'));
+    }
+    var reader = new FileReader();
+    reader.onerror = function () { reject(new Error('Kuvatiedostoa ei voitu lukea.')); };
+    reader.onload = function () {
+      var dataUrl = String(reader.result);
+      fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ filename: file.name, dataBase64: dataUrl })
+      }).then(function (res) {
+        if (!res.ok) {
+          return apiError(res, 'Kuvan lataus epäonnistui.').then(function (msg) { throw new Error(msg); });
+        }
+        return res.json();
+      }).then(function (data) {
+        state.localImages[data.path] = dataUrl;
+        resolve(data.path);
+      }).catch(reject);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function thumbSrc(path) {
+  return state.localImages[path] || (SITE_URL + path);
 }
 
 /* ----------------------------- renderöinti ----------------------------- */
@@ -802,6 +1001,11 @@ function renderPanel() {
   var panel = SCHEMA.find(function (p) { return p.id === state.panel; });
   var area = $('content-area');
   area.innerHTML = '';
+
+  var eyebrow = document.createElement('div');
+  eyebrow.className = 'lbl page-eyebrow';
+  eyebrow.textContent = panel.id === 'common' ? 'Kaikki sivut' : 'Sivu';
+  area.appendChild(eyebrow);
 
   var h2 = document.createElement('h2');
   h2.className = 'page-title';
@@ -838,7 +1042,7 @@ function fieldLabel(field) {
   if (field.hint) {
     var hint = document.createElement('span');
     hint.className = 'hint';
-    hint.textContent = ' – ' + field.hint;
+    hint.textContent = ' (' + field.hint + ')';
     label.appendChild(hint);
   }
   return label;
@@ -847,6 +1051,29 @@ function fieldLabel(field) {
 function renderField(field) {
   var wrap = document.createElement('div');
   wrap.className = 'field';
+
+  if (field.type === 'checkbox') {
+    var row = document.createElement('label');
+    row.className = 'switch-row';
+    var cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = getPath(state.data, field.path) !== false;
+    var track = document.createElement('span');
+    track.className = 'switch-track';
+    var text = document.createElement('span');
+    text.className = 'switch-label';
+    text.textContent = field.label;
+    cb.addEventListener('change', function () {
+      setPath(state.data, field.path, cb.checked);
+      markDirty();
+    });
+    row.appendChild(cb);
+    row.appendChild(track);
+    row.appendChild(text);
+    wrap.appendChild(row);
+    return wrap;
+  }
+
   wrap.appendChild(fieldLabel(field));
 
   if (field.type === 'text' || field.type === 'textarea') {
@@ -861,10 +1088,42 @@ function renderField(field) {
     return wrap;
   }
 
+  if (field.type === 'number') {
+    var num = document.createElement('input');
+    num.type = 'number';
+    if (field.min != null) num.min = field.min;
+    if (field.max != null) num.max = field.max;
+    var val = Number(getPath(state.data, field.path));
+    num.value = isFinite(val) && val > 0 ? val : '';
+    num.addEventListener('input', function () {
+      var n = Number(num.value);
+      if (isFinite(n) && n > 0) {
+        if (field.min != null) n = Math.max(field.min, n);
+        if (field.max != null) n = Math.min(field.max, n);
+        setPath(state.data, field.path, n);
+        markDirty();
+      }
+    });
+    wrap.appendChild(num);
+    return wrap;
+  }
+
   if (field.type === 'strings') {
     wrap.appendChild(renderStringsInto(
       function () { return getPath(state.data, field.path) || []; },
       function (arr) { setPath(state.data, field.path, arr); },
+      field
+    ));
+    return wrap;
+  }
+
+  if (field.type === 'images') {
+    wrap.appendChild(renderImagesInto(
+      function () {
+        var a = getPath(state.data, field.path);
+        if (!Array.isArray(a)) { a = []; setPath(state.data, field.path, a); }
+        return a;
+      },
       field
     ));
     return wrap;
@@ -901,12 +1160,14 @@ function renderStringsInto(getArr, setArr, field) {
       row.appendChild(moveBtn('↑', i === 0, function () { swap(i, i - 1); }));
       row.appendChild(moveBtn('↓', i === arr.length - 1, function () { swap(i, i + 1); }));
       row.appendChild(removeBtn(function () {
-        if (!confirm('Poistetaanko tämä ' + (field.itemLabel || 'rivi') + '?')) return;
-        var a = getArr();
-        a.splice(i, 1);
-        setArr(a);
-        markDirty();
-        redraw();
+        confirmDialog('Poistetaanko tämä ' + (field.itemLabel || 'rivi') + '?').then(function (ok) {
+          if (!ok) return;
+          var a = getArr();
+          a.splice(i, 1);
+          setArr(a);
+          markDirty();
+          redraw();
+        });
       }));
       container.appendChild(row);
     });
@@ -936,6 +1197,115 @@ function renderStringsInto(getArr, setArr, field) {
   return container;
 }
 
+/* Kuvalista: pikkukuvat + järjestys + poisto + lataus. */
+function renderImagesInto(getArr, field) {
+  var container = document.createElement('div');
+
+  function redraw() {
+    container.innerHTML = '';
+    var grid = document.createElement('div');
+    grid.className = 'images-grid';
+    var arr = getArr();
+
+    arr.forEach(function (path, i) {
+      var tile = document.createElement('div');
+      tile.className = 'image-tile';
+
+      var thumb = document.createElement('div');
+      thumb.className = 'thumb';
+      var img = document.createElement('img');
+      img.alt = '';
+      img.src = thumbSrc(path);
+      img.onerror = function () { thumb.textContent = 'Ei esikatselua'; };
+      thumb.appendChild(img);
+      tile.appendChild(thumb);
+
+      var actions = document.createElement('div');
+      actions.className = 'tile-actions';
+      var left = document.createElement('button');
+      left.type = 'button';
+      left.textContent = '←';
+      left.title = 'Siirrä aiemmaksi';
+      left.disabled = i === 0;
+      left.addEventListener('click', function () { swap(i, i - 1); });
+      var del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'danger';
+      del.textContent = '✕';
+      del.title = 'Poista kuva';
+      del.addEventListener('click', function () {
+        confirmDialog('Poistetaanko tämä kuva?').then(function (ok) {
+          if (!ok) return;
+          getArr().splice(i, 1);
+          markDirty();
+          redraw();
+        });
+      });
+      var right = document.createElement('button');
+      right.type = 'button';
+      right.textContent = '→';
+      right.title = 'Siirrä myöhemmäksi';
+      right.disabled = i === arr.length - 1;
+      right.addEventListener('click', function () { swap(i, i + 1); });
+      actions.appendChild(left);
+      actions.appendChild(del);
+      actions.appendChild(right);
+      tile.appendChild(actions);
+
+      grid.appendChild(tile);
+    });
+
+    var fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp';
+    fileInput.multiple = true;
+    fileInput.style.display = 'none';
+
+    var addTile = document.createElement('button');
+    addTile.type = 'button';
+    addTile.className = 'upload-tile';
+    addTile.innerHTML = '<span class="plus">+</span><span>Lisää kuva</span>';
+    addTile.addEventListener('click', function () { fileInput.click(); });
+
+    fileInput.addEventListener('change', function () {
+      var files = Array.prototype.slice.call(fileInput.files || []);
+      if (!files.length) return;
+      addTile.disabled = true;
+      addTile.innerHTML = '<span>Ladataan…</span>';
+      var chain = Promise.resolve();
+      files.forEach(function (file) {
+        chain = chain.then(function () {
+          return uploadFile(file).then(function (path) {
+            getArr().push(path);
+            markDirty();
+          });
+        });
+      });
+      chain.then(function () {
+        redraw();
+        showToast('Kuvat ladattu. Muista tallentaa muutokset, jotta ne tulevat näkyviin.', 'ok');
+      }).catch(function (err) {
+        redraw();
+        showToast(err.message || 'Kuvan lataus epäonnistui.', 'err');
+      });
+    });
+
+    grid.appendChild(addTile);
+    grid.appendChild(fileInput);
+    container.appendChild(grid);
+  }
+
+  function swap(i, j) {
+    var arr = getArr();
+    var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    markDirty();
+    redraw();
+  }
+
+  redraw();
+  return container;
+}
+
 /* Olioiden lista (palvelut, kohteet, henkilöt...). */
 function renderList(field) {
   var container = document.createElement('div');
@@ -950,33 +1320,47 @@ function renderList(field) {
       var head = document.createElement('div');
       head.className = 'item-head';
       var title = document.createElement('span');
-      title.className = 'item-title';
+      title.className = 'item-title lbl';
       title.textContent = (field.itemLabel || 'Rivi') + ' ' + (i + 1) +
-        (item.title || item.name ? ' – ' + (item.title || item.name) : '');
+        (item.title || item.name ? ': ' + (item.title || item.name) : '');
       head.appendChild(title);
       head.appendChild(moveBtn('↑', i === 0, function () { swap(i, i - 1); }));
       head.appendChild(moveBtn('↓', i === arr.length - 1, function () { swap(i, i + 1); }));
       head.appendChild(removeBtn(function () {
-        if (!confirm('Poistetaanko ' + (field.itemLabel || 'rivi').toLowerCase() + ' "' + (item.title || item.name || (i + 1)) + '"?')) return;
-        arr.splice(i, 1);
-        markDirty();
-        redraw();
+        var name = item.title || item.name || ((field.itemLabel || 'rivi') + ' ' + (i + 1));
+        confirmDialog('Poistetaanko "' + name + '"? Poisto tulee voimaan kun tallennat muutokset.').then(function (ok) {
+          if (!ok) return;
+          arr.splice(i, 1);
+          markDirty();
+          redraw();
+        });
       }));
       card.appendChild(head);
 
       field.fields.forEach(function (sub) {
         var f = document.createElement('div');
         f.className = 'field';
-        f.appendChild(fieldLabel(sub));
         if (sub.type === 'image') {
+          f.appendChild(fieldLabel(sub));
           f.appendChild(renderImageControl(item, sub, redraw));
+        } else if (sub.type === 'images') {
+          f.appendChild(fieldLabel(sub));
+          f.appendChild(renderImagesInto(
+            function () {
+              if (!Array.isArray(item[sub.key])) item[sub.key] = [];
+              return item[sub.key];
+            },
+            sub
+          ));
         } else if (sub.type === 'strings') {
+          f.appendChild(fieldLabel(sub));
           f.appendChild(renderStringsInto(
             function () { if (!Array.isArray(item[sub.key])) item[sub.key] = []; return item[sub.key]; },
             function (a) { item[sub.key] = a; },
             sub
           ));
         } else {
+          f.appendChild(fieldLabel(sub));
           var input = document.createElement(sub.type === 'textarea' ? 'textarea' : 'input');
           if (sub.type !== 'textarea') input.type = 'text';
           input.value = String(item[sub.key] == null ? '' : item[sub.key]);
@@ -984,7 +1368,7 @@ function renderList(field) {
             item[sub.key] = input.value;
             markDirty();
             if (sub.key === 'title' || sub.key === 'name') {
-              title.textContent = (field.itemLabel || 'Rivi') + ' ' + (i + 1) + (input.value ? ' – ' + input.value : '');
+              title.textContent = (field.itemLabel || 'Rivi') + ' ' + (i + 1) + (input.value ? ': ' + input.value : '');
             }
           });
           f.appendChild(input);
@@ -1041,101 +1425,58 @@ function removeBtn(onClick) {
   return b;
 }
 
-/* Kuvakenttä: esikatselu + lataus + (valinnainen) poisto. */
+/* Yksittäinen kuva (sertifikaattilogot). */
 function renderImageControl(item, sub, redraw) {
   var wrap = document.createElement('div');
-  wrap.className = 'image-field';
+  wrap.className = 'images-grid';
 
-  var thumb = document.createElement('div');
-  thumb.className = 'image-thumb';
   var current = String(item[sub.key] || '');
+
   if (current) {
+    var tile = document.createElement('div');
+    tile.className = 'image-tile';
+    var thumb = document.createElement('div');
+    thumb.className = 'thumb';
+    thumb.style.background = '#fff';
     var img = document.createElement('img');
     img.alt = '';
-    img.src = state.localImages[current] || (SITE_URL + current);
+    img.style.objectFit = 'contain';
+    img.src = thumbSrc(current);
     img.onerror = function () { thumb.textContent = 'Ei esikatselua'; };
     thumb.appendChild(img);
-  } else {
-    thumb.textContent = 'Ei kuvaa';
+    tile.appendChild(thumb);
+    wrap.appendChild(tile);
   }
-  wrap.appendChild(thumb);
-
-  var controls = document.createElement('div');
-  controls.className = 'image-controls';
 
   var fileInput = document.createElement('input');
   fileInput.type = 'file';
   fileInput.accept = '.jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp';
   fileInput.style.display = 'none';
 
-  var uploadBtn = document.createElement('button');
-  uploadBtn.type = 'button';
-  uploadBtn.className = 'mini-btn';
-  uploadBtn.textContent = current ? 'Vaihda kuva…' : 'Lataa kuva…';
-  uploadBtn.addEventListener('click', function () { fileInput.click(); });
-  controls.appendChild(uploadBtn);
-
-  if (sub.optional && current) {
-    var clearBtn = document.createElement('button');
-    clearBtn.type = 'button';
-    clearBtn.className = 'mini-btn';
-    clearBtn.textContent = 'Poista kuva';
-    clearBtn.addEventListener('click', function () {
-      item[sub.key] = '';
-      markDirty();
-      redraw();
-    });
-    controls.appendChild(clearBtn);
-  }
+  var addTile = document.createElement('button');
+  addTile.type = 'button';
+  addTile.className = 'upload-tile';
+  addTile.innerHTML = '<span class="plus">+</span><span>' + (current ? 'Vaihda kuva' : 'Lisää kuva') + '</span>';
+  addTile.addEventListener('click', function () { fileInput.click(); });
 
   fileInput.addEventListener('change', function () {
     var file = fileInput.files && fileInput.files[0];
     if (!file) return;
-    if (!/\.(jpe?g|png|webp)$/i.test(file.name)) {
-      showToast('Sallitut tiedostomuodot ovat JPG, PNG ja WEBP.', 'err');
-      return;
-    }
-    if (file.size > 2 * 1024 * 1024) {
-      showToast('Kuva on liian suuri. Enimmäiskoko on 2 Mt.', 'err');
-      return;
-    }
-    uploadBtn.disabled = true;
-    uploadBtn.textContent = 'Ladataan…';
-    var reader = new FileReader();
-    reader.onload = function () {
-      var dataUrl = String(reader.result);
-      fetch('/api/upload', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ filename: file.name, dataBase64: dataUrl })
-      }).then(function (res) {
-        if (!res.ok) {
-          return apiError(res, 'Kuvan lataus epäonnistui.').then(function (msg) { throw new Error(msg); });
-        }
-        return res.json();
-      }).then(function (data) {
-        item[sub.key] = data.path;
-        state.localImages[data.path] = dataUrl;
-        markDirty();
-        redraw();
-        showToast('Kuva ladattu. Muista tallentaa muutokset, jotta kuva otetaan käyttöön.', 'ok');
-      }).catch(function (err) {
-        uploadBtn.disabled = false;
-        uploadBtn.textContent = current ? 'Vaihda kuva…' : 'Lataa kuva…';
-        showToast(err.message || 'Kuvan lataus epäonnistui.', 'err');
-      });
-    };
-    reader.readAsDataURL(file);
+    addTile.disabled = true;
+    addTile.innerHTML = '<span>Ladataan…</span>';
+    uploadFile(file).then(function (path) {
+      item[sub.key] = path;
+      markDirty();
+      redraw();
+      showToast('Kuva ladattu. Muista tallentaa muutokset, jotta se tulee näkyviin.', 'ok');
+    }).catch(function (err) {
+      redraw();
+      showToast(err.message || 'Kuvan lataus epäonnistui.', 'err');
+    });
   });
 
-  controls.appendChild(fileInput);
-
-  var pathInfo = document.createElement('div');
-  pathInfo.className = 'path';
-  pathInfo.textContent = current ? current : '';
-  controls.appendChild(pathInfo);
-
-  wrap.appendChild(controls);
+  wrap.appendChild(addTile);
+  wrap.appendChild(fileInput);
   return wrap;
 }
 
@@ -1241,8 +1582,9 @@ $('login-form').addEventListener('submit', function (e) {
 $('save-btn').addEventListener('click', save);
 $('preview-btn').addEventListener('click', preview);
 $('discard-btn').addEventListener('click', function () {
-  if (!confirm('Hylätäänkö kaikki tallentamattomat muutokset?')) return;
-  loadContent();
+  confirmDialog('Hylätäänkö kaikki tallentamattomat muutokset?', 'Hylkää muutokset').then(function (ok) {
+    if (ok) loadContent();
+  });
 });
 $('logout-btn').addEventListener('click', function () {
   fetch('/api/logout', { method: 'POST' }).then(function () {

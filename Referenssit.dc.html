@@ -78,6 +78,7 @@
 <div style="background:#F0F2F6">
 
   <!-- TOP BAR -->
+  <sc-if value="{{ topbarVisible }}">
   <div style="background:#0E1116;color:#9AA6BD;font-size:13px">
     <div data-topbar-inner style="max-width:1300px;margin:0 auto;padding:0 32px;height:42px;display:flex;align-items:center;justify-content:space-between">
       <div data-util-left>{{ company.name }}</div>
@@ -95,6 +96,7 @@
       </div>
     </div>
   </div>
+  </sc-if>
 
   <!-- NAV -->
   <nav style="position:sticky;top:0;z-index:50;background:rgba(240,242,246,.65);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);border-bottom:1px solid rgba(255,255,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 30px -18px rgba(14,17,22,.32)">
@@ -154,13 +156,17 @@
         <div style="font-size:14px;color:#8093B5">{{ projectCount }} {{ page.filters.countSuffix }}</div>
       </div>
       <div data-grid3 style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
-        <sc-for list="{{ page.projects }}" as="p" hint-placeholder-count="9">
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="9">
           <a href="Yhteystiedot.dc.html" style="display:flex;flex-direction:column;background:#fff;border:1px solid rgba(14,17,22,.10)" style-hover="border-color:#015AFF">
             <div style="position:relative;aspect-ratio:3/2;background:#171C24;overflow:hidden">
-              <sc-if value="{{ p.img }}">
-                <img src="{{ p.img }}" alt="{{ p.title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+              <sc-if value="{{ p.slides.0 }}">
+                <div data-slideshow data-slideshow-interval="{{ slideshowInterval }}" style="position:absolute;inset:0">
+                  <sc-for list="{{ p.slides }}" as="sl">
+                    <img data-slide="{{ sl.i }}" src="{{ sl.src }}" alt="{{ p.title }}" style="{{ sl.style }}">
+                  </sc-for>
+                </div>
               </sc-if>
-              <sc-if value="{{ !p.img }}">
+              <sc-if value="{{ !p.slides.0 }}">
                 <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.06) 0 1px,transparent 1px 14px)"></div>
                 <div style="position:absolute;left:16px;bottom:14px;right:16px;font-size:12px;line-height:1.45;color:#4A5566" class="lbl">{{ p.shot }}</div>
               </sc-if>
@@ -246,6 +252,7 @@ class Component extends DCLogic {
       menuOpen: this.state.menuOpen,
       toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
       page: c.referenssit,
+      projects: (c.referenssit.projects || []).map((p) => Object.assign({}, p, { slides: pprSlides(p.images) })),
       projectCount: (c.referenssit.projects || []).length
     }, pprCommonVals(c));
   }
