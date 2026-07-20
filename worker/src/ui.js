@@ -63,7 +63,6 @@ export const ADMIN_HTML = `<!doctype html>
       linear-gradient(135deg, rgba(1, 90, 255, .10), transparent 52%),
       repeating-linear-gradient(135deg, rgba(240, 242, 246, .035) 0 1px, transparent 1px 18px);
   }
-  #login-canvas { position: absolute; inset: 0; display: block; }
   .login-card {
     position: relative;
     z-index: 2;
@@ -443,7 +442,6 @@ export const ADMIN_HTML = `<!doctype html>
 <body>
 
 <div id="login-view">
-  <canvas id="login-canvas" aria-hidden="true"></canvas>
   <div class="login-card">
     <img class="logo" src="https://saimajope.github.io/ppr/assets/ppr-mark.png" alt="PPR">
     <div class="lbl eyebrow">Sisällönhallinta</div>
@@ -1009,176 +1007,6 @@ function hideOverlay() {
     setTimeout(function () { el.style.display = 'none'; }, 460);
   }, wait);
 }
-
-/* Kirjautumisnäkymän interaktiivinen tausta: hitaasti elävä teräksensininen
-   ristikkorakenne, joka reagoi osoittimeen. */
-var loginFx = (function () {
-  var canvas = null, ctx = null, raf = null, running = false, bound = false;
-  var parts = [];
-  var mouse = { x: -9999, y: -9999, on: false };
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var LINK = 130, CURSOR = 175;
-
-  function view() { return $('login-view'); }
-
-  function seed(w, h) {
-    var n = Math.max(34, Math.min(90, Math.round((w * h) / 21000)));
-    parts = [];
-    for (var i = 0; i < n; i++) {
-      var d = 0.35 + Math.random() * 0.65;
-      parts.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.25 * d,
-        vy: (Math.random() - 0.5) * 0.25 * d,
-        r: 0.8 + d * 1.7,
-        d: d
-      });
-    }
-  }
-
-  function resize() {
-    if (!canvas) return;
-    var w = view().clientWidth, h = view().clientHeight;
-    if (!w || !h) return;
-    var dpr = Math.min(2, window.devicePixelRatio || 1);
-    canvas.width = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
-    canvas.style.width = w + 'px';
-    canvas.style.height = h + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    seed(w, h);
-    if (reduce) draw(w, h);
-  }
-
-  function update(w, h) {
-    for (var i = 0; i < parts.length; i++) {
-      var p = parts[i];
-      p.x += p.vx;
-      p.y += p.vy;
-      if (mouse.on) {
-        var dx = p.x - mouse.x, dy = p.y - mouse.y;
-        var dist = Math.sqrt(dx * dx + dy * dy) || 1;
-        if (dist < 150) {
-          var f = ((150 - dist) / 150) * 0.55 * p.d;
-          p.x += (dx / dist) * f;
-          p.y += (dy / dist) * f;
-        }
-      }
-      if (p.x < -30) p.x = w + 30; else if (p.x > w + 30) p.x = -30;
-      if (p.y < -30) p.y = h + 30; else if (p.y > h + 30) p.y = -30;
-    }
-  }
-
-  function draw(w, h) {
-    ctx.clearRect(0, 0, w, h);
-    var i, j, p, q, dx, dy, dist, a;
-    for (i = 0; i < parts.length; i++) {
-      p = parts[i];
-      for (j = i + 1; j < parts.length; j++) {
-        q = parts[j];
-        dx = p.x - q.x; dy = p.y - q.y;
-        if (dx > LINK || dx < -LINK || dy > LINK || dy < -LINK) continue;
-        dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist > LINK) continue;
-        a = (1 - dist / LINK) * 0.22 * Math.min(p.d, q.d);
-        ctx.strokeStyle = 'rgba(128,147,181,' + a.toFixed(3) + ')';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(q.x, q.y);
-        ctx.stroke();
-      }
-    }
-    if (mouse.on) {
-      for (i = 0; i < parts.length; i++) {
-        p = parts[i];
-        dx = p.x - mouse.x; dy = p.y - mouse.y;
-        dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < CURSOR) {
-          a = (1 - dist / CURSOR) * 0.5;
-          ctx.strokeStyle = 'rgba(92,151,255,' + a.toFixed(3) + ')';
-          ctx.lineWidth = 1.2;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(mouse.x, mouse.y);
-          ctx.stroke();
-        }
-      }
-      var g = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 90);
-      g.addColorStop(0, 'rgba(1,90,255,0.16)');
-      g.addColorStop(1, 'rgba(1,90,255,0)');
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.arc(mouse.x, mouse.y, 90, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    for (i = 0; i < parts.length; i++) {
-      p = parts[i];
-      var bright = 0;
-      if (mouse.on) {
-        dx = p.x - mouse.x; dy = p.y - mouse.y;
-        dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < CURSOR) bright = 1 - dist / CURSOR;
-      }
-      a = 0.35 + p.d * 0.25 + bright * 0.4;
-      ctx.fillStyle = bright > 0.05
-        ? 'rgba(92,151,255,' + a.toFixed(3) + ')'
-        : 'rgba(128,147,181,' + a.toFixed(3) + ')';
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r + bright * 0.8, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  function frame() {
-    if (!running) return;
-    var w = view().clientWidth, h = view().clientHeight;
-    update(w, h);
-    draw(w, h);
-    raf = requestAnimationFrame(frame);
-  }
-
-  function setMouse(x, y) {
-    var r = canvas.getBoundingClientRect();
-    mouse.x = x - r.left;
-    mouse.y = y - r.top;
-    mouse.on = true;
-  }
-
-  function start() {
-    if (!canvas) {
-      canvas = $('login-canvas');
-      if (!canvas || !canvas.getContext) return;
-      ctx = canvas.getContext('2d');
-    }
-    if (!bound) {
-      bound = true;
-      window.addEventListener('resize', resize);
-      var v = view();
-      v.addEventListener('mousemove', function (e) { setMouse(e.clientX, e.clientY); });
-      v.addEventListener('mouseleave', function () { mouse.on = false; });
-      v.addEventListener('touchmove', function (e) {
-        var t = e.touches[0];
-        if (t) setMouse(t.clientX, t.clientY);
-      }, { passive: true });
-      v.addEventListener('touchend', function () { mouse.on = false; }, { passive: true });
-    }
-    resize();
-    if (reduce) return;
-    if (!running) {
-      running = true;
-      raf = requestAnimationFrame(frame);
-    }
-  }
-
-  function stop() {
-    running = false;
-    if (raf) cancelAnimationFrame(raf);
-  }
-
-  return { start: start, stop: stop };
-})();
 
 var toastTimer = null;
 function showToast(html, kind, sticky) {
@@ -1831,13 +1659,11 @@ function preview() {
 function showLogin() {
   $('login-view').style.display = 'flex';
   $('app-view').style.display = 'none';
-  loginFx.start();
 }
 
 function showApp() {
   $('login-view').style.display = 'none';
   $('app-view').style.display = 'block';
-  loginFx.stop();
 }
 
 /* ------------------------------ käynnistys ------------------------------ */
