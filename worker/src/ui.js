@@ -50,6 +50,8 @@ export const ADMIN_HTML = `<!doctype html>
 
   /* ---------- kirjautuminen ---------- */
   #login-view {
+    position: relative;
+    overflow: hidden;
     min-height: 100%;
     display: flex;
     align-items: center;
@@ -61,13 +63,61 @@ export const ADMIN_HTML = `<!doctype html>
       linear-gradient(135deg, rgba(1, 90, 255, .10), transparent 52%),
       repeating-linear-gradient(135deg, rgba(240, 242, 246, .035) 0 1px, transparent 1px 18px);
   }
+  #login-canvas { position: absolute; inset: 0; display: block; }
   .login-card {
+    position: relative;
+    z-index: 2;
     background: var(--card);
     width: 100%;
     max-width: 430px;
     padding: 44px 40px;
     border-top: 3px solid var(--blue);
     box-shadow: 0 30px 70px -30px rgba(0, 0, 0, .8);
+    animation: pprCardIn .55s cubic-bezier(.22, 1, .36, 1);
+  }
+  .login-card.shake { animation: pprShake .4s ease; }
+  @keyframes pprCardIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes pprShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-9px); }
+    40% { transform: translateX(9px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+  }
+
+  /* ---------- siirtymäruutu (lataus) ---------- */
+  #transition-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 26px;
+    background: var(--navy);
+    background-image:
+      radial-gradient(circle at 70% 30%, rgba(92, 151, 255, .10), transparent 42%),
+      repeating-linear-gradient(135deg, rgba(240, 242, 246, .035) 0 1px, transparent 1px 18px);
+    opacity: 0;
+    transition: opacity .45s ease;
+  }
+  #transition-overlay.on { opacity: 1; }
+  #transition-overlay img { height: 34px; width: auto; animation: pprPulse 1.6s ease-in-out infinite; }
+  #transition-overlay .t-bar { width: 150px; height: 2px; background: rgba(240, 242, 246, .14); overflow: hidden; }
+  #transition-overlay .t-bar span {
+    display: block; height: 100%; width: 40%;
+    background: var(--blue);
+    animation: pprSlideBar 1.15s cubic-bezier(.4, 0, .2, 1) infinite;
+  }
+  #transition-overlay .t-label { font-size: 12.5px; color: #9AA6BD; font-weight: 600; }
+  @keyframes pprPulse { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+  @keyframes pprSlideBar { 0% { transform: translateX(-130%); } 100% { transform: translateX(370%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .login-card, #transition-overlay img, #transition-overlay .t-bar span { animation: none; }
   }
   .login-card img.logo { height: 30px; width: auto; display: block; margin-bottom: 26px; }
   .login-card .eyebrow { font-size: 12.5px; color: var(--blue); font-weight: 600; margin-bottom: 10px; }
@@ -393,6 +443,7 @@ export const ADMIN_HTML = `<!doctype html>
 <body>
 
 <div id="login-view">
+  <canvas id="login-canvas" aria-hidden="true"></canvas>
   <div class="login-card">
     <img class="logo" src="https://saimajope.github.io/ppr/assets/ppr-mark.png" alt="PPR">
     <div class="lbl eyebrow">Sisällönhallinta</div>
@@ -442,6 +493,12 @@ export const ADMIN_HTML = `<!doctype html>
       <button type="button" class="confirm" id="modal-confirm">Poista</button>
     </div>
   </div>
+</div>
+
+<div id="transition-overlay" class="on" style="display:flex" aria-hidden="true">
+  <img src="https://saimajope.github.io/ppr/assets/ppr-mark-white.png" alt="">
+  <div class="t-bar"><span></span></div>
+  <div class="t-label lbl" id="transition-label">Ladataan…</div>
 </div>
 
 <div id="toast"></div>
@@ -933,6 +990,195 @@ function clearDirty() {
   $('discard-btn').style.display = 'none';
   $('save-btn').disabled = true;
 }
+
+/* Siirtymäruutu kirjautumisen, uloskirjautumisen ja latauksen ajaksi. */
+var overlayShownAt = Date.now();
+function showOverlay(text) {
+  $('transition-label').textContent = text;
+  var el = $('transition-overlay');
+  el.style.display = 'flex';
+  void el.offsetWidth;
+  el.classList.add('on');
+  overlayShownAt = Date.now();
+}
+function hideOverlay() {
+  var el = $('transition-overlay');
+  var wait = Math.max(0, 650 - (Date.now() - overlayShownAt));
+  setTimeout(function () {
+    el.classList.remove('on');
+    setTimeout(function () { el.style.display = 'none'; }, 460);
+  }, wait);
+}
+
+/* Kirjautumisnäkymän interaktiivinen tausta: hitaasti elävä teräksensininen
+   ristikkorakenne, joka reagoi osoittimeen. */
+var loginFx = (function () {
+  var canvas = null, ctx = null, raf = null, running = false, bound = false;
+  var parts = [];
+  var mouse = { x: -9999, y: -9999, on: false };
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var LINK = 130, CURSOR = 175;
+
+  function view() { return $('login-view'); }
+
+  function seed(w, h) {
+    var n = Math.max(34, Math.min(90, Math.round((w * h) / 21000)));
+    parts = [];
+    for (var i = 0; i < n; i++) {
+      var d = 0.35 + Math.random() * 0.65;
+      parts.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.25 * d,
+        vy: (Math.random() - 0.5) * 0.25 * d,
+        r: 0.8 + d * 1.7,
+        d: d
+      });
+    }
+  }
+
+  function resize() {
+    if (!canvas) return;
+    var w = view().clientWidth, h = view().clientHeight;
+    if (!w || !h) return;
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    seed(w, h);
+    if (reduce) draw(w, h);
+  }
+
+  function update(w, h) {
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      if (mouse.on) {
+        var dx = p.x - mouse.x, dy = p.y - mouse.y;
+        var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        if (dist < 150) {
+          var f = ((150 - dist) / 150) * 0.55 * p.d;
+          p.x += (dx / dist) * f;
+          p.y += (dy / dist) * f;
+        }
+      }
+      if (p.x < -30) p.x = w + 30; else if (p.x > w + 30) p.x = -30;
+      if (p.y < -30) p.y = h + 30; else if (p.y > h + 30) p.y = -30;
+    }
+  }
+
+  function draw(w, h) {
+    ctx.clearRect(0, 0, w, h);
+    var i, j, p, q, dx, dy, dist, a;
+    for (i = 0; i < parts.length; i++) {
+      p = parts[i];
+      for (j = i + 1; j < parts.length; j++) {
+        q = parts[j];
+        dx = p.x - q.x; dy = p.y - q.y;
+        if (dx > LINK || dx < -LINK || dy > LINK || dy < -LINK) continue;
+        dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist > LINK) continue;
+        a = (1 - dist / LINK) * 0.22 * Math.min(p.d, q.d);
+        ctx.strokeStyle = 'rgba(128,147,181,' + a.toFixed(3) + ')';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(q.x, q.y);
+        ctx.stroke();
+      }
+    }
+    if (mouse.on) {
+      for (i = 0; i < parts.length; i++) {
+        p = parts[i];
+        dx = p.x - mouse.x; dy = p.y - mouse.y;
+        dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CURSOR) {
+          a = (1 - dist / CURSOR) * 0.5;
+          ctx.strokeStyle = 'rgba(92,151,255,' + a.toFixed(3) + ')';
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      }
+      var g = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 90);
+      g.addColorStop(0, 'rgba(1,90,255,0.16)');
+      g.addColorStop(1, 'rgba(1,90,255,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, 90, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    for (i = 0; i < parts.length; i++) {
+      p = parts[i];
+      var bright = 0;
+      if (mouse.on) {
+        dx = p.x - mouse.x; dy = p.y - mouse.y;
+        dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CURSOR) bright = 1 - dist / CURSOR;
+      }
+      a = 0.35 + p.d * 0.25 + bright * 0.4;
+      ctx.fillStyle = bright > 0.05
+        ? 'rgba(92,151,255,' + a.toFixed(3) + ')'
+        : 'rgba(128,147,181,' + a.toFixed(3) + ')';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r + bright * 0.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function frame() {
+    if (!running) return;
+    var w = view().clientWidth, h = view().clientHeight;
+    update(w, h);
+    draw(w, h);
+    raf = requestAnimationFrame(frame);
+  }
+
+  function setMouse(x, y) {
+    var r = canvas.getBoundingClientRect();
+    mouse.x = x - r.left;
+    mouse.y = y - r.top;
+    mouse.on = true;
+  }
+
+  function start() {
+    if (!canvas) {
+      canvas = $('login-canvas');
+      if (!canvas || !canvas.getContext) return;
+      ctx = canvas.getContext('2d');
+    }
+    if (!bound) {
+      bound = true;
+      window.addEventListener('resize', resize);
+      var v = view();
+      v.addEventListener('mousemove', function (e) { setMouse(e.clientX, e.clientY); });
+      v.addEventListener('mouseleave', function () { mouse.on = false; });
+      v.addEventListener('touchmove', function (e) {
+        var t = e.touches[0];
+        if (t) setMouse(t.clientX, t.clientY);
+      }, { passive: true });
+      v.addEventListener('touchend', function () { mouse.on = false; }, { passive: true });
+    }
+    resize();
+    if (reduce) return;
+    if (!running) {
+      running = true;
+      raf = requestAnimationFrame(frame);
+    }
+  }
+
+  function stop() {
+    running = false;
+    if (raf) cancelAnimationFrame(raf);
+  }
+
+  return { start: start, stop: stop };
+})();
 
 var toastTimer = null;
 function showToast(html, kind, sticky) {
@@ -1527,14 +1773,17 @@ function loadContent() {
     }
     return res.json();
   }).then(function (data) {
-    if (!data) return;
+    if (!data) { hideOverlay(); return; }
     state.data = data.content;
     state.sha = data.sha;
     state.localImages = {};
     clearDirty();
     showApp();
     renderPanel();
+    hideOverlay();
   }).catch(function (err) {
+    if ($('app-view').style.display !== 'block') showLogin();
+    hideOverlay();
     showToast(err.message || 'Sisällön lataus epäonnistui.', 'err', true);
   });
 }
@@ -1582,11 +1831,13 @@ function preview() {
 function showLogin() {
   $('login-view').style.display = 'flex';
   $('app-view').style.display = 'none';
+  loginFx.start();
 }
 
 function showApp() {
   $('login-view').style.display = 'none';
   $('app-view').style.display = 'block';
+  loginFx.stop();
 }
 
 /* ------------------------------ käynnistys ------------------------------ */
@@ -1605,9 +1856,15 @@ $('login-form').addEventListener('submit', function (e) {
       return apiError(res, 'Kirjautuminen epäonnistui.').then(function (msg) { throw new Error(msg); });
     }
     $('password').value = '';
+    showOverlay('Kirjaudutaan sisään…');
     return loadContent();
   }).catch(function (err) {
     $('login-error').textContent = err.message || 'Kirjautuminen epäonnistui.';
+    var card = document.querySelector('.login-card');
+    card.classList.remove('shake');
+    void card.offsetWidth;
+    card.classList.add('shake');
+    setTimeout(function () { card.classList.remove('shake'); }, 450);
   }).finally(function () {
     btn.disabled = false;
   });
@@ -1617,14 +1874,20 @@ $('save-btn').addEventListener('click', save);
 $('preview-btn').addEventListener('click', preview);
 $('discard-btn').addEventListener('click', function () {
   confirmDialog('Hylätäänkö kaikki tallentamattomat muutokset?', 'Hylkää muutokset').then(function (ok) {
-    if (ok) loadContent();
+    if (!ok) return;
+    showOverlay('Ladataan…');
+    loadContent();
   });
 });
 $('logout-btn').addEventListener('click', function () {
+  showOverlay('Kirjaudutaan ulos…');
   fetch('/api/logout', { method: 'POST' }).then(function () {
     state.data = null;
     clearDirty();
     showLogin();
+    hideOverlay();
+  }).catch(function () {
+    hideOverlay();
   });
 });
 
