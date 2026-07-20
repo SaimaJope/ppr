@@ -467,7 +467,30 @@ var state = {
 
 var SITE_URL = 'https://saimajope.github.io/ppr/';
 
-var IMAGES_HINT = 'Yksi kuva näkyy sellaisenaan. Kaksi tai useampi kuva vaihtuu automaattisesti kuvaesityksenä.';
+var IMAGES_HINT = 'Yksi kuva näkyy sellaisenaan. Kaksi tai useampi kuva vaihtuu automaattisesti kuvaesityksenä ja saa selausnuolet.';
+
+/* Linkkikenttien valmiit kohteet. */
+var LINK_OPTIONS = [
+  { value: 'Etusivu.dc.html', label: 'Etusivu' },
+  { value: 'Palvelut.dc.html', label: 'Palvelut-sivu' },
+  { value: 'Yritys.dc.html', label: 'Yritys-sivu' },
+  { value: 'Referenssit.dc.html', label: 'Referenssit-sivu' },
+  { value: 'Ura.dc.html', label: 'Ura-sivu' },
+  { value: 'Yhteystiedot.dc.html', label: 'Yhteystiedot-sivu' },
+  { value: '#laskutustiedot', label: 'Laskutustiedot (etusivun alaosassa)' }
+];
+(function () {
+  var dl = document.createElement('datalist');
+  dl.id = 'link-options';
+  LINK_OPTIONS.forEach(function (o) {
+    var opt = document.createElement('option');
+    opt.value = o.value;
+    opt.label = o.label;
+    dl.appendChild(opt);
+  });
+  document.addEventListener('DOMContentLoaded', function () { document.body.appendChild(dl); });
+  if (document.body) document.body.appendChild(dl);
+})();
 
 /* ------------------------------ skeema ------------------------------ */
 
@@ -488,8 +511,10 @@ var SCHEMA = [
     groups: [
       heroGroup('etusivu', [
         { path: 'etusivu.hero.images', label: 'Yläbannerin kuvat', type: 'images', hint: IMAGES_HINT },
-        { path: 'etusivu.hero.ctaPrimary', label: 'Sininen painike', type: 'text' },
-        { path: 'etusivu.hero.ctaSecondary', label: 'Toinen painike', type: 'text' }
+        { path: 'etusivu.hero.ctaPrimary', label: 'Sinisen painikkeen teksti', type: 'text' },
+        { path: 'etusivu.hero.ctaPrimaryHref', label: 'Sinisen painikkeen kohde', type: 'link', hint: 'mihin painike vie, valitse listasta tai kirjoita osoite' },
+        { path: 'etusivu.hero.ctaSecondary', label: 'Toisen painikkeen teksti', type: 'text' },
+        { path: 'etusivu.hero.ctaSecondaryHref', label: 'Toisen painikkeen kohde', type: 'link', hint: 'mihin painike vie, valitse listasta tai kirjoita osoite' }
       ]),
       {
         title: 'Yritysesittely',
@@ -1084,9 +1109,10 @@ function renderField(field) {
 
   wrap.appendChild(fieldLabel(field));
 
-  if (field.type === 'text' || field.type === 'textarea') {
-    var input = document.createElement(field.type === 'text' ? 'input' : 'textarea');
-    if (field.type === 'text') input.type = 'text';
+  if (field.type === 'text' || field.type === 'textarea' || field.type === 'link') {
+    var input = document.createElement(field.type === 'textarea' ? 'textarea' : 'input');
+    if (field.type !== 'textarea') input.type = 'text';
+    if (field.type === 'link') input.setAttribute('list', 'link-options');
     input.value = String(getPath(state.data, field.path) == null ? '' : getPath(state.data, field.path));
     input.addEventListener('input', function () {
       setPath(state.data, field.path, input.value);

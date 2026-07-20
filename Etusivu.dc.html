@@ -167,8 +167,8 @@
           <h1 data-hero-h1 style="font-size:clamp(44px,6.6vw,96px);line-height:.98;font-weight:800;letter-spacing:-.025em;margin:0">{{ page.hero.title }}</h1>
           <p style="font-size:clamp(17px,1.5vw,20px);line-height:1.55;color:#C2CBDB;max-width:620px;margin:28px 0 0 0">{{ page.hero.lead }}</p>
           <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:36px">
-            <a href="Palvelut.dc.html" style="background:#015AFF;color:#fff;font-weight:600;font-size:16px;padding:15px 28px" style-hover="background:#2b74ff">{{ page.hero.ctaPrimary }}</a>
-            <a href="#laskutustiedot" style="border:1px solid rgba(240,242,246,.3);color:#F0F2F6;font-weight:500;font-size:16px;padding:15px 28px" style-hover="border-color:#5C97FF;color:#fff;background:rgba(92,151,255,.10)">{{ page.hero.ctaSecondary }}</a>
+            <a href="{{ page.hero.ctaPrimaryHref }}" style="background:#015AFF;color:#fff;font-weight:600;font-size:16px;padding:15px 28px" style-hover="background:#2b74ff">{{ page.hero.ctaPrimary }}</a>
+            <a href="{{ page.hero.ctaSecondaryHref }}" style="border:1px solid rgba(240,242,246,.3);color:#F0F2F6;font-weight:500;font-size:16px;padding:15px 28px" style-hover="border-color:#5C97FF;color:#fff;background:rgba(92,151,255,.10)">{{ page.hero.ctaSecondary }}</a>
           </div>
         </div>
       </div>

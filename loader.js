@@ -88,29 +88,120 @@
   };
 
   // ---- Slideshow engine -----------------------------------------------------
-  // Rotates the stacked <img data-slide> children of every [data-slideshow]
-  // container. Runs outside React on purpose: a re-render (e.g. the mobile
-  // menu opening) resets inline opacities to the template values, and the next
-  // tick simply reasserts them. Containers appear only after content renders,
-  // so keep scanning for a while and after the curtain lifts.
+  // Drives the stacked <img data-slide> children of every [data-slideshow]
+  // container: automatic crossfade plus frosted-glass prev/next arrows for
+  // manual browsing. Runs outside React on purpose: a re-render (e.g. the
+  // mobile menu opening) resets inline opacities and can drop the arrows, and
+  // the periodic reassert below simply puts them back. Containers appear only
+  // after content renders, so keep scanning for a while and after the curtain
+  // lifts. Reduced motion disables the auto-rotation but keeps the arrows.
   (function () {
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var timers = new WeakMap();
+    var reduceMotion = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var inited = new WeakSet();
+
+    var CHEVRON_PREV =
+      '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" ' +
+      'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M15 18l-6-6 6-6"></path></svg>';
+    var CHEVRON_NEXT =
+      '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" ' +
+      'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M9 18l6-6-6-6"></path></svg>';
+
+    function ensureStyles() {
+      if (document.getElementById('ppr-slide-style')) return;
+      var s = document.createElement('style');
+      s.id = 'ppr-slide-style';
+      s.textContent =
+        '.ppr-slide-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:6;' +
+        'width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.4);' +
+        'display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;' +
+        'color:#fff;background:rgba(255,255,255,.18);' +
+        'backdrop-filter:blur(12px) saturate(160%);-webkit-backdrop-filter:blur(12px) saturate(160%);' +
+        'box-shadow:0 6px 20px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.45);' +
+        'transition:background .18s ease,transform .18s ease;-webkit-tap-highlight-color:transparent}' +
+        '.ppr-slide-arrow:hover{background:rgba(255,255,255,.34)}' +
+        '.ppr-slide-arrow:active{transform:translateY(-50%) scale(.94)}' +
+        '.ppr-slide-arrow:focus{outline:none}' +
+        '.ppr-slide-arrow:focus-visible{outline:2px solid #fff;outline-offset:2px}' +
+        '.ppr-slide-arrow svg{display:block}' +
+        '.ppr-slide-prev{left:12px}.ppr-slide-next{right:12px}' +
+        '[data-hero-scene]>.ppr-slide-prev{left:22px;width:48px;height:48px}' +
+        '[data-hero-scene]>.ppr-slide-next{right:22px;width:48px;height:48px}';
+      document.head.appendChild(s);
+    }
+
+    function slidesOf(el) {
+      return el.querySelectorAll('img[data-slide]');
+    }
+
     function initContainer(el) {
-      if (timers.has(el)) return;
+      if (inited.has(el)) return;
+      var imgs = slidesOf(el);
+      if (!imgs.length) return;
+      inited.add(el);
+      if (imgs.length < 2) return;
+      ensureStyles();
+
       var seconds = Math.min(60, Math.max(2, Number(el.getAttribute('data-slideshow-interval')) || 7));
-      var state = { idx: 0 };
-      timers.set(el, state);
+      var state = { idx: 0, timer: null };
+
+      // The hero's decorative gradient overlays sit above the slideshow, so
+      // its arrows live on the scene element (last children paint on top).
+      var host = el.closest('[data-hero-scene]') || el;
+
+      function apply() {
+        var list = slidesOf(el);
+        for (var i = 0; i < list.length; i++) {
+          list[i].style.opacity = i === state.idx ? '1' : '0';
+        }
+      }
+      function step(delta) {
+        var n = slidesOf(el).length;
+        if (!n) return;
+        state.idx = (state.idx + delta + n) % n;
+        apply();
+      }
+      function restartAuto() {
+        if (state.timer) clearInterval(state.timer);
+        if (reduceMotion) return;
+        state.timer = setInterval(function () {
+          if (el.isConnected) step(1);
+        }, seconds * 1000);
+      }
+      function makeArrow(delta) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'ppr-slide-arrow ' + (delta < 0 ? 'ppr-slide-prev' : 'ppr-slide-next');
+        b.setAttribute('aria-label', delta < 0 ? 'Edellinen kuva' : 'Seuraava kuva');
+        b.innerHTML = delta < 0 ? CHEVRON_PREV : CHEVRON_NEXT;
+        b.addEventListener('click', function (e) {
+          // Reference cards are links; the arrow must not navigate.
+          e.preventDefault();
+          e.stopPropagation();
+          step(delta);
+          restartAuto();
+        });
+        return b;
+      }
+      function ensureArrows() {
+        if (!host.querySelector('.ppr-slide-prev')) {
+          host.appendChild(makeArrow(-1));
+          host.appendChild(makeArrow(1));
+        }
+      }
+
+      ensureArrows();
+      restartAuto();
+      // Reassert after React re-renders (they reset opacities / drop arrows).
       setInterval(function () {
         if (!el.isConnected) return;
-        var imgs = el.querySelectorAll('img[data-slide]');
-        if (imgs.length < 2) return;
-        state.idx = (state.idx + 1) % imgs.length;
-        for (var i = 0; i < imgs.length; i++) {
-          imgs[i].style.opacity = i === state.idx ? '1' : '0';
-        }
-      }, seconds * 1000);
+        ensureArrows();
+        apply();
+      }, 1000);
     }
+
     function scan() {
       var els = document.querySelectorAll('[data-slideshow]');
       for (var i = 0; i < els.length; i++) initContainer(els[i]);
