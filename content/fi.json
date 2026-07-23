@@ -25,7 +25,7 @@
         "label": "Toimisto",
         "street": "Pappilantie 2",
         "postalCity": "07500 Askola",
-        "phone": "(019) 663 0666",
+        "phone": "019 663 0666",
         "email": "toimisto@ppr.fi"
       },
       "depot": {
@@ -47,7 +47,7 @@
       "ovt": "003720261873",
       "operator": "PAGERO 003723609900",
       "emailInvoice": "003720261873@xbs-salo.com",
-      "paperLine1": "PL 908",
+      "paperLine1": "OVT 003720261873 PL 908",
       "paperLine2": "02066 DOCUSCAN"
     },
     "footer": {
@@ -89,7 +89,7 @@
       "items": [
         {
           "title": "Teollisuusrakentaminen",
-          "desc": "Vaativat kohteet Kilpilahden alueella Neste Oilin ja Borealiksen työtapojen mukaisesti."
+          "desc": "Vaativat kohteet Kilpilahden alueella Neste Oyj:n ja Borealis \nPolymers Oy:n työtapojen mukaisesti."
         },
         {
           "title": "Betonirakenteet",
@@ -105,7 +105,7 @@
         },
         {
           "title": "Uudisrakentaminen",
-          "desc": "Pientalot, teollisuushallit, toimisto- ja koulurakennukset."
+          "desc": "Teollisuushallit, toimisto- ja koulurakennukset."
         },
         {
           "title": "Investointi ja kunnossapito",
