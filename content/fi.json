@@ -474,11 +474,11 @@
     "hero": {
       "eyebrow": "Yhteystiedot",
       "title": "Ota yhteyttä.",
-      "lead": "Toimisto Askolassa ja varikko Kilpilahden Kulloossa. Kilpilahden 24h päivystys palvelee ympäri vuorokauden."
+      "lead": "Toimisto Askolassa, toimipiste ja varasto Kilpilahden Kulloossa. Kilpilahden 24h päivystys palvelee ympäri vuorokauden."
     },
     "locations": {
       "officeTitle": "Askola",
-      "depotLabel": "Varikko ja varasto"
+      "depotLabel": "Toimipiste ja varasto"
     },
     "team": {
       "eyebrow": "Avainhenkilöt",
