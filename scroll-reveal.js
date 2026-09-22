@@ -2,12 +2,12 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isDesktopViewport = window.matchMedia('(min-width: 981px)').matches;
   const mobileRevealViewport = {
-    viewFactor: 0.12,
-    viewOffset: { top: 0, right: 0, bottom: 40, left: 0 }
+    viewFactor: 0,
+    viewOffset: { top: 0, right: 0, bottom: -180, left: 0 }
   };
   const desktopRevealViewport = {
-    viewFactor: 0.08,
-    viewOffset: { top: 0, right: 0, bottom: -180, left: 0 }
+    viewFactor: 0,
+    viewOffset: { top: 0, right: 0, bottom: -280, left: 0 }
   };
 
   const revealViewport = isDesktopViewport ? desktopRevealViewport : mobileRevealViewport;
@@ -24,6 +24,13 @@
     document.querySelectorAll('[data-grid3] > *, [data-srow], [data-cert-card]').forEach((el) => {
       el.classList.add('reveal-stagger');
     });
+
+    // Reveal each piece once; a hidden parent otherwise delays its children too.
+    document.querySelectorAll('.reveal-soft').forEach((el) => {
+      if (el.querySelector('.reveal-up, .reveal-stagger')) {
+        el.classList.remove('reveal-soft');
+      }
+    });
   }
 
   function initScrollReveal() {
@@ -39,7 +46,7 @@
       cleanup: true,
       mobile: true,
       distance: '14px',
-      duration: 620,
+      duration: 360,
       delay: 0,
       opacity: 0,
       easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
@@ -49,22 +56,22 @@
 
     sr.reveal('.reveal-soft', {
       distance: '10px',
-      duration: 600,
+      duration: 360,
       origin: 'bottom'
     });
 
     sr.reveal('.reveal-up', {
       distance: '16px',
-      duration: 620,
+      duration: 360,
       origin: 'bottom',
-      interval: 60
+      interval: 0
     });
 
     sr.reveal('.reveal-stagger', {
       distance: '14px',
-      duration: 600,
+      duration: 360,
       origin: 'bottom',
-      interval: 80
+      interval: 0
     });
   }
 
