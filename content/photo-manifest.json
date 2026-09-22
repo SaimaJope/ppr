@@ -1,0 +1,153 @@
+{
+  "photos": [
+    {
+      "number": 1,
+      "sourceFilename": "IMG_20190214_121155 (1).jpg",
+      "path": "assets/muuntamo-ja-sahkotilojen-rakentaminen-01.jpg",
+      "caption": "Muuntamo- ja sähkötilojen rakentaminen",
+      "placements": [
+        "palvelut.details.0.images",
+        "yritys.expertise.images"
+      ]
+    },
+    {
+      "number": 2,
+      "sourceFilename": "IMG_20190525_072702.jpg",
+      "path": "assets/maanrakennus-ja-perustustyot-02.jpg",
+      "caption": "Maanrakennus- ja perustustyöt",
+      "placements": [
+        "palvelut.details.1.images"
+      ]
+    },
+    {
+      "number": 3,
+      "sourceFilename": "IMG_20190605_091803.jpg",
+      "path": "assets/muotitus-ja-raudoitustyot-03.jpg",
+      "caption": "Muotitus- ja raudoitustyöt",
+      "placements": [
+        "palvelut.details.2.images"
+      ]
+    },
+    {
+      "number": 4,
+      "sourceFilename": "IMG_20190703_101357.jpg",
+      "path": "assets/muotitus-ja-raudoitustyot-04.jpg",
+      "caption": "Muotitus- ja raudoitustyöt",
+      "placements": [
+        "palvelut.details.2.images"
+      ]
+    },
+    {
+      "number": 5,
+      "sourceFilename": "IMG_20190704_133737.jpg",
+      "path": "assets/betonointityot-05.jpg",
+      "caption": "Betonointityöt",
+      "placements": [
+        "palvelut.details.2.images"
+      ]
+    },
+    {
+      "number": 6,
+      "sourceFilename": "IMG_20190716_122337.jpg",
+      "path": "assets/maanrakennus-ja-perustustyot-06.jpg",
+      "caption": "Maanrakennus- ja perustustyöt",
+      "placements": [
+        "palvelut.details.1.images",
+        "palvelut.details.3.images"
+      ]
+    },
+    {
+      "number": 7,
+      "sourceFilename": "IMG_20190719_115829.jpg",
+      "path": "assets/sisailmakorjaukset-07.jpg",
+      "caption": "Sisäilmakorjaukset",
+      "placements": [
+        "palvelut.details.4.images"
+      ]
+    },
+    {
+      "number": 8,
+      "sourceFilename": "IMG_20190817_171638.jpg",
+      "path": "assets/sailioperustukset-08.jpg",
+      "caption": "Säiliöperustukset",
+      "placements": [
+        "palvelut.details.2.images"
+      ]
+    },
+    {
+      "number": 9,
+      "sourceFilename": "IMG_20190829_132858.jpg",
+      "path": "assets/vesikattotyot-saasuojan-alla-09.jpg",
+      "caption": "Vesikattotyöt sääsuojan alla",
+      "placements": [
+        "palvelut.details.4.images"
+      ]
+    },
+    {
+      "number": 10,
+      "sourceFilename": "IMG_20230525_120420.jpg",
+      "path": "assets/maanrakennus-ja-perustustyot-10.jpg",
+      "caption": "Maanrakennus- ja perustustyöt",
+      "placements": [
+        "palvelut.details.1.images"
+      ]
+    },
+    {
+      "number": 11,
+      "sourceFilename": "IMG_20230525_214648.jpg",
+      "path": "assets/maanrakennus-ja-perustustyot-11.jpg",
+      "caption": "Maanrakennus- ja perustustyöt",
+      "placements": [
+        "palvelut.details.1.images"
+      ]
+    },
+    {
+      "number": 12,
+      "sourceFilename": "IMG_20241001_105344.jpg",
+      "path": "assets/maanrakennus-ja-perustustyot-12.jpg",
+      "caption": "Maanrakennus- ja perustustyöt",
+      "placements": [
+        "palvelut.details.1.images",
+        "etusivu.hero.images"
+      ]
+    },
+    {
+      "number": 13,
+      "sourceFilename": "IMG_20241119_104900.jpg",
+      "path": "assets/maanrakennus-ja-perustustyot-13.jpg",
+      "caption": "Maanrakennus- ja perustustyöt",
+      "placements": [
+        "palvelut.details.1.images",
+        "palvelut.details.3.images"
+      ]
+    },
+    {
+      "number": 14,
+      "sourceFilename": "IMG_20241119_145037.jpg",
+      "path": "assets/maanrakennus-ja-perustustyot-14.jpg",
+      "caption": "Maanrakennus- ja perustustyöt",
+      "placements": [
+        "palvelut.details.1.images"
+      ]
+    },
+    {
+      "number": 15,
+      "sourceFilename": "IMG_20250115_093325.jpg",
+      "path": "assets/maanrakennus-ja-perustustyot-15.jpg",
+      "caption": "Maanrakennus- ja perustustyöt",
+      "placements": [
+        "palvelut.details.5.images"
+      ]
+    },
+    {
+      "number": 16,
+      "sourceFilename": "IMG_20250304_090226.jpg",
+      "path": "assets/sisatilojen-toteutus-16.jpg",
+      "caption": "Sisätilojen toteutus",
+      "placements": [
+        "palvelut.details.5.images",
+        "yritys.expertise.images"
+      ]
+    }
+  ]
+}

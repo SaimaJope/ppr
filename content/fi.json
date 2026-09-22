@@ -17,7 +17,6 @@
       "palvelut": "Palvelut",
       "yhteystiedot": "Yhteystiedot",
       "yritys": "Yritys",
-      "ura": "Ura",
       "referenssit": "Referenssit"
     },
     "contact": {
@@ -58,6 +57,24 @@
       "billingLinkLabel": "Laskutus ja OVT",
       "whistleblowingLabel": "Whistleblowing-ilmoituskanava",
       "whistleblowingUrl": "https://app.easywhistle.com/report/ppr/"
+    },
+    "photoCaptions": {
+      "assets/muuntamo-ja-sahkotilojen-rakentaminen-01.jpg": "Muuntamo- ja sähkötilojen rakentaminen",
+      "assets/maanrakennus-ja-perustustyot-02.jpg": "Maanrakennus- ja perustustyöt",
+      "assets/muotitus-ja-raudoitustyot-03.jpg": "Muotitus- ja raudoitustyöt",
+      "assets/muotitus-ja-raudoitustyot-04.jpg": "Muotitus- ja raudoitustyöt",
+      "assets/betonointityot-05.jpg": "Betonointityöt",
+      "assets/maanrakennus-ja-perustustyot-06.jpg": "Maanrakennus- ja perustustyöt",
+      "assets/sisailmakorjaukset-07.jpg": "Sisäilmakorjaukset",
+      "assets/sailioperustukset-08.jpg": "Säiliöperustukset",
+      "assets/vesikattotyot-saasuojan-alla-09.jpg": "Vesikattotyöt sääsuojan alla",
+      "assets/maanrakennus-ja-perustustyot-10.jpg": "Maanrakennus- ja perustustyöt",
+      "assets/maanrakennus-ja-perustustyot-11.jpg": "Maanrakennus- ja perustustyöt",
+      "assets/maanrakennus-ja-perustustyot-12.jpg": "Maanrakennus- ja perustustyöt",
+      "assets/maanrakennus-ja-perustustyot-13.jpg": "Maanrakennus- ja perustustyöt",
+      "assets/maanrakennus-ja-perustustyot-14.jpg": "Maanrakennus- ja perustustyöt",
+      "assets/maanrakennus-ja-perustustyot-15.jpg": "Maanrakennus- ja perustustyöt",
+      "assets/sisatilojen-toteutus-16.jpg": "Sisätilojen toteutus"
     }
   },
   "etusivu": {
@@ -70,7 +87,8 @@
       "ctaSecondary": "Laskutustiedot",
       "ctaSecondaryHref": "#laskutustiedot",
       "images": [
-        "Kilpi_lahti.jpg"
+        "Kilpi_lahti.jpg",
+        "assets/maanrakennus-ja-perustustyot-12.jpg"
       ]
     },
     "intro": {
@@ -90,6 +108,10 @@
         {
           "title": "Teollisuusrakentaminen",
           "desc": "Vaativat kohteet Kilpilahden alueella Neste Oyj:n ja Borealis Polymers Oy:n työtapojen mukaisesti."
+        },
+        {
+          "title": "Maanrakennus- ja perustustyöt",
+          "desc": "Maanrakennus- ja perustustyöt rakennushankkeiden pohjaksi."
         },
         {
           "title": "Betonirakenteet",
@@ -155,14 +177,34 @@
       {
         "title": "Teollisuusrakentaminen",
         "desc": "Ydinosaamistamme ovat vaativat kohteet Kilpilahden teollisuusalueella, Neste Oyj:n ja Borealis Polymers Oy:n specifikaatioiden, määräysten ja työtapojen mukaisesti.",
-        "shot": "Valokuva: prosessialue, putkistot, työryhmä",
+        "shot": "Muuntamo- ja sähkötilojen rakentaminen",
         "bullets": [
           "Kilpilahden teollisuusalue",
           "Neste Oyj:n ja Borealis Polymers Oy:n specifikaatiot",
           "Työturvallisuus- ja tulityökortit",
           "Seisokit ja investointihankkeet"
         ],
-        "images": []
+        "images": [
+          "assets/muuntamo-ja-sahkotilojen-rakentaminen-01.jpg"
+        ]
+      },
+      {
+        "title": "Maanrakennus- ja perustustyöt",
+        "desc": "Maanrakennus- ja perustustyöt rakennushankkeiden pohjaksi.",
+        "shot": "Maanrakennus- ja perustustyöt",
+        "bullets": [
+          "Maanrakennustyöt",
+          "Perustustyöt"
+        ],
+        "images": [
+          "assets/maanrakennus-ja-perustustyot-12.jpg",
+          "assets/maanrakennus-ja-perustustyot-02.jpg",
+          "assets/maanrakennus-ja-perustustyot-06.jpg",
+          "assets/maanrakennus-ja-perustustyot-10.jpg",
+          "assets/maanrakennus-ja-perustustyot-11.jpg",
+          "assets/maanrakennus-ja-perustustyot-13.jpg",
+          "assets/maanrakennus-ja-perustustyot-14.jpg"
+        ]
       },
       {
         "title": "Betonirakenteet",
@@ -175,7 +217,12 @@
           "Vallitilapinnoitukset",
           "Säiliöiden pohjalaatat"
         ],
-        "images": []
+        "images": [
+          "assets/muotitus-ja-raudoitustyot-03.jpg",
+          "assets/muotitus-ja-raudoitustyot-04.jpg",
+          "assets/betonointityot-05.jpg",
+          "assets/sailioperustukset-08.jpg"
+        ]
       },
       {
         "title": "Kunnallistekniset työt",
@@ -186,7 +233,10 @@
           "Palovesiverkostot",
           "Juomavesiverkostot"
         ],
-        "images": []
+        "images": [
+          "assets/maanrakennus-ja-perustustyot-06.jpg",
+          "assets/maanrakennus-ja-perustustyot-13.jpg"
+        ]
       },
       {
         "title": "Korjausrakentaminen",
@@ -198,7 +248,10 @@
           "Sokkelien vesieristeet ja salaojat",
           "Sisätilojen saneeraus- ja muutostyöt"
         ],
-        "images": []
+        "images": [
+          "assets/sisailmakorjaukset-07.jpg",
+          "assets/vesikattotyot-saasuojan-alla-09.jpg"
+        ]
       },
       {
         "title": "Uudisrakentaminen",
@@ -210,7 +263,10 @@
           "Toimistorakennukset",
           "Koulurakennukset"
         ],
-        "images": []
+        "images": [
+          "assets/maanrakennus-ja-perustustyot-15.jpg",
+          "assets/sisatilojen-toteutus-16.jpg"
+        ]
       },
       {
         "title": "Teollisuuden investointi- ja kunnossapitopalvelut",
@@ -303,19 +359,14 @@
         "Tulityökortti"
       ],
       "photoCaption": "Valokuva: työryhmä prosessialueella",
-      "images": []
+      "images": [
+        "assets/muuntamo-ja-sahkotilojen-rakentaminen-01.jpg",
+        "assets/sisatilojen-toteutus-16.jpg"
+      ]
     },
     "network": {
       "title": "Laaja ja testattu alihankintaverkosto.",
       "text": "Toimiva ja testattu rakentamisen alihankinta- ja yhteistyöverkosto Itä-Uudenmaan alueella mahdollistaa suuretkin työkokonaisuudet sekä takaa laadukkaan lopputuloksen ja pitävät aikataulut."
-    },
-    "career": {
-      "eyebrow": "Ura",
-      "title": "Tule rakentamaan kanssamme.",
-      "text": "Etsimme ammattitaitoisia tekijöitä ja työnjohtajia teollisuusrakentamisen vaativiin kohteisiin. Meillä työ tehdään turvallisesti ja kerralla kunnolla.",
-      "ctaLabel": "Avoimet työpaikat",
-      "photoCaption": "Valokuva: työmaa, suojavarusteet",
-      "images": []
     }
   },
   "referenssit": {
@@ -419,57 +470,6 @@
       }
     ]
   },
-  "ura": {
-    "hero": {
-      "eyebrow": "Ura",
-      "title": "Tule rakentamaan kanssamme.",
-      "lead": "Etsimme ammattitaitoisia tekijöitä ja työnjohtajia teollisuusrakentamisen vaativiin kohteisiin. Meillä työ tehdään turvallisesti ja kerralla kunnolla."
-    },
-    "why": {
-      "eyebrow": "Miksi PPR",
-      "title": "Vakaata työtä luotettavassa porukassa.",
-      "items": [
-        {
-          "title": "Turvallisuus edellä",
-          "desc": "Voimassa olevat kortit ja perehdytys jokaiseen kohteeseen."
-        },
-        {
-          "title": "Kokenut työnjohto",
-          "desc": "Työnjohtohenkilöstöllä on vuosikymmenien kokemus alalta."
-        },
-        {
-          "title": "Vakaat työmaat",
-          "desc": "Pitkäjänteistä työtä Itä-Uudenmaan alueella."
-        }
-      ]
-    },
-    "roles": {
-      "title": "Tehtävät, joihin rekrytoimme",
-      "note": "Avoimet paikat vaihtelevat kohteiden mukaan. Lähetä avoin hakemus, niin olemme yhteydessä.",
-      "items": [
-        {
-          "title": "Rakennustyöntekijät",
-          "note": "Teollisuus- ja betonirakentaminen"
-        },
-        {
-          "title": "Kirvesmiehet",
-          "note": "Uudis- ja korjausrakentaminen"
-        },
-        {
-          "title": "Betonimiehet",
-          "note": "Perustukset ja pohjalaatat"
-        },
-        {
-          "title": "Kärkimiehet ja työnjohtajat",
-          "note": "Kokemus teollisuuskohteista eduksi"
-        }
-      ]
-    },
-    "apply": {
-      "title": "Kiinnostuitko? Lähetä avoin hakemus.",
-      "text": "Kerro osaamisestasi ja korteistasi. Käsittelemme hakemukset luottamuksellisesti."
-    }
-  },
   "yhteystiedot": {
     "hero": {
       "eyebrow": "Yhteystiedot",
@@ -544,5 +544,6 @@
       "eyebrow": "Laskutus",
       "title": "Laskutustiedot"
     }
-  }
+  },
+  "ura": {}
 }
