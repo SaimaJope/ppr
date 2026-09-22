@@ -530,7 +530,6 @@ var LINK_OPTIONS = [
   { value: 'Palvelut.dc.html', label: 'Palvelut-sivu' },
   { value: 'Yritys.dc.html', label: 'Yritys-sivu' },
   { value: 'Referenssit.dc.html', label: 'Referenssit-sivu' },
-  { value: 'Ura.dc.html', label: 'Ura-sivu' },
   { value: 'Yhteystiedot.dc.html', label: 'Yhteystiedot-sivu' },
   { value: '#laskutustiedot', label: 'Laskutustiedot (etusivun alaosassa)' }
 ];
@@ -710,17 +709,6 @@ var SCHEMA = [
           { path: 'yritys.network.title', label: 'Otsikko', type: 'text' },
           { path: 'yritys.network.text', label: 'Teksti', type: 'textarea' }
         ]
-      },
-      {
-        title: 'Ura-nosto',
-        fields: [
-          { path: 'yritys.career.eyebrow', label: 'Pieni yläotsikko', type: 'text' },
-          { path: 'yritys.career.title', label: 'Otsikko', type: 'text' },
-          { path: 'yritys.career.text', label: 'Teksti', type: 'textarea' },
-          { path: 'yritys.career.ctaLabel', label: 'Painikkeen teksti', type: 'text' },
-          { path: 'yritys.career.images', label: 'Kuvat', type: 'images', hint: IMAGES_HINT },
-          { path: 'yritys.career.photoCaption', label: 'Kuvapaikan teksti', type: 'text', hint: 'näkyy vain jos kuvia ei ole' }
-        ]
       }
     ]
   },
@@ -754,51 +742,6 @@ var SCHEMA = [
             ],
             blank: { sector: '', title: '', scope: '', loc: '', year: '', shot: '', images: [] }
           }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'ura',
-    title: 'Ura',
-    desc: 'Ura-sivun sisältö.',
-    groups: [
-      heroGroup('ura'),
-      {
-        title: 'Miksi PPR',
-        fields: [
-          { path: 'ura.why.eyebrow', label: 'Pieni yläotsikko', type: 'text' },
-          { path: 'ura.why.title', label: 'Otsikko', type: 'text' },
-          {
-            path: 'ura.why.items', label: 'Perustelut', type: 'list', itemLabel: 'Perustelu',
-            fields: [
-              { key: 'title', label: 'Otsikko', type: 'text' },
-              { key: 'desc', label: 'Kuvaus', type: 'textarea' }
-            ],
-            blank: { title: '', desc: '' }
-          }
-        ]
-      },
-      {
-        title: 'Avoimet tehtävät',
-        fields: [
-          { path: 'ura.roles.title', label: 'Otsikko', type: 'text' },
-          { path: 'ura.roles.note', label: 'Lisäteksti', type: 'textarea' },
-          {
-            path: 'ura.roles.items', label: 'Tehtävät', type: 'list', itemLabel: 'Tehtävä',
-            fields: [
-              { key: 'title', label: 'Tehtävänimike', type: 'text' },
-              { key: 'note', label: 'Lisätieto', type: 'text' }
-            ],
-            blank: { title: '', note: '' }
-          }
-        ]
-      },
-      {
-        title: 'Hakukehotus',
-        fields: [
-          { path: 'ura.apply.title', label: 'Otsikko', type: 'text' },
-          { path: 'ura.apply.text', label: 'Teksti', type: 'textarea' }
         ]
       }
     ]
@@ -931,7 +874,6 @@ var SCHEMA = [
           { path: 'common.nav.palvelut', label: 'Palvelut', type: 'text' },
           { path: 'common.nav.yhteystiedot', label: 'Yhteystiedot', type: 'text' },
           { path: 'common.nav.yritys', label: 'Yritys', type: 'text' },
-          { path: 'common.nav.ura', label: 'Ura', type: 'text' },
           { path: 'common.nav.referenssit', label: 'Referenssit', type: 'text' }
         ]
       }
@@ -944,7 +886,6 @@ var PREVIEW_PAGE_FOR_PANEL = {
   palvelut: 'Palvelut',
   yritys: 'Yritys',
   referenssit: 'Referenssit',
-  ura: 'Ura',
   yhteystiedot: 'Yhteystiedot',
   common: 'Etusivu'
 };
@@ -1327,6 +1268,23 @@ function renderImagesInto(getArr, field) {
       img.onerror = function () { thumb.textContent = 'Ei esikatselua'; };
       thumb.appendChild(img);
       tile.appendChild(thumb);
+
+      var captionLabel = document.createElement('label');
+      captionLabel.style.cssText = 'display:block;padding:8px;font-size:12px;';
+      captionLabel.appendChild(document.createTextNode('Kuvateksti'));
+      var captionInput = document.createElement('textarea');
+      captionInput.rows = 3;
+      captionInput.style.cssText = 'display:block;width:100%;margin-top:4px;resize:vertical;font:inherit;';
+      captionInput.value = (state.data.common.photoCaptions || {})[path] || '';
+      img.alt = captionInput.value;
+      captionInput.addEventListener('input', function () {
+        if (!state.data.common.photoCaptions) state.data.common.photoCaptions = {};
+        state.data.common.photoCaptions[path] = captionInput.value;
+        img.alt = captionInput.value;
+        markDirty();
+      });
+      captionLabel.appendChild(captionInput);
+      tile.appendChild(captionLabel);
 
       var actions = document.createElement('div');
       actions.className = 'tile-actions';

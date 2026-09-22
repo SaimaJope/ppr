@@ -19,8 +19,8 @@ const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // 24 h
 const MAX_LOGIN_ATTEMPTS = 5;
 const LOGIN_WINDOW_MS = 15 * 60 * 1000; // 15 min
 const MAX_IMAGE_BYTES = 2 * 1024 * 1024; // 2 Mt
-const PREVIEW_PAGES = ['Etusivu', 'Palvelut', 'Yritys', 'Referenssit', 'Ura', 'Yhteystiedot'];
-const CONTENT_TOP_KEYS = ['common', 'etusivu', 'palvelut', 'yritys', 'referenssit', 'ura', 'yhteystiedot'];
+const PREVIEW_PAGES = ['Etusivu', 'Palvelut', 'Yritys', 'Referenssit', 'Yhteystiedot'];
+const CONTENT_TOP_KEYS = ['common', 'etusivu', 'palvelut', 'yritys', 'referenssit', 'yhteystiedot'];
 
 // Parhaan yrityksen kirjautumisrajoitin. Tila on isolate-kohtainen (nollautuu
 // kun Worker kierrätetään), mikä riittää hidastamaan arvailun; varsinainen
@@ -172,7 +172,16 @@ async function handleGetContent(env) {
   } catch {
     return jsonResponse({ error: 'Sivuston sisältötiedosto on viallinen (ei kelvollista JSONia).' }, 500);
   }
+  removeLegacyCareerContent(parsed);
   return jsonResponse({ content: parsed, sha: file.sha });
+}
+
+// The empty legacy key may remain in JSON while an older Worker is deployed.
+// Remove it when the updated admin reads or saves the content.
+function removeLegacyCareerContent(content) {
+  delete content.ura;
+  if (content.common && content.common.nav) delete content.common.nav.ura;
+  if (content.yritys) delete content.yritys.career;
 }
 
 async function handlePutContent(request, env) {
@@ -196,6 +205,7 @@ async function handlePutContent(request, env) {
     return jsonResponse({ error: 'Tallennuksesta puuttuu versiotieto. Lataa sivu uudelleen.' }, 400);
   }
 
+  removeLegacyCareerContent(content);
   const serialized = JSON.stringify(content, null, 2) + '\n';
   if (serialized.length > 900 * 1024) {
     return jsonResponse({ error: 'Sisältö on liian suuri tallennettavaksi.' }, 400);
