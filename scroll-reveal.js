@@ -21,8 +21,14 @@
       el.classList.add('reveal-up');
     });
 
-    document.querySelectorAll('[data-grid3] > *, [data-srow], [data-cert-card]').forEach((el) => {
+    document.querySelectorAll('[data-grid3]:not([data-cert-grid]) > *, [data-srow]').forEach((el) => {
       el.classList.add('reveal-stagger');
+    });
+
+    // Reveal the horizontal certificate strip together so offscreen logos
+    // are already visible when visitors swipe them into view on mobile.
+    document.querySelectorAll('[data-cert-grid]').forEach((el) => {
+      el.classList.add('reveal-soft');
     });
 
     // Reveal each piece once; a hidden parent otherwise delays its children too.
