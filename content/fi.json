@@ -74,7 +74,8 @@
       "assets/maanrakennus-ja-perustustyot-13.jpg": "Maanrakennus- ja perustustyöt",
       "assets/maanrakennus-ja-perustustyot-14.jpg": "Maanrakennus- ja perustustyöt",
       "assets/maanrakennus-ja-perustustyot-15.jpg": "Maanrakennus- ja perustustyöt",
-      "assets/sisatilojen-toteutus-16.jpg": "Sisätilojen toteutus"
+      "assets/sisatilojen-toteutus-16.jpg": "Sisätilojen toteutus",
+      "assets/teollisuuden-kunnossapito.jpg": "Teollisuuden investointi- ja kunnossapitopalvelut"
     }
   },
   "etusivu": {
@@ -271,13 +272,15 @@
       {
         "title": "Teollisuuden investointi- ja kunnossapitopalvelut",
         "desc": "Jatkuvat ja projektiluontoiset palvelut teollisuusasiakkaille sekä alueiden ja infran kunnossapito.",
-        "shot": "Valokuva: tiealue, viheralueet",
+        "shot": "Teollisuuden investointi- ja kunnossapitopalvelut",
         "bullets": [
           "Rakentamispalvelut teollisuusasiakkaille",
           "Teiden ja viheralueiden kunnossapito",
           "Puhdistus- ja siivouspalvelut"
         ],
-        "images": []
+        "images": [
+          "assets/teollisuuden-kunnossapito.jpg"
+        ]
       }
     ]
   },
