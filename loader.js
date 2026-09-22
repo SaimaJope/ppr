@@ -54,14 +54,14 @@
   };
   // Photo lists -> stacked slide <img> descriptors for the slideshow engine
   // below. One image renders static; two or more crossfade.
-  window.pprSlides = function (images, objectPosition) {
+  window.pprSlides = function (images, objectPosition, captions) {
     var arr = Array.isArray(images) ? images.filter(Boolean) : [];
     var base =
       'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;' +
       'object-position:' + (objectPosition || 'center') + ';' +
       'transition:opacity 1.2s ease;';
     return arr.map(function (src, i) {
-      return { i: i, src: src, style: base + (i === 0 ? 'opacity:1' : 'opacity:0') };
+      return { i: i, src: src, caption: (captions && captions[src]) || '', hidden: i === 0 ? 'false' : 'true', style: base + (i === 0 ? 'opacity:1' : 'opacity:0') };
     });
   };
 
@@ -141,7 +141,7 @@
     }
 
     function slidesOf(el) {
-      return el.querySelectorAll('img[data-slide]');
+      return el.querySelectorAll('[data-slide]');
     }
 
     function initContainer(el) {
@@ -163,6 +163,7 @@
         var list = slidesOf(el);
         for (var i = 0; i < list.length; i++) {
           list[i].style.opacity = i === state.idx ? '1' : '0';
+          list[i].setAttribute('aria-hidden', i === state.idx ? 'false' : 'true');
         }
       }
       function step(delta) {

@@ -7,7 +7,6 @@
     'palvelut.dc.html',
     'yhteystiedot.dc.html',
     'yritys.dc.html',
-    'ura.dc.html',
     'referenssit.dc.html'
   ]);
 

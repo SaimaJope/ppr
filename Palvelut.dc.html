@@ -113,7 +113,6 @@
         <a href="Palvelut.dc.html" style-hover="color:#015AFF">{{ nav.palvelut }}</a>
         <a href="Yhteystiedot.dc.html" style-hover="color:#015AFF">{{ nav.yhteystiedot }}</a>
         <a href="Yritys.dc.html" style-hover="color:#015AFF">{{ nav.yritys }}</a>
-        <a href="Ura.dc.html" style-hover="color:#015AFF">{{ nav.ura }}</a>
         <a href="Referenssit.dc.html" style-hover="color:#015AFF">{{ nav.referenssit }}</a>
       </div>
       <div data-nav-actions style="display:flex;align-items:center;gap:14px">
@@ -127,7 +126,6 @@
           <a href="Palvelut.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">{{ nav.palvelut }}</a>
           <a href="Yhteystiedot.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">{{ nav.yhteystiedot }}</a>
           <a href="Yritys.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">{{ nav.yritys }}</a>
-          <a href="Ura.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500;border-bottom:1px solid rgba(14,17,22,.08)">{{ nav.ura }}</a>
           <a href="Referenssit.dc.html" style="padding:14px 8px;font-size:18px;font-weight:500">{{ nav.referenssit }}</a>
         </div>
       </div>
@@ -150,7 +148,7 @@
   <!-- DETAIL LIST -->
   <section data-sec style="background:#fff">
     <div style="max-width:1300px;margin:0 auto;padding:96px 32px">
-      <sc-for list="{{ details }}" as="d" hint-placeholder-count="6">
+      <sc-for list="{{ details }}" as="d" hint-placeholder-count="7">
         <div data-split style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:64px;padding:56px 0;border-top:1px solid rgba(14,17,22,.14);align-items:start">
           <div>
             <h2 style="font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.02em;margin:0 0 18px 0;line-height:1.08">{{ d.title }}</h2>
@@ -165,7 +163,11 @@
             <sc-if value="{{ d.slides.0 }}">
               <div data-slideshow data-slideshow-interval="{{ slideshowInterval }}" style="position:absolute;inset:0">
                 <sc-for list="{{ d.slides }}" as="sl">
-                  <img data-slide="{{ sl.i }}" src="{{ sl.src }}" alt="{{ d.title }}" style="{{ sl.style }}">
+                  <div data-slide="{{ sl.i }}" aria-hidden="{{ sl.hidden }}" style="{{ sl.style }}">
+                    <img src="{{ sl.src }}" alt="" aria-hidden="true" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(18px) brightness(.65);transform:scale(1.15)">
+                    <img src="{{ sl.src }}" alt="{{ sl.caption }}" loading="lazy" decoding="async" style="position:relative;width:100%;height:calc(100% - 44px);object-fit:contain;display:block">
+                    <div style="position:absolute;bottom:0;left:0;right:0;height:44px;display:flex;align-items:center;justify-content:center;padding:6px 16px;background:rgba(14,17,22,.55);color:#F0F2F6;font-size:13px;line-height:1.35;text-align:center">{{ sl.caption }}</div>
+                  </div>
                 </sc-for>
               </div>
             </sc-if>
@@ -196,7 +198,6 @@
             <li><a href="Palvelut.dc.html" style-hover="color:#fff">{{ nav.palvelut }}</a></li>
             <li><a href="Referenssit.dc.html" style-hover="color:#fff">{{ nav.referenssit }}</a></li>
             <li><a href="Yritys.dc.html" style-hover="color:#fff">{{ nav.yritys }}</a></li>
-            <li><a href="Ura.dc.html" style-hover="color:#fff">{{ nav.ura }}</a></li>
             <li><a href="Yhteystiedot.dc.html" style-hover="color:#fff">{{ nav.yhteystiedot }}</a></li>
           </ul>
         </div>
@@ -246,7 +247,7 @@ class Component extends DCLogic {
       menuOpen: this.state.menuOpen,
       toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
       page: c.palvelut,
-      details: (c.palvelut.details || []).map((d) => Object.assign({}, d, { slides: pprSlides(d.images) }))
+      details: (c.palvelut.details || []).map((d) => Object.assign({}, d, { slides: pprSlides(d.images, 'center', c.common.photoCaptions).map((sl) => Object.assign({}, sl, { caption: sl.caption || d.title })) }))
     }, pprCommonVals(c));
   }
 }
