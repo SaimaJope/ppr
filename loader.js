@@ -114,8 +114,7 @@
       var s = document.createElement('style');
       s.id = 'ppr-slide-style';
       s.textContent =
-        // Hidden by default; hover over the photo area (or keyboard focus)
-        // fades them in. Touch devices never see them and swipe instead.
+        // Desktop arrows appear on hover; mobile controls stay visible.
         '.ppr-slide-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:6;' +
         'width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.4);' +
         'display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;' +
@@ -128,7 +127,14 @@
         '@media (hover:hover){' +
         '.ppr-slide-host:hover>.ppr-slide-arrow,.ppr-slide-arrow:focus-visible{opacity:1;pointer-events:auto}' +
         '}' +
-        '@media (hover:none){.ppr-slide-arrow{display:none}}' +
+        '.ppr-slide-hint{display:none;position:absolute;top:12px;left:50%;transform:translateX(-50%);' +
+        'z-index:6;align-items:center;gap:8px;padding:7px 12px;border-radius:20px;' +
+        'color:#fff;background:rgba(14,17,22,.78);font-size:12px;line-height:1.4;' +
+        'white-space:nowrap;pointer-events:none}' +
+        '@media (hover:none),(pointer:coarse),(max-width:760px){' +
+        '.ppr-slide-host>.ppr-slide-arrow{display:flex;opacity:1;pointer-events:auto;' +
+        'width:44px;height:44px;background:rgba(14,17,22,.72)}' +
+        '.ppr-slide-hint{display:flex}}' +
         '.ppr-slide-arrow:hover{background:rgba(255,255,255,.34)}' +
         '.ppr-slide-arrow:active{transform:translateY(-50%) scale(.94)}' +
         '.ppr-slide-arrow:focus{outline:none}' +
@@ -165,6 +171,8 @@
           list[i].style.opacity = i === state.idx ? '1' : '0';
           list[i].setAttribute('aria-hidden', i === state.idx ? 'false' : 'true');
         }
+        var hint = host.querySelector('.ppr-slide-hint');
+        if (hint) hint.textContent = '↔ Pyyhkäise · ' + (state.idx + 1) + ' / ' + list.length;
       }
       function step(delta) {
         var n = slidesOf(el).length;
@@ -200,28 +208,45 @@
           host.appendChild(makeArrow(-1));
           host.appendChild(makeArrow(1));
         }
+        if (!host.querySelector('.ppr-slide-hint')) {
+          var hint = document.createElement('div');
+          hint.className = 'ppr-slide-hint';
+          host.appendChild(hint);
+        }
       }
 
       // Touch devices browse by swiping the photo area. Passive listeners:
       // vertical page scrolling is untouched, and a real swipe suppresses the
       // click so reference-card links do not navigate.
-      var touchX = 0, touchY = 0;
+      var touchX = 0, touchY = 0, touching = false, suppressClickUntil = 0;
       host.addEventListener('touchstart', function (e) {
+        touching = e.touches.length === 1 && !e.target.closest('.ppr-slide-arrow');
         var t = e.touches[0];
         if (t) { touchX = t.clientX; touchY = t.clientY; }
       }, { passive: true });
+      host.addEventListener('touchcancel', function () { touching = false; }, { passive: true });
       host.addEventListener('touchend', function (e) {
+        if (!touching) return;
+        touching = false;
         var t = e.changedTouches[0];
         if (!t) return;
         var dx = t.clientX - touchX;
         var dy = t.clientY - touchY;
         if (Math.abs(dx) > 45 && Math.abs(dx) > 1.6 * Math.abs(dy)) {
+          suppressClickUntil = Date.now() + 500;
           step(dx < 0 ? 1 : -1);
           restartAuto();
         }
       }, { passive: true });
+      host.addEventListener('click', function (e) {
+        if (Date.now() < suppressClickUntil) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, true);
 
       ensureArrows();
+      apply();
       restartAuto();
       // Reassert after React re-renders (they reset opacities / drop arrows).
       setInterval(function () {
