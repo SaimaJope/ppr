@@ -21,6 +21,12 @@ const LOGIN_WINDOW_MS = 15 * 60 * 1000; // 15 min
 const MAX_IMAGE_BYTES = 2 * 1024 * 1024; // 2 Mt
 const PREVIEW_PAGES = ['Etusivu', 'Palvelut', 'Yritys', 'Referenssit', 'Yhteystiedot'];
 const CONTENT_TOP_KEYS = ['common', 'etusivu', 'palvelut', 'yritys', 'referenssit', 'yhteystiedot'];
+const LANGUAGES = ['fi', 'sv', 'en'];
+function contentPath(env, language) {
+  const base = env.CONTENT_PATH || 'content/fi.json';
+  return language === 'fi' ? base : base.replace(/[^/]+$/, language + '.json');
+}
+function validLanguage(value) { return LANGUAGES.includes(value); }
 
 // Parhaan yrityksen kirjautumisrajoitin. Tila on isolate-kohtainen (nollautuu
 // kun Worker kierrätetään), mikä riittää hidastamaan arvailun; varsinainen
@@ -48,7 +54,7 @@ export default {
         return jsonResponse({ error: 'Kirjautuminen vaaditaan.' }, 401);
       }
       if (url.pathname === '/api/content' && request.method === 'GET') {
-        return handleGetContent(env);
+        return handleGetContent(env, url.searchParams.has('lang') ? url.searchParams.get('lang') : 'fi');
       }
       if (url.pathname === '/api/content' && request.method === 'PUT') {
         return handlePutContent(request, env);
@@ -163,8 +169,9 @@ async function sha256Bytes(text) {
 
 /* --------------------------------- content -------------------------------- */
 
-async function handleGetContent(env) {
-  const file = await githubGetFile(env, env.CONTENT_PATH);
+async function handleGetContent(env, language) {
+  if (!validLanguage(language)) return jsonResponse({ error: 'Tuntematon kieli.' }, 400);
+  const file = await githubGetFile(env, contentPath(env, language));
   if (file.error) return jsonResponse({ error: file.error }, file.status || 502);
   let parsed;
   try {
@@ -173,7 +180,7 @@ async function handleGetContent(env) {
     return jsonResponse({ error: 'Sivuston sisältötiedosto on viallinen (ei kelvollista JSONia).' }, 500);
   }
   removeLegacyCareerContent(parsed);
-  return jsonResponse({ content: parsed, sha: file.sha });
+  return jsonResponse({ content: parsed, sha: file.sha, language });
 }
 
 // The empty legacy key may remain in JSON while an older Worker is deployed.
@@ -192,6 +199,8 @@ async function handlePutContent(request, env) {
     return jsonResponse({ error: 'Virheellinen pyyntö.' }, 400);
   }
   const content = body.content;
+  const language = body.language === undefined ? 'fi' : body.language;
+  if (!validLanguage(language)) return jsonResponse({ error: 'Tuntematon kieli.' }, 400);
   const sha = String(body.sha || '');
   if (!content || typeof content !== 'object' || Array.isArray(content)) {
     return jsonResponse({ error: 'Virheellinen sisältö.' }, 400);
@@ -204,6 +213,8 @@ async function handlePutContent(request, env) {
   if (!sha) {
     return jsonResponse({ error: 'Tallennuksesta puuttuu versiotieto. Lataa sivu uudelleen.' }, 400);
   }
+  if (content.locale && content.locale !== language) return jsonResponse({ error: 'Sisällön kieli ei vastaa valittua kieltä.' }, 400);
+  content.locale = language;
 
   removeLegacyCareerContent(content);
   const serialized = JSON.stringify(content, null, 2) + '\n';
@@ -211,7 +222,7 @@ async function handlePutContent(request, env) {
     return jsonResponse({ error: 'Sisältö on liian suuri tallennettavaksi.' }, 400);
   }
 
-  const result = await githubPutFile(env, env.CONTENT_PATH, base64EncodeUtf8(serialized), 'Sisältöpäivitys hallintapaneelista', sha);
+  const result = await githubPutFile(env, contentPath(env, language), base64EncodeUtf8(serialized), 'Sisältöpäivitys hallintapaneelista (' + language + ')', sha);
   if (result.error) return jsonResponse({ error: result.error }, result.status || 502);
   return jsonResponse({ ok: true, sha: result.sha });
 }
@@ -284,6 +295,8 @@ function slugify(text) {
 
 async function handlePreview(request, env) {
   const form = await request.formData();
+  const language = form.has('language') ? String(form.get('language')) : 'fi';
+  if (!validLanguage(language)) return new Response('Tuntematon kieli', { status: 400 });
   const page = String(form.get('page') || 'Etusivu');
   if (!PREVIEW_PAGES.includes(page)) {
     return new Response('Tuntematon sivu', { status: 400 });
@@ -295,7 +308,8 @@ async function handlePreview(request, env) {
     return new Response('Virheellinen sisältö', { status: 400 });
   }
 
-  const liveUrl = env.SITE_URL + page + '.dc.html';
+  if (!content || typeof content !== 'object' || Array.isArray(content) || (content.locale && content.locale !== language)) return new Response('Virheellinen sisältö tai kieli', { status: 400 });
+  const liveUrl = env.SITE_URL + page + '.dc.html?lang=' + language;
   const upstream = await fetch(liveUrl, { headers: { 'user-agent': 'ppr-admin-worker' } });
   if (!upstream.ok) {
     return new Response('Esikatselua ei voitu ladata (sivusto vastasi ' + upstream.status + ').', { status: 502 });
@@ -309,10 +323,9 @@ async function handlePreview(request, env) {
   // loader.js asettaa window.__pprContent -promisen; korvataan se heti perään
   // muokkaamattomalla pending-sisällöllä, jolloin sivu renderöityy siitä.
   const injected = JSON.stringify(content).replace(/</g, '\\u003c');
-  html = html.replace(
-    /<script src="\.\/loader\.js"><\/script>/i,
-    '<script src="./loader.js"></script><script>window.__pprContent = Promise.resolve(' + injected + ');</script>'
-  );
+  // Set preview data before language.js and loader.js, including versioned URLs.
+  const previewSetup = '<script>window.__pprPreviewLanguage=' + JSON.stringify(language) + ';window.__pprPreviewPage=' + JSON.stringify(page + '.dc.html') + ';window.__pprPreviewContent=' + injected + ';</script>';
+  html = html.replace(/(<script\s+src="\.\/(?:language|loader)\.js(?:\?[^\"]*)?"[^>]*><\/script>)/i, previewSetup + '$1');
 
   return new Response(html, {
     headers: {

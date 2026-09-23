@@ -463,6 +463,8 @@ export const ADMIN_HTML = `<!doctype html>
       <span class="b2">Porvoon Paalurakenne Oy</span>
     </div>
     <div class="spacer"></div>
+    <label for="language-select">Sisällön kieli</label>
+    <select id="language-select" aria-label="Sisällön kieli"><option value="fi">Suomi</option><option value="sv">Svenska</option><option value="en">English</option></select>
     <span id="dirty-pill" class="lbl">Tallentamattomia muutoksia</span>
     <button class="btn btn-ghost" id="discard-btn" style="display:none">Hylkää muutokset</button>
     <button class="btn btn-ghost" id="preview-btn">Esikatselu</button>
@@ -503,6 +505,7 @@ export const ADMIN_HTML = `<!doctype html>
 
 <form id="preview-form" method="POST" action="/preview" target="_blank" style="display:none">
   <input type="hidden" name="page" id="preview-page">
+  <input type="hidden" name="language" id="preview-language">
   <input type="hidden" name="content" id="preview-content">
 </form>
 
@@ -512,6 +515,8 @@ export const ADMIN_HTML = `<!doctype html>
 /* ------------------------------ tila ------------------------------ */
 
 var state = {
+  language: 'fi',
+  loading: false,
   data: null,
   sha: null,
   dirty: false,
@@ -1548,8 +1553,11 @@ function renderImageControl(item, sub, redraw) {
 
 /* ------------------------------ toiminnot ------------------------------ */
 
-function loadContent() {
-  return fetch('/api/content').then(function (res) {
+function loadContent(language) {
+  var requestedLanguage = language || state.language;
+  state.loading = true;
+  $('language-select').disabled = true;
+  return fetch('/api/content?lang=' + requestedLanguage).then(function (res) {
     if (res.status === 401) {
       showLogin();
       return null;
@@ -1560,6 +1568,9 @@ function loadContent() {
     return res.json();
   }).then(function (data) {
     if (!data) { hideOverlay(); return; }
+    if (data.language !== requestedLanguage) throw new Error('Hallintapalvelin ei tue vielä kieliversioita. Julkaise päivitetty Worker.');
+    state.language = requestedLanguage;
+    $('language-select').value = state.language;
     state.data = data.content;
     state.sha = data.sha;
     state.localImages = {};
@@ -1571,19 +1582,24 @@ function loadContent() {
     if ($('app-view').style.display !== 'block') showLogin();
     hideOverlay();
     showToast(err.message || 'Sisällön lataus epäonnistui.', 'err', true);
+  }).finally(function () {
+    state.loading = false;
+    $('language-select').value = state.language;
+    $('language-select').disabled = state.saving;
   });
 }
 
 function save() {
-  if (state.saving || !state.dirty) return;
+  if (state.saving || state.loading || !state.dirty) return;
   state.saving = true;
+  $('language-select').disabled = true;
   var btn = $('save-btn');
   btn.disabled = true;
   btn.textContent = 'Tallennetaan…';
   fetch('/api/content', {
     method: 'PUT',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ content: state.data, sha: state.sha })
+    body: JSON.stringify({ content: state.data, sha: state.sha, language: state.language })
   }).then(function (res) {
     if (!res.ok) {
       return apiError(res, 'Tallennus epäonnistui.').then(function (msg) { throw new Error(msg); });
@@ -1594,7 +1610,7 @@ function save() {
     clearDirty();
     showToast(
       'Tallennettu! Muutokset näkyvät sivustolla noin minuutin kuluttua. ' +
-      '<a href="' + SITE_URL + '" target="_blank" rel="noopener">Avaa sivusto ↗</a>',
+      '<a href="' + SITE_URL + '?lang=' + state.language + '" target="_blank" rel="noopener">Avaa sivusto ↗</a>',
       'ok'
     );
   }).catch(function (err) {
@@ -1602,13 +1618,15 @@ function save() {
     $('save-btn').disabled = false;
   }).finally(function () {
     state.saving = false;
+    $('language-select').disabled = state.loading;
     $('save-btn').textContent = 'Tallenna muutokset';
     if (!state.dirty) $('save-btn').disabled = true;
   });
 }
 
 function preview() {
-  if (!state.data) return;
+  if (!state.data || state.loading) return;
+  $('preview-language').value = state.language;
   $('preview-page').value = PREVIEW_PAGE_FOR_PANEL[state.panel] || 'Etusivu';
   $('preview-content').value = JSON.stringify(state.data);
   $('preview-form').submit();
@@ -1655,6 +1673,17 @@ $('login-form').addEventListener('submit', function (e) {
 });
 
 $('save-btn').addEventListener('click', save);
+$('language-select').addEventListener('change', function () {
+  var next = this.value;
+  this.value = state.language;
+  if (state.loading || state.saving || next === state.language) return;
+  var confirmation = state.dirty ? confirmDialog('Vaihdettaessa kieltä tallentamattomat muutokset hylätään. Vaihdetaanko kieli?', 'Vaihda kieli') : Promise.resolve(true);
+  confirmation.then(function (ok) {
+    if (!ok) return;
+    showOverlay('Ladataan…');
+    loadContent(next);
+  });
+});
 $('preview-btn').addEventListener('click', preview);
 $('discard-btn').addEventListener('click', function () {
   confirmDialog('Hylätäänkö kaikki tallentamattomat muutokset?', 'Hylkää muutokset').then(function (ok) {
