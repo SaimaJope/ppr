@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet">
 <style>html,body{background:#F0F2F6;margin:0}body{font-family:'Archivo',system-ui,sans-serif}</style>
 <script src="./support.js"></script>
-<script src="./language.js?v=20260923"></script>
+<script src="./language.js?v=20260923-topbar"></script>
 <script src="./loader.js?v=20260923-languages"></script>
 <script defer src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
 <script defer src="./scroll-reveal.js?v=20260922"></script>
@@ -50,7 +50,7 @@
   @media (max-width:860px){
     [data-navlinks]{display:none !important}
     [data-menubtn]{display:inline-flex !important}
-    [data-topbar-inner]{display:none !important}
+    [data-util-left]{display:none !important}
   }
   @media (max-width:600px){
     [data-split]{gap:28px !important}
@@ -58,9 +58,10 @@
     [data-hero-h1]{font-size:38px !important}
     [data-footcols]{grid-template-columns:1fr 1fr !important}
     [data-sec] > div{padding-top:46px !important;padding-bottom:46px !important}
-    [data-topbar-inner]{height:36px !important;padding:0 16px !important;justify-content:center !important}
-    [data-topbar-actions]{width:100% !important;justify-content:center !important;gap:0 !important}
-    [data-topbar-office],[data-topbar-lang]{display:none !important}
+    [data-topbar-inner]{height:44px !important;padding:0 16px !important;justify-content:space-between !important}
+    [data-topbar-actions]{width:100% !important;justify-content:space-between !important;gap:8px !important}
+    [data-topbar-office]{display:none !important}
+    [data-emergency-label]{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
     [data-topbar-emergency]{font-size:12.5px !important;gap:7px !important;white-space:nowrap !important}
     [data-page-breadcrumb],[data-page-eyebrow]{display:none !important}
     [data-page-hero-inner]{padding:0 32px !important}
@@ -81,14 +82,17 @@
   <!-- TOP BAR -->
   <sc-if value="{{ topbarVisible }}">
   <div style="background:#0E1116;color:#9AA6BD;font-size:13px">
-    <div data-topbar-inner style="max-width:1300px;margin:0 auto;padding:0 32px;height:42px;display:flex;align-items:center;justify-content:space-between">
+    <div data-topbar-inner style="max-width:1300px;margin:0 auto;padding:0 32px;height:44px;display:flex;align-items:center;justify-content:space-between">
       <div data-util-left>{{ company.name }}</div>
       <div data-topbar-actions style="display:flex;align-items:center;gap:26px">
         <a data-topbar-office href="{{ telOffice }}" style="color:#C7D0E0" style-hover="color:#fff">{{ office.label }} {{ office.phone }}</a>
         <a data-topbar-emergency href="{{ telDepot }}" style="display:flex;align-items:center;gap:8px;color:#fff" style-hover="color:#5C97FF">
           <span style="width:7px;height:7px;border-radius:50%;background:#015AFF;display:inline-block"></span>
-          <span>{{ depot.emergencyLabel }} {{ depot.phone }}</span>
+          <span><span data-emergency-label>{{ depot.emergencyLabel }} </span>{{ depot.phone }}</span>
         </a>
+        <div data-language-switch role="group" aria-label="{{ ui.language }}">
+          <sc-for list="{{ languages }}" as="l"><a href="{{ l.href }}" lang="{{ l.lang }}" hreflang="{{ l.lang }}" aria-label="{{ l.name }}" aria-current="{{ l.current }}">{{ l.code }}</a></sc-for>
+        </div>
         
       </div>
     </div>
@@ -109,9 +113,7 @@
         <a href="Referenssit.dc.html?lang={{ language }}" style-hover="color:#015AFF">{{ nav.referenssit }}</a>
       </div>
       <div data-nav-actions style="display:flex;align-items:center;gap:14px">
-        <div data-language-switch role="group" aria-label="{{ ui.language }}">
-          <sc-for list="{{ languages }}" as="l"><a href="{{ l.href }}" lang="{{ l.lang }}" hreflang="{{ l.lang }}" aria-label="{{ l.name }}" aria-current="{{ l.current }}">{{ l.code }}</a></sc-for>
-        </div>
+
         <button aria-label="{{ ui.menu }}" aria-expanded="{{ menuOpen }}" data-menubtn onClick="{{ toggleMenu }}" style="display:none;align-items:center;justify-content:center;width:46px;height:44px;background:transparent;border:0;color:#14181F;cursor:pointer;font-size:26px">≡</button>
       </div>
     </div>
