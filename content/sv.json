@@ -1,0 +1,802 @@
+{
+  "locale": "sv",
+  "common": {
+    "company": {
+      "name": "Porvoon Paalurakenne Oy",
+      "businessId": "2026187-3"
+    },
+    "topbar": {
+      "visible": true
+    },
+    "slideshow": {
+      "intervalSeconds": 7
+    },
+    "nav": {
+      "etusivu": "Startsida",
+      "koti": "Hem",
+      "palvelut": "Tjänster",
+      "yhteystiedot": "Kontakt",
+      "yritys": "Företaget",
+      "referenssit": "Referenser"
+    },
+    "contact": {
+      "office": {
+        "label": "Kontor",
+        "street": "Pappilantie 2",
+        "postalCity": "07500 Askola",
+        "phone": "019 663 0666",
+        "email": "toimisto@ppr.fi"
+      },
+      "depot": {
+        "name": "Kulloo, Kilpilahti",
+        "street": "Nybyntie 16",
+        "postalCity": "06850 Kulloo",
+        "phone": "040 566 6074",
+        "emergencyLabel": "Jour 24 h"
+      }
+    },
+    "billing": {
+      "labels": {
+        "businessId": "FO-nummer",
+        "ovt": "E-fakturaadress / OVT",
+        "operator": "Operatör / OVT",
+        "email": "Faktura per e-post",
+        "paper": "Pappersfaktura"
+      },
+      "ovt": "003720261873",
+      "operator": "PAGERO 003723609900",
+      "emailInvoice": "003720261873@xbs-salo.com",
+      "paperLine1": "PL 908",
+      "paperLine2": "02066 DOCUSCAN"
+    },
+    "footer": {
+      "description": "Porvoon Paalurakenne Oy erbjuder byggtjänster för industrin och offentliga beställare i södra Finland.",
+      "pagesTitle": "Sidor",
+      "depotTitle": "Depå / Kilpilahti",
+      "copyright": "© 2026 Porvoon Paalurakenne Oy",
+      "billingLinkLabel": "Fakturering och OVT",
+      "whistleblowingLabel": "Visselblåsarkanal",
+      "whistleblowingUrl": "https://app.easywhistle.com/report/ppr/"
+    },
+    "photoCaptions": {
+      "assets/muuntamo-ja-sahkotilojen-rakentaminen-01.jpg": "Byggande av transformatorstationer och elutrymmen",
+      "assets/maanrakennus-ja-perustustyot-02.jpg": "Mark- och grundläggningsarbeten",
+      "assets/muotitus-ja-raudoitustyot-03.jpg": "Form- och armeringsarbeten",
+      "assets/muotitus-ja-raudoitustyot-04.jpg": "Form- och armeringsarbeten",
+      "assets/betonointityot-05.jpg": "Betonggjutning",
+      "assets/maanrakennus-ja-perustustyot-06.jpg": "Mark- och grundläggningsarbeten",
+      "assets/sisailmakorjaukset-07.jpg": "Åtgärder för bättre inomhusluft",
+      "assets/sailioperustukset-08.jpg": "Cisternfundament",
+      "assets/vesikattotyot-saasuojan-alla-09.jpg": "Takarbeten under väderskydd",
+      "assets/maanrakennus-ja-perustustyot-10.jpg": "Mark- och grundläggningsarbeten",
+      "assets/maanrakennus-ja-perustustyot-11.jpg": "Mark- och grundläggningsarbeten",
+      "assets/maanrakennus-ja-perustustyot-12.jpg": "Mark- och grundläggningsarbeten",
+      "assets/maanrakennus-ja-perustustyot-13.jpg": "Mark- och grundläggningsarbeten",
+      "assets/maanrakennus-ja-perustustyot-14.jpg": "Mark- och grundläggningsarbeten",
+      "assets/maanrakennus-ja-perustustyot-15.jpg": "Mark- och grundläggningsarbeten",
+      "assets/sisatilojen-toteutus-16.jpg": "Inredningsarbeten",
+      "assets/teollisuuden-rakennustyomaa.jpg": "Investerings- och underhållstjänster för industrin"
+    }
+  },
+  "etusivu": {
+    "hero": {
+      "eyebrow": "Industribyggande i södra Finland",
+      "title": "Byggtjänster för industrin.",
+      "lead": "Porvoon Paalurakenne Oy erbjuder byggtjänster för industrin och offentliga beställare. Vår kärnkompetens är industribyggande i Kilpilahtiområdet.",
+      "ctaPrimary": "Se våra tjänster",
+      "ctaPrimaryHref": "Palvelut.dc.html",
+      "ctaSecondary": "Faktureringsuppgifter",
+      "ctaSecondaryHref": "#laskutustiedot",
+      "images": [
+        "Kilpi_lahti.jpg",
+        "assets/maanrakennus-ja-perustustyot-12.jpg"
+      ]
+    },
+    "intro": {
+      "eyebrow": "Företaget",
+      "title": "Erfarenhet av byggande sedan 2006.",
+      "paragraphs": [
+        "Vår arbetsledning har flera årtiondens erfarenhet av både krävande industribyggande och andra byggarbeten. Vi satsar på hög kvalitet och säkra arbetsmetoder i all vår verksamhet.",
+        "Ett välfungerande och beprövat nätverk av underentreprenörer inom byggbranschen i östra Nyland säkerställer hög kvalitet och att tidplanerna håller."
+      ],
+      "linkLabel": "Läs mer om företaget"
+    },
+    "services": {
+      "eyebrow": "Tjänster",
+      "title": "Byggtjänster för industrin och offentliga beställare.",
+      "linkLabel": "Alla tjänster",
+      "items": [
+        {
+          "title": "Industribyggande",
+          "desc": "Krävande projekt i Kilpilahtiområdet enligt Neste Oyj:s och Borealis Polymers Oy:s arbetsmetoder."
+        },
+        {
+          "title": "Mark- och grundläggningsarbeten",
+          "desc": "Mark- och grundläggningsarbeten som grund för byggprojekt."
+        },
+        {
+          "title": "Betongkonstruktioner",
+          "desc": "Grundläggning, maskinfundament, beläggningar i invallningar och bottenplattor för cisterner."
+        },
+        {
+          "title": "Kommunaltekniska arbeten",
+          "desc": "Avloppsarbeten samt byggande av brandvatten- och dricksvattennät."
+        },
+        {
+          "title": "Renovering",
+          "desc": "Fasad- och balkongrenoveringar, fuktisolering av socklar, dränering och ombyggnad av inomhusutrymmen."
+        },
+        {
+          "title": "Nybyggnation",
+          "desc": "Industrihallar, kontors- och skolbyggnader."
+        },
+        {
+          "title": "Investeringar och underhåll",
+          "desc": "Underhåll av vägar och grönområden samt rengörings- och städtjänster."
+        }
+      ]
+    },
+    "certs": {
+      "eyebrow": "Kompetenser och certifikat",
+      "title": "En pålitlig och certifierad partner.",
+      "items": [
+        {
+          "img": "assets/cert-rala.png",
+          "alt": "RALA-kompetens",
+          "url": "https://www.rala.fi/fi/palvelut/rala-patevyys"
+        },
+        {
+          "img": "assets/iso-9001-logo-vari-202607241137.png",
+          "alt": "ISO 9001:2015-certifierad",
+          "url": "https://sfs.fi/standardeista/tutustu-standardeihin/suositut-standardit/iso-9001-laadunhallinta/"
+        },
+        {
+          "img": "assets/cert-luotettava-kumppani.png",
+          "alt": "Luotettava Kumppani – Tilaajavastuu.fi",
+          "url": "https://www.vastuugroup.fi/palvelut/luotettava-kumppani"
+        },
+        {
+          "img": "assets/cert-aaa-2026.png",
+          "alt": "AAA – högsta kreditvärdighet, Dun & Bradstreet 2026",
+          "url": "https://www.rahalaitos.fi/talous/luottoluokitus"
+        }
+      ]
+    },
+    "contact": {
+      "depotLabel": "Lager och depå",
+      "billingLabel": "Fakturering",
+      "phonePrefix": "Tfn"
+    }
+  },
+  "palvelut": {
+    "hero": {
+      "eyebrow": "Tjänster",
+      "title": "Professionella byggtjänster för industrin.",
+      "lead": "Vi utför byggarbeten för industrin, företag, föreningar och den offentliga sektorn. Vår erfarna och yrkeskunniga personal säkerställer kvaliteten."
+    },
+    "details": [
+      {
+        "title": "Industribyggande",
+        "desc": "Vår kärnkompetens är krävande projekt i Kilpilahti industriområde enligt Neste Oyj:s och Borealis Polymers Oy:s specifikationer, föreskrifter och arbetsmetoder.",
+        "shot": "Byggande av transformatorstationer och elutrymmen",
+        "bullets": [
+          "Kilpilahti industriområde",
+          "Neste Oyj:s och Borealis Polymers Oy:s specifikationer",
+          "Arbetssäkerhetskort och hetarbetskort",
+          "Underhållsstopp och investeringsprojekt"
+        ],
+        "images": [
+          "assets/muuntamo-ja-sahkotilojen-rakentaminen-01.jpg"
+        ]
+      },
+      {
+        "title": "Mark- och grundläggningsarbeten",
+        "desc": "Mark- och grundläggningsarbeten som grund för byggprojekt.",
+        "shot": "Mark- och grundläggningsarbeten",
+        "bullets": [
+          "Markarbeten",
+          "Grundläggningsarbeten"
+        ],
+        "images": [
+          "assets/maanrakennus-ja-perustustyot-12.jpg",
+          "assets/maanrakennus-ja-perustustyot-02.jpg",
+          "assets/maanrakennus-ja-perustustyot-06.jpg",
+          "assets/maanrakennus-ja-perustustyot-10.jpg",
+          "assets/maanrakennus-ja-perustustyot-11.jpg",
+          "assets/maanrakennus-ja-perustustyot-13.jpg",
+          "assets/maanrakennus-ja-perustustyot-14.jpg"
+        ]
+      },
+      {
+        "title": "Betongkonstruktioner",
+        "desc": "Från grundläggning till beläggningar: yrkeskunnigt utförda, krävande gjutningsarbeten och betongkonstruktioner för industrin.",
+        "shot": "Foto: armering och betonggjutning",
+        "bullets": [
+          "Grundläggning",
+          "Byggnader",
+          "Maskinfundament",
+          "Beläggningar i invallningar",
+          "Bottenplattor för cisterner"
+        ],
+        "images": [
+          "assets/muotitus-ja-raudoitustyot-03.jpg",
+          "assets/muotitus-ja-raudoitustyot-04.jpg",
+          "assets/betonointityot-05.jpg",
+          "assets/sailioperustukset-08.jpg"
+        ]
+      },
+      {
+        "title": "Kommunaltekniska arbeten",
+        "desc": "Vatten- och avloppsnät samt markarbeten för offentliga beställare och industrin.",
+        "shot": "Foto: schakt och rörledning",
+        "bullets": [
+          "Avloppsarbeten",
+          "Brandvattennät",
+          "Dricksvattennät"
+        ],
+        "images": [
+          "assets/maanrakennus-ja-perustustyot-06.jpg",
+          "assets/maanrakennus-ja-perustustyot-13.jpg"
+        ]
+      },
+      {
+        "title": "Renovering",
+        "desc": "Renovering av fasader och konstruktioner samt ombyggnad av inomhusutrymmen med hög kvalitet och lång livslängd.",
+        "shot": "Foto: fasadarbeten under väderskydd",
+        "bullets": [
+          "Fasadrenoveringar",
+          "Balkongrenoveringar",
+          "Fuktisolering av socklar och dränering",
+          "Renovering och ombyggnad av inomhusutrymmen"
+        ],
+        "images": [
+          "assets/sisailmakorjaukset-07.jpg",
+          "assets/vesikattotyot-saasuojan-alla-09.jpg"
+        ]
+      },
+      {
+        "title": "Nybyggnation",
+        "desc": "Nybyggnation från radhus till industrihallar och offentliga byggnader, smidigt från grundläggning till färdig byggnad.",
+        "shot": "Foto: hall med stålstomme och grundläggning",
+        "bullets": [
+          "Radhus",
+          "Industrihallar",
+          "Kontorsbyggnader",
+          "Skolbyggnader"
+        ],
+        "images": [
+          "assets/maanrakennus-ja-perustustyot-15.jpg",
+          "assets/sisatilojen-toteutus-16.jpg"
+        ]
+      },
+      {
+        "title": "Investerings- och underhållstjänster för industrin",
+        "desc": "Löpande och projektbaserade tjänster för industrikunder samt underhåll av områden och infrastruktur.",
+        "shot": "Investerings- och underhållstjänster för industrin",
+        "bullets": [
+          "Byggtjänster för industrikunder",
+          "Underhåll av vägar och grönområden",
+          "Rengörings- och städtjänster"
+        ],
+        "images": [
+          "assets/teollisuuden-rakennustyomaa.jpg"
+        ]
+      }
+    ]
+  },
+  "yritys": {
+    "hero": {
+      "eyebrow": "Företaget",
+      "title": "Byggkompetens sedan 2006.",
+      "lead": "Porvoon Paalurakenne Oy erbjuder byggtjänster för industrin och offentliga beställare i södra Finland."
+    },
+    "story": {
+      "title": "Vår kärnkompetens är byggtjänster för industrin och offentliga beställare.",
+      "stats": [
+        {
+          "value": "2006",
+          "label": "Grundat"
+        },
+        {
+          "value": "Kilpilahti",
+          "label": "Specialområde"
+        },
+        {
+          "value": "Södra Finland",
+          "label": "Verksamhetsområde"
+        }
+      ],
+      "paragraphs": [
+        "Vi är specialiserade på industribyggande i Kilpilahtiområdet, där vi följer Neste Oyj:s och Borealis Polymers Oy:s specifikationer, föreskrifter och arbetsmetoder.",
+        "Vår arbetsledning har flera årtiondens erfarenhet av både krävande industribyggande och andra byggarbeten.",
+        "Vår erfarna och yrkeskunniga personal säkerställer kvaliteten."
+      ]
+    },
+    "quality": {
+      "eyebrow": "Kvalitet och säkerhet",
+      "title": "Säkerhet är grunden för vårt arbete.",
+      "paragraphs": [
+        "Vi satsar på hög kvalitet och arbetssäkerhet i all vår verksamhet. Vår personal har giltiga arbetssäkerhetskort och hetarbetskort.",
+        "I Kilpilahtiområdet följer vi Neste Oyj:s och Borealis Polymers Oy:s föreskrifter och arbetsmetoder i varje arbetsmoment."
+      ],
+      "badges": [
+        "Arbetssäkerhetskort",
+        "Hetarbetskort",
+        "Nestes arbetsmetoder",
+        "Borealis arbetsmetoder"
+      ]
+    },
+    "creds": {
+      "eyebrow": "Kompetenser",
+      "title": "Certifikat och kompetenser.",
+      "items": [
+        {
+          "name": "RALA-kompetens",
+          "desc": "Bedömd och godkänd av Rakentamisen Laatu RALA ry."
+        },
+        {
+          "name": "ISO 9001",
+          "desc": "Kvalitetsledningssystem, certifierat av Bureau Veritas."
+        },
+        {
+          "name": "Luotettava Kumppani",
+          "desc": "Tilaajavastuu.fi, lagstadgade skyldigheter sköts och uppgifterna hålls aktuella."
+        },
+        {
+          "name": "AAA-kreditbetyg",
+          "desc": "Högsta kreditvärdighet, Dun & Bradstreet 2026."
+        }
+      ]
+    },
+    "expertise": {
+      "eyebrow": "Specialkompetens",
+      "title": "Industribyggande i Kilpilahtiområdet.",
+      "paragraphs": [
+        "I Kilpilahti följer vi Neste Oyj:s och Borealis Polymers Oy:s specifikationer, föreskrifter och arbetsmetoder. Vår personal har giltiga arbetssäkerhetskort och hetarbetskort.",
+        "Säkerhet och kvalitet är grunden för vårt arbete i varje projekt."
+      ],
+      "badges": [
+        "Neste",
+        "Borealis",
+        "Arbetssäkerhetskort",
+        "Hetarbetskort"
+      ],
+      "photoCaption": "Foto: arbetslag på processområdet",
+      "images": [
+        "assets/muuntamo-ja-sahkotilojen-rakentaminen-01.jpg",
+        "assets/sisatilojen-toteutus-16.jpg"
+      ]
+    },
+    "network": {
+      "title": "Ett omfattande och beprövat nätverk av underentreprenörer.",
+      "text": "Vårt välfungerande och beprövade nätverk av underentreprenörer och samarbetspartner inom byggbranschen i östra Nyland möjliggör även stora entreprenader och säkerställer hög kvalitet och hållbara tidplaner."
+    }
+  },
+  "referenssit": {
+    "hero": {
+      "eyebrow": "Referenser",
+      "title": "Våra genomförda arbeten visar vår kompetens.",
+      "lead": "Referenser inom betong- och markarbeten, byggande och underhåll."
+    },
+    "filters": {
+      "allLabel": "Alla",
+      "categories": [
+        "Betong- och markarbeten",
+        "Betongarbeten",
+        "Bygg- och underhållsarbeten"
+      ],
+      "countSuffix": "referenser"
+    },
+    "projects": [
+      {
+        "sector": "Betong- och markarbeten",
+        "title": "Fingrid Anttila",
+        "scope": "Fingrid Anttila: betongkonstruktioner, byggande av kontrollbyggnader, mark- och betongarbeten 1200 m³, markarbeten 20000 m³, från våren 2026.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betong- och markarbeten",
+        "title": "Byggande av hushållsvattenledning",
+        "scope": "Byggande av hushållsvattenledning, markarbeten 5000 m³, styrd borrning 300 löpmeter, rörinstallationer 1600 löpmeter, 2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betong- och markarbeten",
+        "title": "Byggande av råvattenledning",
+        "scope": "Byggande av råvattenledning PEH 500 mm, 900 löpmeter, markarbeten 7000 m³, bergschaktning 100 m³ och rörinstallation, 2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betong- och markarbeten",
+        "title": "Vantaan Energia Oy – batterilager",
+        "scope": "Vantaan Energia Oy, batterilager: markarbeten 2000 m³, betongarbeten 400 m³, bergschaktning 600 m³, 2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betong- och markarbeten",
+        "title": "Förnyelse av K-25-vattenringen",
+        "scope": "Förnyelse av K-25-vattenringen, betongarbeten 600 m³, 2024-2026.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betong- och markarbeten",
+        "title": "Värmepumpsbyggnad i Tolkkinen",
+        "scope": "Byggande av värmepumpsbyggnad i Tolkkinen inklusive pålplattor, 800 m³, 2024-2026.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betong- och markarbeten",
+        "title": "Transformatorstation M099",
+        "scope": "Byggande av transformatorstation M099, 5000 m², platsgjutna konstruktioner 1000 m³ och markarbeten, 2024-2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betong- och markarbeten",
+        "title": "Transformatorstation M018",
+        "scope": "Byggande av M018: bergschaktning 300 m³, platsgjutna konstruktioner 800 m³, markarbeten 2500 m³, 2023-2024.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betong- och markarbeten",
+        "title": "R-9 betongring och pelarfundament",
+        "scope": "Förnyelse av R-9-betongringen och byggande av pelarfundament inklusive markarbeten, platsgjutning 600 m³, 2023-2024.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betong- och markarbeten",
+        "title": "T-34 betongring och pelarfundament",
+        "scope": "Förnyelse av T-34-betongringen och byggande av pelarfundament, 600 m³, 2023-2024.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betong- och markarbeten",
+        "title": "Avloppspumpstationer – Peab Oy",
+        "scope": "Byggande av avloppspumpstationer, platsgjutna väggar och pålplattor 900 m³, Peab Oy, 2022-2024.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betong- och markarbeten",
+        "title": "OW treatment",
+        "scope": "Ow treatment: byggtekniska arbeten, markarbeten 2000 m³, OW-avloppsledningar 300 löpmeter, platsgjutning 2500 m³, betongkonstruktioner i krävande klass (tabletop, betongbassäng med volymen 7000 m³), cisternfundament och invallning, platsgjutna pelare, markarbeten 9000 m³. Neste Engineering Oy, 2021-2022.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betong- och markarbeten",
+        "title": "Porvoon Energia – värmeackumulator",
+        "scope": "Porvoon Energia, värmeackumulator: cisternfundament, markarbeten, stålpålning och byggande av betongbassäng. Betongkonstruktioner i krävande klass, Porvoon Energia Oy, 1000 m³, 2020-2021.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betong- och markarbeten",
+        "title": "Renovering av T-45-invallningen",
+        "scope": "Renovering av T-45-invallningen, platsgjutna betongkonstruktioner 800 m³, byggande av betongväggar och markarbeten. Neste Oyj, våren 2022.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betongarbeten",
+        "title": "Kilpilahti avfallscentral",
+        "scope": "Kilpilahti avfallscentral, vågområde och vågbyggnad, IU24 Kilpilahti driftsättningsfas 1/vågområde, sommaren 2019-sommaren 2020, Rosk’n Roll.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betongarbeten",
+        "title": "Zero Pellet och avloppsvattenbassäng",
+        "scope": "Zero Pellet, markarbeten och HDPE-tätning, Borealis Polymers Oy. Ett annat projekt: byggande av avloppsvattenbassäng, Jenni Valonen, V-17 markarbeten, betonggjutning och installation av bottenrörledningar.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betongarbeten",
+        "title": "Own Naptha Storage",
+        "scope": "Own Naptha Storage: byggtekniska arbeten, markarbeten 3000 m³, brandvattenledning PEH PN16 500 mm, 400 löpmeter, och platsgjutning 450 m³ (pelare och fundament), Borealis Polymers Oy, 2019.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betongarbeten",
+        "title": "T-33-, K-25- och T-34-invallningar",
+        "scope": "Renovering av T-33-, K-25- och T-34-invallningar, vattentäta platsgjutna konstruktioner 2800 m³, markplatta (100 mm-160 mm) 7000 m², sprutbetong 6800 m², markarbeten 3000 m³, bergspräckning med kilar 700 m³ och avloppsarbeten.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betongarbeten",
+        "title": "Neste Aviation – Öljytie 5",
+        "scope": "Neste Engineering Solutions Oy, 2019. Neste Aviation, Öljytie 5, PEK NOK-reparationer, förnyelse av oljeavskiljare och avloppssystem samt markarbeten.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betongarbeten",
+        "title": "Aviation och UBC-containerområde",
+        "scope": "Aviation 42641 / 632147 / FI00000144 / 308, sommaren 2019-vintern 2019, Neste Markkinointi Oy. UBC-containerområde: platsgjutna konstruktioner 2200 m³, avlopp för personalutrymmen och containerområdet, oljeavskiljare, HDPE-tätning och bergschaktning 15000 m³. Markplatta (300 mm) med kantförstärkning (600 mm), totalt 5500 m², Borealis Polymers Oy, 2018-vintern 2019.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betongarbeten",
+        "title": "PYAS-pålplatta",
+        "scope": "Byggande av PYAS-pålplatta, markarbeten och massutbyte 30000 m³, pålning 1000 löpmeter, pålplatta av betong 1600 m³, 2017-2018.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Renovering av Teknologia-byggnaderna",
+        "scope": "Renovering av Teknologias byggnader C, B, A, Analyyttinen och Aurinkotalo, 2020-2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Vaktmästartjänster",
+        "scope": "Vaktmästartjänster: flyttar, möblering och mindre byggtekniska arbeten.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Åtgärder för inomhusluften – Borgå stad",
+        "scope": "Åtgärder för bättre inomhusluft, Borgå stad.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Fasad- och stambyten i bostadsbolag",
+        "scope": "Fasadrenoveringar och stambyten i bostadsbolag i Sibbo och Borgå.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Reparationer av skolbyggnader",
+        "scope": "Reparationer av skolbyggnader, 2018-2023.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Radhus – Askola",
+        "scope": "Byggande av radhus i Askola, 2022.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Careeria Oy – ytskiktsrenoveringar",
+        "scope": "Ytskiktsrenoveringar för Careeria Oy, från 2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Ensto – byggtekniska arbeten",
+        "scope": "Byggtekniska arbeten för Ensto, från 2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Dränering och dagvattenkonstruktioner",
+        "scope": "Förnyelse av dränering och tillägg av dagvattenkonstruktioner, Sipoon AS Oy.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Neste Oyj – REM-utomhusområden",
+        "scope": "Skötsel av Neste Oyj:s REM-utomhusområden, 2013-2019.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Neste Oyj – röjning och grönytearbeten på OP-områden",
+        "scope": "Röjning och grönytearbeten på Neste Oyj:s OP-områden, 2010-2019.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Neste Oyj – utomhusområden i Kilpilahti",
+        "scope": "Skötsel av Neste Oyj:s utomhusområden i Kilpilahti, 2019-2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Borgå stad – grönområden och blomsterrabatter",
+        "scope": "Skötsel av Borgå stads grönområden och blomsterrabatter, från 2017.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Borgå stad – ramavtal för grönytearbeten",
+        "scope": "Arbeten enligt ramavtal för Borgå stads grönytearbeten, från 2017.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Styrochem – skötsel av grönområden",
+        "scope": "Skötsel av grönområden för Styrochem, 2011-2021.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Bygg- och underhållsarbeten",
+        "title": "Grönyte- och iståndsättningsarbeten för bostadsbolag",
+        "scope": "Många grönyte- och iståndsättningsarbeten för bostadsbolag har utförts genom åren.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      }
+    ]
+  },
+  "yhteystiedot": {
+    "hero": {
+      "eyebrow": "Kontakt",
+      "title": "Kontakta oss.",
+      "lead": "Kontor i Askola, verksamhetsställe och lager i Kulloo i Kilpilahti. Vår 24 h-jour i Kilpilahti betjänar dygnet runt."
+    },
+    "locations": {
+      "officeTitle": "Askola",
+      "depotLabel": "Verksamhetsställe och lager"
+    },
+    "team": {
+      "eyebrow": "Kontaktpersoner",
+      "title": "Kontakta oss direkt.",
+      "members": [
+        {
+          "name": "Marko Paavola",
+          "role": "Styrelseordförande, byggmästare",
+          "phone": "0400 714 532",
+          "email": "marko.paavola@ppr.fi"
+        },
+        {
+          "name": "Jaani Karavirta",
+          "role": "Verkställande direktör, byggmästare",
+          "phone": "0400 840 912",
+          "email": "jaani.karavirta@ppr.fi"
+        },
+        {
+          "name": "Camilla Paavola",
+          "role": "Ekonomichef",
+          "phone": "0400 351 804",
+          "email": "camilla.paavola@ppr.fi"
+        },
+        {
+          "name": "Tomi Hyppönen",
+          "role": "Arbetarskyddschef / lagerchef",
+          "phone": "0400 310 257",
+          "email": "tomi.hypponen@ppr.fi"
+        },
+        {
+          "name": "Mikko Myllynen",
+          "role": "Platschef, byggnadsingenjör",
+          "phone": "040 755 5133",
+          "email": "mikko.myllynen@ppr.fi"
+        },
+        {
+          "name": "Mikael Tapanainen",
+          "role": "Platschef, byggnadsingenjör",
+          "phone": "040 775 5006",
+          "email": "mikael.tapanainen@ppr.fi"
+        },
+        {
+          "name": "Juha Yletyinen",
+          "role": "Lagbas",
+          "phone": "040 513 7781",
+          "email": "juha.yletyinen@ppr.fi"
+        },
+        {
+          "name": "Tarmo Kukkonen",
+          "role": "Lagbas",
+          "phone": "0400 920 891",
+          "email": "tarmo.kukkonen@ppr.fi"
+        },
+        {
+          "name": "Mika Viitanen",
+          "role": "Lagbas",
+          "phone": "044 203 8822",
+          "email": "mika.viitanen@ppr.fi"
+        }
+      ]
+    },
+    "invoicing": {
+      "eyebrow": "Fakturering",
+      "title": "Faktureringsuppgifter"
+    }
+  },
+  "ura": {}
+}

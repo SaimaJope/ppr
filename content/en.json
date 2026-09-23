@@ -1,0 +1,802 @@
+{
+  "locale": "en",
+  "common": {
+    "company": {
+      "name": "Porvoon Paalurakenne Oy",
+      "businessId": "2026187-3"
+    },
+    "topbar": {
+      "visible": true
+    },
+    "slideshow": {
+      "intervalSeconds": 7
+    },
+    "nav": {
+      "etusivu": "Home",
+      "koti": "Home",
+      "palvelut": "Services",
+      "yhteystiedot": "Contact",
+      "yritys": "Company",
+      "referenssit": "References"
+    },
+    "contact": {
+      "office": {
+        "label": "Office",
+        "street": "Pappilantie 2",
+        "postalCity": "07500 Askola",
+        "phone": "019 663 0666",
+        "email": "toimisto@ppr.fi"
+      },
+      "depot": {
+        "name": "Kulloo, Kilpilahti",
+        "street": "Nybyntie 16",
+        "postalCity": "06850 Kulloo",
+        "phone": "040 566 6074",
+        "emergencyLabel": "24-hour on-call service"
+      }
+    },
+    "billing": {
+      "labels": {
+        "businessId": "Business ID",
+        "ovt": "E-invoice address / OVT",
+        "operator": "Operator / OVT",
+        "email": "Invoice by email",
+        "paper": "Paper invoice"
+      },
+      "ovt": "003720261873",
+      "operator": "PAGERO 003723609900",
+      "emailInvoice": "003720261873@xbs-salo.com",
+      "paperLine1": "PL 908",
+      "paperLine2": "02066 DOCUSCAN"
+    },
+    "footer": {
+      "description": "Porvoon Paalurakenne Oy provides construction services for industrial and public-sector clients in southern Finland.",
+      "pagesTitle": "Pages",
+      "depotTitle": "Depot / Kilpilahti",
+      "copyright": "© 2026 Porvoon Paalurakenne Oy",
+      "billingLinkLabel": "Invoicing and OVT",
+      "whistleblowingLabel": "Whistleblowing channel",
+      "whistleblowingUrl": "https://app.easywhistle.com/report/ppr/"
+    },
+    "photoCaptions": {
+      "assets/muuntamo-ja-sahkotilojen-rakentaminen-01.jpg": "Construction of substations and electrical rooms",
+      "assets/maanrakennus-ja-perustustyot-02.jpg": "Earthworks and foundation works",
+      "assets/muotitus-ja-raudoitustyot-03.jpg": "Formwork and reinforcement works",
+      "assets/muotitus-ja-raudoitustyot-04.jpg": "Formwork and reinforcement works",
+      "assets/betonointityot-05.jpg": "Concrete pouring",
+      "assets/maanrakennus-ja-perustustyot-06.jpg": "Earthworks and foundation works",
+      "assets/sisailmakorjaukset-07.jpg": "Indoor air quality remediation",
+      "assets/sailioperustukset-08.jpg": "Tank foundations",
+      "assets/vesikattotyot-saasuojan-alla-09.jpg": "Roofing under weather protection",
+      "assets/maanrakennus-ja-perustustyot-10.jpg": "Earthworks and foundation works",
+      "assets/maanrakennus-ja-perustustyot-11.jpg": "Earthworks and foundation works",
+      "assets/maanrakennus-ja-perustustyot-12.jpg": "Earthworks and foundation works",
+      "assets/maanrakennus-ja-perustustyot-13.jpg": "Earthworks and foundation works",
+      "assets/maanrakennus-ja-perustustyot-14.jpg": "Earthworks and foundation works",
+      "assets/maanrakennus-ja-perustustyot-15.jpg": "Earthworks and foundation works",
+      "assets/sisatilojen-toteutus-16.jpg": "Interior fit-out",
+      "assets/teollisuuden-rakennustyomaa.jpg": "Industrial investment and maintenance services"
+    }
+  },
+  "etusivu": {
+    "hero": {
+      "eyebrow": "Industrial construction in southern Finland",
+      "title": "Construction services for industry.",
+      "lead": "Porvoon Paalurakenne Oy provides construction services for industrial and public-sector clients. Our core expertise is industrial construction in the Kilpilahti area.",
+      "ctaPrimary": "Explore our services",
+      "ctaPrimaryHref": "Palvelut.dc.html",
+      "ctaSecondary": "Invoicing details",
+      "ctaSecondaryHref": "#laskutustiedot",
+      "images": [
+        "Kilpi_lahti.jpg",
+        "assets/maanrakennus-ja-perustustyot-12.jpg"
+      ]
+    },
+    "intro": {
+      "eyebrow": "Company",
+      "title": "Experienced construction professionals since 2006.",
+      "paragraphs": [
+        "Our site management team has decades of experience in demanding industrial construction and other building works. We prioritise high quality and safe working practices in everything we do.",
+        "Our established network of construction subcontractors in eastern Uusimaa ensures quality results and reliable schedules."
+      ],
+      "linkLabel": "More about our company"
+    },
+    "services": {
+      "eyebrow": "Services",
+      "title": "Construction services for industrial and public-sector clients.",
+      "linkLabel": "All services",
+      "items": [
+        {
+          "title": "Industrial construction",
+          "desc": "Demanding projects in the Kilpilahti area in accordance with the working practices of Neste Oyj and Borealis Polymers Oy."
+        },
+        {
+          "title": "Earthworks and foundation works",
+          "desc": "Earthworks and foundation works for construction projects."
+        },
+        {
+          "title": "Concrete structures",
+          "desc": "Foundations, equipment foundations, bund linings and tank base slabs."
+        },
+        {
+          "title": "Municipal infrastructure works",
+          "desc": "Sewerage works and construction of firewater and drinking water networks."
+        },
+        {
+          "title": "Renovation",
+          "desc": "Facade and balcony renovations, foundation waterproofing, drainage and interior alterations."
+        },
+        {
+          "title": "New construction",
+          "desc": "Industrial halls, office buildings and schools."
+        },
+        {
+          "title": "Investment and maintenance",
+          "desc": "Road and green space maintenance, cleaning and janitorial services."
+        }
+      ]
+    },
+    "certs": {
+      "eyebrow": "Qualifications and certifications",
+      "title": "A reliable, certified partner.",
+      "items": [
+        {
+          "img": "assets/cert-rala.png",
+          "alt": "RALA qualification",
+          "url": "https://www.rala.fi/fi/palvelut/rala-patevyys"
+        },
+        {
+          "img": "assets/iso-9001-logo-vari-202607241137.png",
+          "alt": "ISO 9001:2015 certified",
+          "url": "https://sfs.fi/standardeista/tutustu-standardeihin/suositut-standardit/iso-9001-laadunhallinta/"
+        },
+        {
+          "img": "assets/cert-luotettava-kumppani.png",
+          "alt": "Luotettava Kumppani – Tilaajavastuu.fi",
+          "url": "https://www.vastuugroup.fi/palvelut/luotettava-kumppani"
+        },
+        {
+          "img": "assets/cert-aaa-2026.png",
+          "alt": "AAA – highest credit rating, Dun & Bradstreet 2026",
+          "url": "https://www.rahalaitos.fi/talous/luottoluokitus"
+        }
+      ]
+    },
+    "contact": {
+      "depotLabel": "Warehouse and depot",
+      "billingLabel": "Invoicing",
+      "phonePrefix": "Tel."
+    }
+  },
+  "palvelut": {
+    "hero": {
+      "eyebrow": "Services",
+      "title": "Professional industrial construction services.",
+      "lead": "We carry out construction works for industry, businesses, associations and the public sector. Our experienced, skilled team ensures quality."
+    },
+    "details": [
+      {
+        "title": "Industrial construction",
+        "desc": "Our core expertise is demanding projects in the Kilpilahti industrial area, following the specifications, regulations and working practices of Neste Oyj and Borealis Polymers Oy.",
+        "shot": "Construction of substations and electrical rooms",
+        "bullets": [
+          "Kilpilahti industrial area",
+          "Specifications of Neste Oyj and Borealis Polymers Oy",
+          "Occupational safety and hot work cards",
+          "Shutdowns and investment projects"
+        ],
+        "images": [
+          "assets/muuntamo-ja-sahkotilojen-rakentaminen-01.jpg"
+        ]
+      },
+      {
+        "title": "Earthworks and foundation works",
+        "desc": "Earthworks and foundation works for construction projects.",
+        "shot": "Earthworks and foundation works",
+        "bullets": [
+          "Earthworks",
+          "Foundation works"
+        ],
+        "images": [
+          "assets/maanrakennus-ja-perustustyot-12.jpg",
+          "assets/maanrakennus-ja-perustustyot-02.jpg",
+          "assets/maanrakennus-ja-perustustyot-06.jpg",
+          "assets/maanrakennus-ja-perustustyot-10.jpg",
+          "assets/maanrakennus-ja-perustustyot-11.jpg",
+          "assets/maanrakennus-ja-perustustyot-13.jpg",
+          "assets/maanrakennus-ja-perustustyot-14.jpg"
+        ]
+      },
+      {
+        "title": "Concrete structures",
+        "desc": "From foundations to coatings: skilled delivery of demanding concrete pours and industrial concrete structures.",
+        "shot": "Photo: reinforcement and concrete pouring",
+        "bullets": [
+          "Foundations",
+          "Buildings",
+          "Equipment foundations",
+          "Bund linings",
+          "Tank base slabs"
+        ],
+        "images": [
+          "assets/muotitus-ja-raudoitustyot-03.jpg",
+          "assets/muotitus-ja-raudoitustyot-04.jpg",
+          "assets/betonointityot-05.jpg",
+          "assets/sailioperustukset-08.jpg"
+        ]
+      },
+      {
+        "title": "Municipal infrastructure works",
+        "desc": "Water infrastructure networks and earthworks for public-sector and industrial clients.",
+        "shot": "Photo: trench and pipeline",
+        "bullets": [
+          "Sewerage works",
+          "Firewater networks",
+          "Drinking water networks"
+        ],
+        "images": [
+          "assets/maanrakennus-ja-perustustyot-06.jpg",
+          "assets/maanrakennus-ja-perustustyot-13.jpg"
+        ]
+      },
+      {
+        "title": "Renovation",
+        "desc": "Quality, durable renovations of facades and structures, together with interior alterations.",
+        "shot": "Photo: facade works under weather protection",
+        "bullets": [
+          "Facade renovations",
+          "Balcony renovations",
+          "Foundation waterproofing and drainage",
+          "Interior renovations and alterations"
+        ],
+        "images": [
+          "assets/sisailmakorjaukset-07.jpg",
+          "assets/vesikattotyot-saasuojan-alla-09.jpg"
+        ]
+      },
+      {
+        "title": "New construction",
+        "desc": "New construction from terraced houses to industrial halls and public buildings, delivered smoothly from foundations to completion.",
+        "shot": "Photo: steel-frame hall and foundations",
+        "bullets": [
+          "Terraced houses",
+          "Industrial halls",
+          "Office buildings",
+          "School buildings"
+        ],
+        "images": [
+          "assets/maanrakennus-ja-perustustyot-15.jpg",
+          "assets/sisatilojen-toteutus-16.jpg"
+        ]
+      },
+      {
+        "title": "Industrial investment and maintenance services",
+        "desc": "Ongoing and project-based services for industrial clients, including site and infrastructure maintenance.",
+        "shot": "Industrial investment and maintenance services",
+        "bullets": [
+          "Construction services for industrial clients",
+          "Road and green space maintenance",
+          "Cleaning and janitorial services"
+        ],
+        "images": [
+          "assets/teollisuuden-rakennustyomaa.jpg"
+        ]
+      }
+    ]
+  },
+  "yritys": {
+    "hero": {
+      "eyebrow": "Company",
+      "title": "Construction expertise since 2006.",
+      "lead": "Porvoon Paalurakenne Oy offers construction services for industrial and public-sector clients in southern Finland."
+    },
+    "story": {
+      "title": "Our core expertise is providing construction services for industrial and public-sector clients.",
+      "stats": [
+        {
+          "value": "2006",
+          "label": "Established"
+        },
+        {
+          "value": "Kilpilahti",
+          "label": "Specialisation"
+        },
+        {
+          "value": "Southern Finland",
+          "label": "Service area"
+        }
+      ],
+      "paragraphs": [
+        "We specialise in industrial construction in the Kilpilahti area, following the specifications, regulations and working practices of Neste Oyj and Borealis Polymers Oy.",
+        "Our site management team has decades of experience in demanding industrial construction and other building works.",
+        "Our experienced, skilled team ensures quality."
+      ]
+    },
+    "quality": {
+      "eyebrow": "Quality and safety",
+      "title": "Safety is the foundation of our work.",
+      "paragraphs": [
+        "We prioritise high quality and occupational safety in all our operations. Our personnel hold valid occupational safety and hot work cards.",
+        "In the Kilpilahti area, we follow Neste Oyj and Borealis Polymers Oy regulations and working practices at every stage."
+      ],
+      "badges": [
+        "Occupational safety card",
+        "Hot work card",
+        "Neste working practices",
+        "Borealis working practices"
+      ]
+    },
+    "creds": {
+      "eyebrow": "Qualifications",
+      "title": "Certifications and qualifications.",
+      "items": [
+        {
+          "name": "RALA qualification",
+          "desc": "Assessed and approved by Rakentamisen Laatu RALA ry."
+        },
+        {
+          "name": "ISO 9001",
+          "desc": "Quality management system certified by Bureau Veritas."
+        },
+        {
+          "name": "Luotettava Kumppani",
+          "desc": "Tilaajavastuu.fi: statutory obligations met and information kept up to date."
+        },
+        {
+          "name": "AAA credit rating",
+          "desc": "Highest credit rating, Dun & Bradstreet 2026."
+        }
+      ]
+    },
+    "expertise": {
+      "eyebrow": "Specialist expertise",
+      "title": "Industrial construction in the Kilpilahti area.",
+      "paragraphs": [
+        "In Kilpilahti, we follow the specifications, regulations and working practices of Neste Oyj and Borealis Polymers Oy. Our personnel hold valid occupational safety and hot work cards.",
+        "Safety and quality underpin our work on every project."
+      ],
+      "badges": [
+        "Neste",
+        "Borealis",
+        "Occupational safety card",
+        "Hot work card"
+      ],
+      "photoCaption": "Photo: work crew in the process area",
+      "images": [
+        "assets/muuntamo-ja-sahkotilojen-rakentaminen-01.jpg",
+        "assets/sisatilojen-toteutus-16.jpg"
+      ]
+    },
+    "network": {
+      "title": "An extensive, established subcontractor network.",
+      "text": "Our established network of construction subcontractors and partners in eastern Uusimaa enables us to deliver large contracts with quality results and reliable schedules."
+    }
+  },
+  "referenssit": {
+    "hero": {
+      "eyebrow": "References",
+      "title": "Our completed work demonstrates our expertise.",
+      "lead": "Our references in concrete works, earthworks, construction and maintenance."
+    },
+    "filters": {
+      "allLabel": "All",
+      "categories": [
+        "Concrete works and earthworks",
+        "Concrete works",
+        "Construction and maintenance works"
+      ],
+      "countSuffix": "references"
+    },
+    "projects": [
+      {
+        "sector": "Concrete works and earthworks",
+        "title": "Fingrid Anttila",
+        "scope": "Fingrid Anttila: concrete structures, control building construction, earthworks and concrete works 1200 m³, earthworks 20000 m³, from spring 2026.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works and earthworks",
+        "title": "Domestic water pipeline construction",
+        "scope": "Domestic water pipeline construction, earthworks 5000 m³, directional drilling 300 linear metres, pipe installations 1600 linear metres, 2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works and earthworks",
+        "title": "Raw water pipeline construction",
+        "scope": "Raw water pipeline construction, PEH 500 mm, 900 linear metres, earthworks 7000 m³, rock excavation 100 m³ and pipe installation, 2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works and earthworks",
+        "title": "Vantaan Energia Oy – battery storage",
+        "scope": "Vantaan Energia Oy battery storage: earthworks 2000 m³, concrete works 400 m³, rock excavation 600 m³, 2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works and earthworks",
+        "title": "K-25 water ring replacement",
+        "scope": "K-25 water ring replacement, concrete works 600 m³, 2024-2026.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works and earthworks",
+        "title": "Tolkkinen heat pump building",
+        "scope": "Construction of a heat pump building in Tolkkinen, including pile-supported slabs, 800 m³, 2024-2026.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works and earthworks",
+        "title": "Substation M099",
+        "scope": "Construction of substation M099, 5000 m², cast-in-place structures 1000 m³ and earthworks, 2024-2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works and earthworks",
+        "title": "Substation M018",
+        "scope": "Construction of M018: rock excavation 300 m³, cast-in-place structures 800 m³, earthworks 2500 m³, 2023-2024.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works and earthworks",
+        "title": "R-9 concrete ring and column foundations",
+        "scope": "R-9 concrete ring replacement and construction of column foundations, including earthworks, cast-in-place concrete 600 m³, 2023-2024.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works and earthworks",
+        "title": "T-34 concrete ring and column foundations",
+        "scope": "T-34 concrete ring replacement and construction of column foundations, 600 m³, 2023-2024.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works and earthworks",
+        "title": "Wastewater pumping stations – Peab Oy",
+        "scope": "Construction of wastewater pumping stations, cast-in-place walls and pile-supported slabs 900 m³, Peab Oy, 2022-2024.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works and earthworks",
+        "title": "OW treatment",
+        "scope": "Ow treatment: building works, earthworks 2000 m³, OW sewerage 300 linear metres, cast-in-place concrete 2500 m³, demanding-class concrete structures (tabletop, concrete basin with a capacity of 7000 m³), tank foundation and containment, cast-in-place columns, earthworks 9000 m³. Neste Engineering Oy, 2021-2022.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works and earthworks",
+        "title": "Porvoon Energia – thermal storage tank",
+        "scope": "Porvoon Energia thermal storage tank: tank foundation, earthworks, steel piling and concrete basin construction. Demanding-class concrete structures, Porvoon Energia Oy, 1000 m³, 2020-2021.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works and earthworks",
+        "title": "T-45 bund refurbishment",
+        "scope": "T-45 bund refurbishment, cast-in-place concrete structures 800 m³, concrete wall construction and earthworks. Neste Oyj, spring 2022.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works",
+        "title": "Kilpilahti waste centre",
+        "scope": "Kilpilahti waste centre, weighbridge area and weighbridge building, IU24 Kilpilahti commissioning phase 1/weighbridge area, summer 2019-summer 2020, Rosk’n Roll.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works",
+        "title": "Zero Pellet and wastewater basin",
+        "scope": "Zero Pellet, earthworks and HDPE lining, Borealis Polymers Oy. Another project: wastewater basin construction, Jenni Valonen, V-17 earthworks, concrete pouring and installation of below-ground pipework.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works",
+        "title": "Own Naptha Storage",
+        "scope": "Own Naptha Storage: building works, earthworks 3000 m³, construction of a PEH PN16 500 mm firewater pipeline, 400 linear metres, and cast-in-place concrete 450 m³ (columns and footings), Borealis Polymers Oy, 2019.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works",
+        "title": "T-33, K-25 and T-34 bunds",
+        "scope": "Refurbishment of T-33, K-25 and T-34 bunds, watertight cast-in-place structures 2800 m³, ground slab (100 mm-160 mm) 7000 m², shotcrete 6800 m², earthworks 3000 m³, rock splitting with wedges 700 m³ and sewerage works.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works",
+        "title": "Neste Aviation – Öljytie 5",
+        "scope": "Neste Engineering Solutions Oy, 2019. Neste Aviation, Öljytie 5, PEK NOK repairs, replacement of oil separators and sewerage systems, and earthworks.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works",
+        "title": "Aviation and UBC container yard",
+        "scope": "Aviation 42641 / 632147 / FI00000144 / 308, summer 2019-winter 2019, Neste Markkinointi Oy. UBC container yard: cast-in-place structures 2200 m³, drainage for staff facilities and the container yard, oil separators, HDPE lining and rock excavation 15000 m³. Ground slab (300 mm) with thickened edges (600 mm), totalling 5500 m², Borealis Polymers Oy, 2018-winter 2019.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Concrete works",
+        "title": "PYAS pile-supported slab",
+        "scope": "Construction of a PYAS pile-supported slab, earthworks and soil replacement 30000 m³, piling 1000 linear metres, pile-supported concrete slab 1600 m³, 2017-2018.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "Renovation of the Teknologia buildings",
+        "scope": "Renovation of Teknologia buildings C, B, A, Analyyttinen and Aurinkotalo, 2020-2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "Caretaking services",
+        "scope": "Caretaking services: removals, furnishing and minor building works.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "Indoor air quality remediation – City of Porvoo",
+        "scope": "Indoor air quality remediation, City of Porvoo.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "Housing company facade renovations and pipe replacements",
+        "scope": "Housing company facade renovations and pipe replacements in Sipoo and Porvoo.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "School building repairs",
+        "scope": "School building repairs, 2018-2023.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "Terraced house – Askola",
+        "scope": "Terraced house construction in Askola, 2022.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "Careeria Oy – interior finish renovations",
+        "scope": "Interior finish renovations for Careeria Oy, from 2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "Ensto – building works",
+        "scope": "Building works for Ensto, from 2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "Drainage and stormwater structures",
+        "scope": "Drainage replacement and additional stormwater structures, Sipoon AS Oy.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "Neste Oyj – REM outdoor areas",
+        "scope": "Maintenance of Neste Oyj REM outdoor areas, 2013-2019.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "Neste Oyj – OP area clearing and landscaping",
+        "scope": "Clearing and landscaping in Neste Oyj OP areas, 2010-2019.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "Neste Oyj – Kilpilahti outdoor areas",
+        "scope": "Maintenance of Neste Oyj outdoor areas in Kilpilahti, 2019-2025.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "City of Porvoo – green spaces and flowerbeds",
+        "scope": "Maintenance of City of Porvoo green spaces and flowerbeds, from 2017.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "City of Porvoo – framework agreement for landscaping",
+        "scope": "Landscaping works under a City of Porvoo framework agreement, from 2017.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "Styrochem – green space maintenance",
+        "scope": "Green space maintenance for Styrochem, 2011-2021.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Construction and maintenance works",
+        "title": "Housing company landscaping and improvement works",
+        "scope": "Numerous landscaping and improvement works completed for housing companies over the years.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      }
+    ]
+  },
+  "yhteystiedot": {
+    "hero": {
+      "eyebrow": "Contact",
+      "title": "Contact us.",
+      "lead": "Office in Askola, with an operating base and warehouse in Kulloo, Kilpilahti. Our Kilpilahti on-call service is available 24 hours a day."
+    },
+    "locations": {
+      "officeTitle": "Askola",
+      "depotLabel": "Operating base and warehouse"
+    },
+    "team": {
+      "eyebrow": "Key contacts",
+      "title": "Contact us directly.",
+      "members": [
+        {
+          "name": "Marko Paavola",
+          "role": "Chair of the Board, Construction Manager",
+          "phone": "0400 714 532",
+          "email": "marko.paavola@ppr.fi"
+        },
+        {
+          "name": "Jaani Karavirta",
+          "role": "Managing Director, Construction Manager",
+          "phone": "0400 840 912",
+          "email": "jaani.karavirta@ppr.fi"
+        },
+        {
+          "name": "Camilla Paavola",
+          "role": "Finance Manager",
+          "phone": "0400 351 804",
+          "email": "camilla.paavola@ppr.fi"
+        },
+        {
+          "name": "Tomi Hyppönen",
+          "role": "Occupational Safety Manager / Warehouse Manager",
+          "phone": "0400 310 257",
+          "email": "tomi.hypponen@ppr.fi"
+        },
+        {
+          "name": "Mikko Myllynen",
+          "role": "Site Manager, Civil Engineer",
+          "phone": "040 755 5133",
+          "email": "mikko.myllynen@ppr.fi"
+        },
+        {
+          "name": "Mikael Tapanainen",
+          "role": "Site Manager, Civil Engineer",
+          "phone": "040 775 5006",
+          "email": "mikael.tapanainen@ppr.fi"
+        },
+        {
+          "name": "Juha Yletyinen",
+          "role": "Lead Hand",
+          "phone": "040 513 7781",
+          "email": "juha.yletyinen@ppr.fi"
+        },
+        {
+          "name": "Tarmo Kukkonen",
+          "role": "Lead Hand",
+          "phone": "0400 920 891",
+          "email": "tarmo.kukkonen@ppr.fi"
+        },
+        {
+          "name": "Mika Viitanen",
+          "role": "Lead Hand",
+          "phone": "044 203 8822",
+          "email": "mika.viitanen@ppr.fi"
+        }
+      ]
+    },
+    "invoicing": {
+      "eyebrow": "Invoicing",
+      "title": "Invoicing details"
+    }
+  },
+  "ura": {}
+}
