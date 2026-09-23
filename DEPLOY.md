@@ -2,14 +2,28 @@
 
 Sivusto toimii näin:
 
-- Kaikki muokattava sisältö on yhdessä tiedostossa: **`content/fi.json`**. Sivut
+- Kunkin kielen sisältö on omassa tiedostossaan: **`content/fi.json`**,
+  **`content/sv.json`** ja **`content/en.json`**. Sivut
   (`*.dc.html`) hakevat sen selaimessa välimuistin ohi (`?v=aikaleima` +
   `cache: "no-store"`), joten muutos näkyy heti kun GitHub Pages on julkaissut
   uuden version (yleensä alle minuutissa).
 - Hallintapaneeli on **Cloudflare Worker** (`worker/`-kansio). Se tallentaa
-  muokatun `fi.json`-tiedoston ja ladatut kuvat suoraan tämän repon
+  valitun kielen sisältötiedoston ja ladatut kuvat suoraan tämän repon
   `main`-haaraan GitHubin REST-rajapinnalla. GitHub-token on vain Workerin
   salaisuuksissa – se ei koskaan päädy selaimeen.
+
+## Kieliversiot
+
+- Suomi on oletuskieli. `?lang=fi`, `?lang=sv` ja `?lang=en` valitsevat kielen;
+  URL:n valinta ohittaa selaimeen tallennetun valinnan.
+- Hallintapaneelin **Sisällön kieli** valitsee ladattavan, tallennettavan ja
+  esikatseltavan kieliversion. Tallentamattomista muutoksista varoitetaan ennen
+  vaihtoa. Muutoksia ei käännetä automaattisesti muihin kieliin.
+- GET `/api/content?lang=sv` lukee ruotsin. PUT `/api/content` käyttää rungon
+  `language`-kenttää. Ilman kielivalintaa molemmat käyttävät suomea.
+- Julkaise sekä staattiset sivut GitHub Pagesiin että päivitetty Worker.
+  Julkiset käännökset toimivat itsenäisesti, vaikka Worker olisi vielä vanha.
+- Tarkistukset: `node --test tests/languages.test.mjs` repon juuressa.
 
 ## 1. Luo fine-grained PAT (GitHub-token)
 

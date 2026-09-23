@@ -12,7 +12,7 @@
   window.__pprLoader = true;
 
   // ---- Site content ---------------------------------------------------------
-  // Every editable string on the site lives in content/fi.json; the page logic
+  // Editable content lives in content/{fi,sv,en}.json; the page logic
   // classes (script[data-dc-script]) render from it and hold their template
   // behind `ready` until it has arrived, which keeps the curtain below covering
   // the load. The fetch starts here — this file is loaded synchronously in
@@ -20,18 +20,30 @@
   // Cache is busted both ways (query param + no-store): GitHub Pages caches
   // aggressively and an edit must be visible on the very next load.
   window.__pprContent = (function load(attempt) {
-    return fetch('content/fi.json?v=' + Date.now(), { cache: 'no-store' })
+    if (window.__pprPreviewContent) return Promise.resolve(window.pprLocalizeContent(window.__pprPreviewContent)).then(function (content) { window.pprSetPageMetadata(content); return content; });
+    return fetch('content/' + window.pprLanguage + '.json?v=' + Date.now(), { cache: 'no-store' })
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
       })
+      .then(function (content) { window.pprSetPageMetadata(content); return window.pprLocalizeContent(content); })
       .catch(function (err) {
         if (attempt < 2) {
           return new Promise(function (resolve) {
             setTimeout(resolve, 400 * (attempt + 1));
           }).then(function () { return load(attempt + 1); });
         }
-        console.error('[ppr] content/fi.json load failed:', err);
+        console.error('[ppr] content load failed:', err);
+        document.addEventListener('ppr:loaded', function () {
+          var message = document.createElement('div');
+          message.style.cssText = 'padding:48px;font:18px sans-serif';
+          message.textContent = window.pprUi.error + ' ';
+          var retry = document.createElement('a');
+          retry.href = location.href;
+          retry.textContent = window.pprUi.retry;
+          message.appendChild(retry);
+          document.body.appendChild(message);
+        }, { once: true });
         return null;
       });
   })(0);
@@ -74,6 +86,9 @@
     var interval = common.slideshow && Number(common.slideshow.intervalSeconds);
     return {
       company: common.company,
+      language: window.pprLanguage,
+      languages: window.pprLanguageOptions,
+      ui: window.pprUi,
       nav: common.nav,
       office: office,
       depot: depot,
@@ -172,7 +187,7 @@
           list[i].setAttribute('aria-hidden', i === state.idx ? 'false' : 'true');
         }
         var hint = host.querySelector('.ppr-slide-hint');
-        if (hint) hint.textContent = '↔ Pyyhkäise · ' + (state.idx + 1) + ' / ' + list.length;
+        if (hint) hint.textContent = '↔ ' + window.pprUi.swipe + ' · ' + (state.idx + 1) + ' / ' + list.length;
       }
       function step(delta) {
         var n = slidesOf(el).length;
@@ -191,7 +206,7 @@
         var b = document.createElement('button');
         b.type = 'button';
         b.className = 'ppr-slide-arrow ' + (delta < 0 ? 'ppr-slide-prev' : 'ppr-slide-next');
-        b.setAttribute('aria-label', delta < 0 ? 'Edellinen kuva' : 'Seuraava kuva');
+        b.setAttribute('aria-label', delta < 0 ? window.pprUi.prev : window.pprUi.next);
         b.innerHTML = delta < 0 ? CHEVRON_PREV : CHEVRON_NEXT;
         b.addEventListener('click', function (e) {
           // Reference cards are links; the arrow must not navigate.

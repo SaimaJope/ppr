@@ -21,7 +21,7 @@
       '.ppr-nav-active{color:#015AFF!important;font-weight:700!important}',
       '.ppr-nav-active-desktop{position:relative}',
       '.ppr-nav-active-desktop::after{content:"";position:absolute;left:0;right:0;bottom:-9px;height:2px;background:#015AFF;border-radius:999px;opacity:.95}',
-      '.ppr-nav-active-desktop[aria-label="Etusivu"]::after{left:50%;right:auto;width:20px;transform:translateX(-50%)}',
+      '.ppr-nav-active-desktop[data-home-link]::after{left:50%;right:auto;width:20px;transform:translateX(-50%)}',
       '.ppr-nav-active-menu{background:rgba(1,90,255,.06);box-shadow:inset 3px 0 0 #015AFF}'
     ].join('\n');
     document.head.appendChild(style);

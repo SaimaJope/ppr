@@ -3,10 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="refresh" content="0; url=Etusivu.dc.html">
+<noscript><meta http-equiv="refresh" content="0; url=Etusivu.dc.html?lang=fi"></noscript>
 <title>Porvoon Paalurakenne Oy</title>
 <script>
-  window.location.replace('Etusivu.dc.html');
+  var target = new URL('Etusivu.dc.html', location.href);
+  target.search = location.search;
+  target.hash = location.hash;
+  window.location.replace(target.href);
 </script>
 </head>
 <body>
