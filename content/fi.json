@@ -75,7 +75,7 @@
       "assets/maanrakennus-ja-perustustyot-14.jpg": "Maanrakennus- ja perustustyöt",
       "assets/maanrakennus-ja-perustustyot-15.jpg": "Maanrakennus- ja perustustyöt",
       "assets/sisatilojen-toteutus-16.jpg": "Sisätilojen toteutus",
-      "assets/teollisuuden-kunnossapito.jpg": "Teollisuuden investointi- ja kunnossapitopalvelut"
+      "assets/teollisuuden-rakennustyomaa.jpg": "Teollisuuden investointi- ja kunnossapitopalvelut"
     }
   },
   "etusivu": {
@@ -156,8 +156,8 @@
           "url": "https://www.vastuugroup.fi/palvelut/luotettava-kumppani"
         },
         {
-          "img": "assets/cert-luottokelpoisuus.png",
-          "alt": "Hyvä luottokelpoisuus",
+          "img": "assets/cert-aaa-2026.png",
+          "alt": "AAA – korkein luottoluokitus, Dun & Bradstreet 2026",
           "url": "https://www.rahalaitos.fi/talous/luottoluokitus"
         }
       ]
@@ -279,7 +279,7 @@
           "Puhdistus- ja siivouspalvelut"
         ],
         "images": [
-          "assets/teollisuuden-kunnossapito.jpg"
+          "assets/teollisuuden-rakennustyomaa.jpg"
         ]
       }
     ]
@@ -343,8 +343,8 @@
           "desc": "Tilaajavastuu.fi, velvoitteet hoidettu ajantasaisesti."
         },
         {
-          "name": "AA-luottoluokitus",
-          "desc": "Vakaa ja luotettava taloudellinen asema."
+          "name": "AAA-luottoluokitus",
+          "desc": "Korkein luottoluokitus, Dun & Bradstreet 2026."
         }
       ]
     },
@@ -376,99 +376,349 @@
     "hero": {
       "eyebrow": "Referenssit",
       "title": "Toteutuneet työt kertovat osaamisesta.",
-      "lead": "Valikoima kohteitamme teollisuus-, kunnallistekniikka-, korjaus- ja uudisrakentamisesta Itä-Uudellamaalla. Täydennämme sivua kohdekuvilla ja yksityiskohdilla."
+      "lead": "Referenssejämme betoni- ja maanrakennustöistä, rakentamisesta sekä kunnossapidosta."
     },
     "filters": {
       "allLabel": "Kaikki",
       "categories": [
-        "Prosessiteollisuus",
-        "Betonirakenteet",
-        "Kunnallistekniikka",
-        "Uudisrakentaminen",
-        "Korjausrakentaminen"
+        "Betoni- ja maanrakennustyöt",
+        "Betonityöt",
+        "Rakennus- ja kunnossapitotyöt"
       ],
-      "countSuffix": "kohdetta"
+      "countSuffix": "referenssiä"
     },
     "projects": [
       {
-        "sector": "Prosessiteollisuus",
-        "title": "Säiliöperustukset ja vallitila-alueen pinnoitus",
-        "scope": "Betonipohjalaatat, vallitilan nestetiivis pinnoitus ja perustustyöt prosessialueella.",
-        "loc": "Kilpilahti",
-        "year": "2023",
-        "shot": "Valokuva: säiliökenttä, pohjalaatat",
+        "sector": "Betoni- ja maanrakennustyöt",
+        "title": "Fingrid Anttila",
+        "scope": "Fingrid Anttila betonirakennetyöt, ohjaamorakennuksien rakennustyöt, maanrakennus ja betonityöt 1200 m³, maarakennus 20000 m³ kevät 2026-",
+        "loc": "",
+        "year": "",
+        "shot": "",
         "images": []
       },
       {
-        "sector": "Teollisuusrakentaminen",
-        "title": "Laiteperustukset, prosessilaitos",
-        "scope": "Laiteperustusten valutyöt Neste Oyj:n specifikaatioiden ja työtapojen mukaisesti.",
-        "loc": "Kilpilahti",
-        "year": "2022",
-        "shot": "Valokuva: laiteperustukset, raudoitus",
+        "sector": "Betoni- ja maanrakennustyöt",
+        "title": "Talousvesilinjan rakentaminen",
+        "scope": "Talousvesilinjan rakentaminen, maanrakennus 5000 m³, suuntaporaus 300 jm, putkistojen asennukset 1600 jm 2025",
+        "loc": "",
+        "year": "",
+        "shot": "",
         "images": []
       },
       {
-        "sector": "Uudisrakentaminen",
-        "title": "Teollisuushalli, runko ja perustukset",
-        "scope": "Teräsrunkoisen teollisuushallin perustukset ja maanrakennustyöt.",
-        "loc": "Itä-Uusimaa",
-        "year": "2021",
-        "shot": "Valokuva: teräsrunkoinen halli, työmaa",
+        "sector": "Betoni- ja maanrakennustyöt",
+        "title": "Raakavesilinjan rakentaminen",
+        "scope": "Raakavesilinjan rakentaminen PEH 500 mm 900 jm, maanrakennustyöt 7000 m³, louhinnat 100 m³, putkiston asennus 2025",
+        "loc": "",
+        "year": "",
+        "shot": "",
         "images": []
       },
       {
-        "sector": "Kunnallistekniikka",
-        "title": "Palovesiverkoston rakennustyöt",
-        "scope": "Palovesi- ja juomavesiverkoston rakennustyöt sekä kaivannot julkiselle tilaajalle.",
-        "loc": "Porvoo",
-        "year": "2022",
-        "shot": "Valokuva: kaivanto, putkilinja",
+        "sector": "Betoni- ja maanrakennustyöt",
+        "title": "Vantaan Energia Oy – akkuvaranto",
+        "scope": "Vantaan Energia Oy akkuvaranto, maanrakennus 2000 m³, betonityöt 400 m³, louhinta 600 m³ 2025",
+        "loc": "",
+        "year": "",
+        "shot": "",
         "images": []
       },
       {
-        "sector": "Korjausrakentaminen",
-        "title": "Julkisivu- ja parvekesaneeraus",
-        "scope": "Asuinkerrostalon julkisivujen ja parvekkeiden saneeraus sääsuojattuna.",
-        "loc": "Porvoo",
-        "year": "2020",
-        "shot": "Valokuva: julkisivutyömaa, parveke",
+        "sector": "Betoni- ja maanrakennustyöt",
+        "title": "K-25 vesirenkaan uusinta",
+        "scope": "K-25 vesirenkaan uusinta, betonityöt 600 m³ 2024-2026",
+        "loc": "",
+        "year": "",
+        "shot": "",
         "images": []
       },
       {
-        "sector": "Uudisrakentaminen",
-        "title": "Koulurakennuksen perustukset ja betonirakenteet",
-        "scope": "Julkisen rakennuksen perustukset, pohjalaatat ja kantavat betonirakenteet.",
-        "loc": "Askola",
-        "year": "2019",
-        "shot": "Valokuva: pohjalaatta, betonirakenteet",
+        "sector": "Betoni- ja maanrakennustyöt",
+        "title": "Tolkkisten lämpöpumppurakennus",
+        "scope": "Tolkkinen lämpöpumppu rakennuksen rakentaminen paalulaattoineen 800 m³ 2024-2026",
+        "loc": "",
+        "year": "",
+        "shot": "",
         "images": []
       },
       {
-        "sector": "Kunnallistekniikka",
-        "title": "Viemäröinti- ja juomavesiverkosto",
-        "scope": "Viemäröintityöt ja vesihuollon verkostojen rakentaminen taajama-alueella.",
-        "loc": "Itä-Uusimaa",
-        "year": "2021",
-        "shot": "Valokuva: maanrakennus, viemärilinja",
+        "sector": "Betoni- ja maanrakennustyöt",
+        "title": "Muuntamo M099",
+        "scope": "Muuntamo M099 rakentaminen 5000 m² paikallavalurakenteet 1000 m³ ja maanrakennustyöt 2024-2025",
+        "loc": "",
+        "year": "",
+        "shot": "",
         "images": []
       },
       {
-        "sector": "Korjausrakentaminen",
-        "title": "Sokkelien vesieristys ja salaojat",
-        "scope": "Perustusten kosteudeneristys, salaojitus ja kuivatuksen parannustyöt.",
-        "loc": "Askola",
-        "year": "2023",
-        "shot": "Valokuva: sokkelin kaivu, salaoja",
+        "sector": "Betoni- ja maanrakennustyöt",
+        "title": "Muuntamo M018",
+        "scope": "M018 rakentaminen; louhintatyöt 300 m³, paikallavalurakenteet 800 m³, maanrakennustyöt 2500 m³ 2023-2024",
+        "loc": "",
+        "year": "",
+        "shot": "",
         "images": []
       },
       {
-        "sector": "Investointi ja kunnossapito",
-        "title": "Teiden ja viheralueiden kunnossapito",
-        "scope": "Teollisuusalueen tie- ja viheralueiden jatkuva kunnossapito sekä puhtaanapito.",
-        "loc": "Kilpilahti",
-        "year": "Jatkuva",
-        "shot": "Valokuva: tiealue, huoltokalusto",
+        "sector": "Betoni- ja maanrakennustyöt",
+        "title": "R-9 betonirengas ja pilariperustukset",
+        "scope": "R-9 betonirenkaan uusinta ja pilariperustuksien rakentaminen maanrakennustöineen, paikallavalutöitä 600 m³ 2023-2024",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betoni- ja maanrakennustyöt",
+        "title": "T-34 betonirengas ja pilariperustukset",
+        "scope": "T-34 betonirenkaan uusinta ja pilariperustuksien rakentaminen 600 m³, 2023-2024",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betoni- ja maanrakennustyöt",
+        "title": "Jätevesipumppaamot – Peab Oy",
+        "scope": "Jätevesipumppaamoiden rakentaminen paikallavalu seiniä ja paalulaattoja 900 m³, Peab Oy 2022-2024",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betoni- ja maanrakennustyöt",
+        "title": "OW treatment",
+        "scope": "Ow treatment, rakennustekniset työt, maanrakennustyöt 2000 m³, owviemäröintiä 300 jm, paikallavalu 2500 m³, vaativan luokan betonirakenteita (tabletop, betoniallas (tilavuus 7000 m³), säiliö perustus ja allastus, paikallavalu pilareita, maanrakennus 9000 m³. Neste Engineering Oy 2021-2022",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betoni- ja maanrakennustyöt",
+        "title": "Porvoon Energia – lämpöakku",
+        "scope": "Porvoon Energia Lämpöakku, säiliön perustus, maanrakennustyöt, teräspaalutus, betonialtaan rakentaminen. Vaativan luokan betonirakenteet Porvoon Energia Oy 1000 m³ 2020-2021",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betoni- ja maanrakennustyöt",
+        "title": "T-45 vallitilan perusparannus",
+        "scope": "T-45 vallitilan perusparannus, paikallavalu betonirakenteet 800 m³, betoniseinien rakentaminen ja maanrakennustyöt. Neste Oyj 2022 kevät",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betonityöt",
+        "title": "Kilpilahden jätekeskus",
+        "scope": "Kilpilahden jätekeskus, vaakatoimintojen alue, vaakarakennus, IU24 Kilpilahden käyttöönottovaihe 1/Vaakatoimintojen alue kesä 2019-kesä 2020, Rosk’n Roll",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betonityöt",
+        "title": "Zero Pellet ja jätevesiallas",
+        "scope": "Zero Pellet, maanrakennus, HDPE kalvotus Borealis Polymers Oy, toinen kohde Jätevesialtaan rakentaminen Jenni Valonen, V-17 maanrakennustyö, betonointityö, maanrakennus pohjaputkiston asennus.",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betonityöt",
+        "title": "Own Naptha Storage",
+        "scope": "Own Naptha Storage rakennustekniset työt, maanrakennustyöt 3000 m³, palovesilinjan rakentaminen PEH PN16 500 mm 400 jm ja paikallavalutyöt 450 m³ (pilareita ja anturoita) Borealis Polymers Oy, 2019",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betonityöt",
+        "title": "T-33, K-25 ja T-34 vallitilat",
+        "scope": "T-33, K-25 ja T-34 vallitilojen perusparannus, vesitiiviitä paikallavalurakenteita 2800 m³, maastolaattaa (100 mm-160 mm) 7000 m² ruiskubetonointia 6800 m², maanrakennus 3000 m³, kallionrikontaa kiilauksella 700 m³ ja viemäröintitöitä",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betonityöt",
+        "title": "Neste Aviation – Öljytie 5",
+        "scope": "Neste Engineering Solutions Oy, 2019 Neste Aviation Öljytie 5 PEK NOK korjaukset, öljynerotin ja viemäröinti järjestelmien uusintatyöt, maanrakennustyöt",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betonityöt",
+        "title": "Aviation ja UBC-konttikenttä",
+        "scope": "Aviation 42641 / 632147 / FI00000144 / 308, kesä 2019 -talvi 2019, Neste Markkinointi Oy UBC konttikenttä, paikallavalu rakenteita 2200 m³, viemäröintejä sosiaalitiloille, konttikentän viemäröinnit, öljynerottimet, HDPE kalvotus ja louhintaa 15000 m³. Konttikenttä maastolaattaa (300 mm) reunavahvistuksella (600 mm), yhteensä 5500 m² Borealis Polymers Oy 2018 talvi 2019",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Betonityöt",
+        "title": "PYAS-paalulaatta",
+        "scope": "PYAS paalulaatan rakentaminen, maanrakennus ja massanvaihto 30000 m³, paalutusta 1000 jm, betonipaalulaattaa 1600 m³ 2017-2018",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Teknologian rakennusten saneeraukset",
+        "scope": "Teknologian kirjaintalojen C, B, A, Analyyttinen, Aurinkotalo saneeraukset 2020-2025",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Talonmiestyöt",
+        "scope": "Talonmiestyöt; muutot, kalustukset, pienet rakennustekniset työt",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Sisäilmakorjaukset – Porvoon kaupunki",
+        "scope": "Sisäilmakorjaukset Porvoon Kaupunki",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Taloyhtiöiden julkisivu- ja linjasaneeraukset",
+        "scope": "Taloyhtiöiden julkisivu- ja linjasaneerauksia Sipoo-Porvoo",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Koulurakennusten korjaukset",
+        "scope": "Koulurakennuksien korjaukset 2018-2023",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Rivitalo – Askola",
+        "scope": "Rivitalon rakentaminen Askola 2022",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Careeria Oy – pintasaneeraukset",
+        "scope": "Careeria Oy pintasaneeraukset 2025-",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Ensto – rakennustekniset työt",
+        "scope": "Ensto rakennustekniset työt 2025-",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Salaojat ja sadevesirakenteet",
+        "scope": "Salaojituksien uusinta sekä sv-rakenteiden lisäys Sipoon AS Oy",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Neste Oyj – REM-ulkoalueet",
+        "scope": "Neste Oyj REM ulkoalueiden hoito 2013-2019",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Neste Oyj – OP-alueiden raivaus- ja vihertyöt",
+        "scope": "Neste Oyj raivaus- ja vihertyöt OP alueilla 2010-2019",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Neste Oyj – Kilpilahden ulkoalueet",
+        "scope": "Neste Oyj Kilpilahti ulkoalueiden hoito 2019-2025",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Porvoon kaupunki – viheralueet ja kukkapenkit",
+        "scope": "Porvoon Kaupunki viheralueiden ja kukkapenkkien hoito 2017-",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Porvoon kaupunki – vihertöiden puitesopimus",
+        "scope": "Porvoon Kaupunki puitesopimustyöt vihertöihin 2017-",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Styrochem – viheralueiden hoito",
+        "scope": "Styrochem viheralueiden hoito 2011-2021",
+        "loc": "",
+        "year": "",
+        "shot": "",
+        "images": []
+      },
+      {
+        "sector": "Rakennus- ja kunnossapitotyöt",
+        "title": "Asunto-osakeyhtiöiden viher- ja kunnostustyöt",
+        "scope": "Useita asunto osakeyhtiöiden viher- ja kunnostustöitä tehty vuosien varrella",
+        "loc": "",
+        "year": "",
+        "shot": "",
         "images": []
       }
     ]
