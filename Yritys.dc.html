@@ -214,19 +214,16 @@
             </sc-for>
           </div>
         </div>
-        <div style="position:relative;aspect-ratio:4/5;background:#171C24;overflow:hidden;border:1px solid rgba(128,147,181,.18)">
-          <sc-if value="{{ expertiseSlides.0 }}">
+        <sc-if value="{{ expertiseSlides.0 }}">
+<div style="position:relative;aspect-ratio:4/5;background:#171C24;overflow:hidden;border:1px solid rgba(128,147,181,.18)">
+          
             <div data-slideshow data-slideshow-interval="{{ slideshowInterval }}" style="position:absolute;inset:0">
               <sc-for list="{{ expertiseSlides }}" as="sl">
                 <img data-slide="{{ sl.i }}" src="{{ sl.src }}" alt="{{ page.expertise.title }}" style="{{ sl.style }}">
               </sc-for>
             </div>
-          </sc-if>
-          <sc-if value="{{ !expertiseSlides.0 }}">
-            <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.06) 0 1px,transparent 1px 15px)"></div>
-            <div style="position:absolute;left:18px;bottom:16px;right:18px;font-size:13px;line-height:1.5;color:#5A6678" class="lbl">{{ page.expertise.photoCaption }}</div>
-          </sc-if>
-        </div>
+          </div>
+            </sc-if>
       </div>
     </div>
   </section>

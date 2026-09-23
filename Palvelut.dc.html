@@ -159,8 +159,9 @@
               </sc-for>
             </ul>
           </div>
-          <div style="position:relative;aspect-ratio:4/3;background:#171C24;overflow:hidden">
-            <sc-if value="{{ d.slides.0 }}">
+          <sc-if value="{{ d.slides.0 }}">
+<div style="position:relative;aspect-ratio:4/3;background:#171C24;overflow:hidden">
+            
               <div data-slideshow data-slideshow-interval="{{ slideshowInterval }}" style="position:absolute;inset:0">
                 <sc-for list="{{ d.slides }}" as="sl">
                   <div data-slide="{{ sl.i }}" aria-hidden="{{ sl.hidden }}" style="{{ sl.style }}">
@@ -170,12 +171,8 @@
                   </div>
                 </sc-for>
               </div>
+            </div>
             </sc-if>
-            <sc-if value="{{ !d.slides.0 }}">
-              <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.06) 0 1px,transparent 1px 14px)"></div>
-              <div style="position:absolute;left:16px;bottom:14px;right:16px;font-size:12px;line-height:1.45;color:#4A5566" class="lbl">{{ d.shot }}</div>
-            </sc-if>
-          </div>
         </div>
       </sc-for>
       <div style="border-top:1px solid rgba(14,17,22,.14)"></div>

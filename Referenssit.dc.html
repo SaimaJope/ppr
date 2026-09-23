@@ -156,27 +156,24 @@
       <div data-grid3 style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
         <sc-for list="{{ projects }}" as="p" hint-placeholder-count="9">
           <a href="Yhteystiedot.dc.html" style="display:flex;flex-direction:column;background:#fff;border:1px solid rgba(14,17,22,.10)" style-hover="border-color:#015AFF">
-            <div style="position:relative;aspect-ratio:3/2;background:#171C24;overflow:hidden">
-              <sc-if value="{{ p.slides.0 }}">
+            <sc-if value="{{ p.slides.0 }}">
+<div style="position:relative;aspect-ratio:3/2;background:#171C24;overflow:hidden">
+              
                 <div data-slideshow data-slideshow-interval="{{ slideshowInterval }}" style="position:absolute;inset:0">
                   <sc-for list="{{ p.slides }}" as="sl">
                     <img data-slide="{{ sl.i }}" src="{{ sl.src }}" alt="{{ p.title }}" style="{{ sl.style }}">
                   </sc-for>
                 </div>
-              </sc-if>
-              <sc-if value="{{ !p.slides.0 }}">
-                <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.06) 0 1px,transparent 1px 14px)"></div>
-                <div style="position:absolute;left:16px;bottom:14px;right:16px;font-size:12px;line-height:1.45;color:#4A5566" class="lbl">{{ p.shot }}</div>
-              </sc-if>
-            </div>
+              </div>
+            </sc-if>
             <div style="padding:24px 24px 26px 24px;display:flex;flex-direction:column;flex:1">
               <div class="lbl" style="font-size:12px;color:#015AFF;font-weight:600;margin-bottom:12px">{{ p.sector }}</div>
               <h3 style="font-size:20px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:0 0 12px 0">{{ p.title }}</h3>
               <p style="font-size:15px;line-height:1.55;color:#56607A;margin:0 0 18px 0;flex:1">{{ p.scope }}</p>
-              <div style="display:flex;justify-content:space-between;font-size:14px;color:#8093B5;border-top:1px solid rgba(14,17,22,.10);padding-top:14px;margin-top:auto">
+              <sc-if value="{{ p.loc || p.year }}"><div style="display:flex;justify-content:space-between;font-size:14px;color:#8093B5;border-top:1px solid rgba(14,17,22,.10);padding-top:14px;margin-top:auto">
                 <span>{{ p.loc }}</span>
                 <span>{{ p.year }}</span>
-              </div>
+              </div></sc-if>
             </div>
           </a>
         </sc-for>
