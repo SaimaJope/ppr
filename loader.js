@@ -159,7 +159,10 @@
         '.ppr-photo-host>.ppr-slide-hint{display:none}' +
         '.ppr-photo-open{position:absolute;top:12px;right:12px;z-index:7;display:inline-flex;align-items:center;gap:8px;' +
         'min-height:44px;padding:10px 15px;border:1px solid rgba(255,255,255,.5);border-radius:24px;' +
-        'font:500 13px/1.3 Archivo,system-ui,sans-serif;color:#fff;background:rgba(14,17,22,.85);cursor:zoom-in}' +
+        'font:500 13px/1.3 Archivo,system-ui,sans-serif;color:#fff;background:rgba(14,17,22,.85);cursor:zoom-in;' +
+        'opacity:0;pointer-events:none;transition:opacity .2s ease}' +
+        '@media(hover:hover){.ppr-photo-host:hover>.ppr-photo-open{opacity:1;pointer-events:auto}}' +
+        '.ppr-photo-open:focus-visible{opacity:1;pointer-events:auto}' +
         '.ppr-photo-open:hover{background:#015AFF}' +
         '.ppr-photo-open:focus-visible{outline:2px solid #fff;outline-offset:3px}' +
         '.ppr-photo-dialog{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;' +
