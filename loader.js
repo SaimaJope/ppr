@@ -176,8 +176,8 @@
         '.ppr-photo-dialog button:hover{background:#015AFF}' +
         '.ppr-photo-dialog button:focus-visible{outline:2px solid #8AB5FF;outline-offset:3px}' +
         '.ppr-photo-dialog button[hidden]{display:none}' +
-        '.ppr-photo-dialog figure{min-width:0;min-height:0;margin:0}' +
-        '.ppr-photo-dialog img{display:block;width:100%;height:100%;object-fit:contain}' +
+        '.ppr-photo-dialog figure{min-width:0;min-height:0;margin:0;display:flex;align-items:center;justify-content:center;cursor:zoom-out}' +
+        '.ppr-photo-dialog img{display:block;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;cursor:default}' +
         '.ppr-photo-footer{display:flex;align-items:center;justify-content:center;gap:16px}' +
         '.ppr-photo-caption{flex:1;min-width:0;max-width:900px;margin:0;text-align:center;font-size:14px;overflow-wrap:anywhere}' +
         '@media(max-width:600px){.ppr-photo-dialog{padding:12px;gap:8px}.ppr-photo-footer{gap:10px}}' +
@@ -205,6 +205,7 @@
       var count = dialog.querySelector('.ppr-photo-toolbar span');
       var close = dialog.querySelector('.ppr-photo-toolbar button');
       var photo = dialog.querySelector('img');
+      var stage = dialog.querySelector('figure');
       var caption = dialog.querySelector('.ppr-photo-caption');
       var buttons = dialog.querySelectorAll('.ppr-photo-footer button');
       close.textContent = window.pprUi.closePhoto + ' ×';
@@ -221,6 +222,10 @@
         count.textContent = (index + 1) + ' / ' + photos.length;
       }
       close.addEventListener('click', function () { dialog.close(); });
+      dialog.addEventListener('click', function (e) {
+        if (e.target === dialog || e.target === stage ||
+            e.target.matches('.ppr-photo-toolbar,.ppr-photo-footer')) dialog.close();
+      });
       buttons[0].addEventListener('click', function () { show(-1); });
       buttons[1].addEventListener('click', function () { show(1); });
       dialog.addEventListener('keydown', function (e) {
