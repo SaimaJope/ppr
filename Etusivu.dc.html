@@ -9,8 +9,8 @@
 <link rel="preload" as="image" href="Kilpi_lahti.jpg">
 <style>html,body{background:#F0F2F6;margin:0}body{font-family:'Archivo',system-ui,sans-serif}</style>
 <script src="./support.js"></script>
-<script src="./language.js?v=20260923-topbar"></script>
-<script src="./loader.js?v=20260923-languages"></script>
+<script src="./language.js?v=20260929-photos"></script>
+<script src="./loader.js?v=20260929-photos"></script>
 <script defer src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
 <script defer src="./scroll-reveal.js?v=20260922-certs"></script>
 <script defer src="./active-nav.js?v=20260923"></script>
@@ -43,6 +43,11 @@
   [data-cert-next]:focus-visible{outline:2px solid #015AFF;outline-offset:4px}
   [data-cert-next]:active img{filter:grayscale(1);opacity:.55}
   [data-cert-grid]{overscroll-behavior-x:contain}
+  a[data-srow] h3,a[data-srow]>span{transition:color .2s ease,transform .2s ease}
+  a[data-srow]:hover h3,a[data-srow]:focus-visible h3{color:#015AFF}
+  a[data-srow]:hover>span,a[data-srow]:focus-visible>span{color:#015AFF !important;transform:translateX(4px)}
+  a[data-srow]:focus-visible{outline:2px solid #015AFF;outline-offset:5px}
+  @media(prefers-reduced-motion:reduce){a[data-srow] h3,a[data-srow]>span{transition:none;transform:none !important}}
   [data-cert-card],[data-cert-card] img{user-select:none;-webkit-user-drag:none}
   [data-billing-target]{scroll-margin-top:105px}
   [data-billing-title].is-billing-highlight{animation:pprBillingHighlight 3s cubic-bezier(.22,1,.36,1)}
@@ -206,7 +211,7 @@
       </div>
       <div style="border-top:1px solid rgba(14,17,22,.14)">
         <sc-for list="{{ page.services.items }}" as="s" hint-placeholder-count="6">
-          <a href="Palvelut.dc.html?lang={{ language }}" data-srow style="display:grid;grid-template-columns:1fr 1.4fr auto;gap:48px;align-items:center;padding:30px 0;border-bottom:1px solid rgba(14,17,22,.14)" style-hover="background:rgba(1,90,255,.03)">
+          <a href="Palvelut.dc.html?lang={{ language }}" data-srow style="display:grid;grid-template-columns:1fr 1.4fr auto;gap:48px;align-items:center;padding:30px 0;border-bottom:1px solid rgba(14,17,22,.14)">
             <h3 style="font-size:clamp(21px,2vw,27px);font-weight:600;letter-spacing:-.01em;margin:0;line-height:1.15">{{ s.title }}</h3>
             <p style="font-size:16px;line-height:1.55;color:#56607A;margin:0">{{ s.desc }}</p>
             <span style="font-size:22px;color:#8093B5;justify-self:end">→</span>

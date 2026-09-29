@@ -108,7 +108,7 @@
       "items": [
         {
           "title": "Industribyggande",
-          "desc": "Krävande projekt i Kilpilahtiområdet enligt Neste Oyj:s och Borealis Polymers Oy:s arbetsmetoder."
+          "desc": "Krävande projekt i Kilpilahtiområdet enligt Neste Oyj:s och Borouge Internationals arbetsmetoder."
         },
         {
           "title": "Mark- och grundläggningsarbeten",
@@ -177,11 +177,11 @@
     "details": [
       {
         "title": "Industribyggande",
-        "desc": "Vår kärnkompetens är krävande projekt i Kilpilahti industriområde enligt Neste Oyj:s och Borealis Polymers Oy:s specifikationer, föreskrifter och arbetsmetoder.",
+        "desc": "Vår kärnkompetens är krävande projekt i Kilpilahti industriområde enligt Neste Oyj:s och Borouge Internationals specifikationer, föreskrifter och arbetsmetoder.",
         "shot": "Byggande av transformatorstationer och elutrymmen",
         "bullets": [
           "Kilpilahti industriområde",
-          "Neste Oyj:s och Borealis Polymers Oy:s specifikationer",
+          "Neste Oyj:s och Borouge Internationals specifikationer",
           "Arbetssäkerhetskort och hetarbetskort",
           "Underhållsstopp och investeringsprojekt"
         ],
@@ -307,7 +307,7 @@
         }
       ],
       "paragraphs": [
-        "Vi är specialiserade på industribyggande i Kilpilahtiområdet, där vi följer Neste Oyj:s och Borealis Polymers Oy:s specifikationer, föreskrifter och arbetsmetoder.",
+        "Vi är specialiserade på industribyggande i Kilpilahtiområdet, där vi följer Neste Oyj:s och Borouge Internationals specifikationer, föreskrifter och arbetsmetoder.",
         "Vår arbetsledning har flera årtiondens erfarenhet av både krävande industribyggande och andra byggarbeten.",
         "Vår erfarna och yrkeskunniga personal säkerställer kvaliteten."
       ]
@@ -317,13 +317,13 @@
       "title": "Säkerhet är grunden för vårt arbete.",
       "paragraphs": [
         "Vi satsar på hög kvalitet och arbetssäkerhet i all vår verksamhet. Vår personal har giltiga arbetssäkerhetskort och hetarbetskort.",
-        "I Kilpilahtiområdet följer vi Neste Oyj:s och Borealis Polymers Oy:s föreskrifter och arbetsmetoder i varje arbetsmoment."
+        "I Kilpilahtiområdet följer vi Neste Oyj:s och Borouge Internationals föreskrifter och arbetsmetoder i varje arbetsmoment."
       ],
       "badges": [
         "Arbetssäkerhetskort",
         "Hetarbetskort",
         "Nestes arbetsmetoder",
-        "Borealis arbetsmetoder"
+        "Borouge Internationals arbetsmetoder"
       ]
     },
     "creds": {
@@ -352,12 +352,12 @@
       "eyebrow": "Specialkompetens",
       "title": "Industribyggande i Kilpilahtiområdet.",
       "paragraphs": [
-        "I Kilpilahti följer vi Neste Oyj:s och Borealis Polymers Oy:s specifikationer, föreskrifter och arbetsmetoder. Vår personal har giltiga arbetssäkerhetskort och hetarbetskort.",
+        "I Kilpilahti följer vi Neste Oyj:s och Borouge Internationals specifikationer, föreskrifter och arbetsmetoder. Vår personal har giltiga arbetssäkerhetskort och hetarbetskort.",
         "Säkerhet och kvalitet är grunden för vårt arbete i varje projekt."
       ],
       "badges": [
         "Neste",
-        "Borealis",
+        "Borouge International",
         "Arbetssäkerhetskort",
         "Hetarbetskort"
       ],
@@ -526,7 +526,7 @@
       {
         "sector": "Betongarbeten",
         "title": "Zero Pellet och avloppsvattenbassäng",
-        "scope": "Zero Pellet, markarbeten och HDPE-tätning, Borealis Polymers Oy. Ett annat projekt: byggande av avloppsvattenbassäng, Jenni Valonen, V-17 markarbeten, betonggjutning och installation av bottenrörledningar.",
+        "scope": "Zero Pellet, markarbeten och HDPE-tätning, Borouge International. Ett annat projekt: byggande av avloppsvattenbassäng, Jenni Valonen, V-17 markarbeten, betonggjutning och installation av bottenrörledningar.",
         "loc": "",
         "year": "",
         "shot": "",
@@ -535,7 +535,7 @@
       {
         "sector": "Betongarbeten",
         "title": "Own Naptha Storage",
-        "scope": "Own Naptha Storage: byggtekniska arbeten, markarbeten 3000 m³, brandvattenledning PEH PN16 500 mm, 400 löpmeter, och platsgjutning 450 m³ (pelare och fundament), Borealis Polymers Oy, 2019.",
+        "scope": "Own Naptha Storage: byggtekniska arbeten, markarbeten 3000 m³, brandvattenledning PEH PN16 500 mm, 400 löpmeter, och platsgjutning 450 m³ (pelare och fundament), Borouge International, 2019.",
         "loc": "",
         "year": "",
         "shot": "",
@@ -562,7 +562,7 @@
       {
         "sector": "Betongarbeten",
         "title": "Aviation och UBC-containerområde",
-        "scope": "Aviation 42641 / 632147 / FI00000144 / 308, sommaren 2019-vintern 2019, Neste Markkinointi Oy. UBC-containerområde: platsgjutna konstruktioner 2200 m³, avlopp för personalutrymmen och containerområdet, oljeavskiljare, HDPE-tätning och bergschaktning 15000 m³. Markplatta (300 mm) med kantförstärkning (600 mm), totalt 5500 m², Borealis Polymers Oy, 2018-vintern 2019.",
+        "scope": "Aviation 42641 / 632147 / FI00000144 / 308, sommaren 2019-vintern 2019, Neste Markkinointi Oy. UBC-containerområde: platsgjutna konstruktioner 2200 m³, avlopp för personalutrymmen och containerområdet, oljeavskiljare, HDPE-tätning och bergschaktning 15000 m³. Markplatta (300 mm) med kantförstärkning (600 mm), totalt 5500 m², Borouge International, 2018-vintern 2019.",
         "loc": "",
         "year": "",
         "shot": "",

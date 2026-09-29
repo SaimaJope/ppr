@@ -155,6 +155,29 @@
         '.ppr-slide-arrow:focus{outline:none}' +
         '.ppr-slide-arrow:focus-visible{outline:2px solid #fff;outline-offset:2px}' +
         '.ppr-slide-arrow svg{display:block}' +
+        '.ppr-photo-host{cursor:zoom-in}' +
+        '.ppr-photo-host>.ppr-slide-hint{display:none}' +
+        '.ppr-photo-open{position:absolute;top:12px;right:12px;z-index:7;display:inline-flex;align-items:center;gap:8px;' +
+        'min-height:44px;padding:10px 15px;border:1px solid rgba(255,255,255,.5);border-radius:24px;' +
+        'font:500 13px/1.3 Archivo,system-ui,sans-serif;color:#fff;background:rgba(14,17,22,.85);cursor:zoom-in}' +
+        '.ppr-photo-open:hover{background:#015AFF}' +
+        '.ppr-photo-open:focus-visible{outline:2px solid #fff;outline-offset:3px}' +
+        '.ppr-photo-dialog{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;' +
+        'margin:0;border:0;padding:20px;box-sizing:border-box;color:#fff;background:#0E1116;font:16px/1.5 Archivo,system-ui,sans-serif}' +
+        '.ppr-photo-dialog[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:12px}' +
+        '.ppr-photo-dialog::backdrop{background:rgba(0,0,0,.9)}' +
+        '.ppr-photo-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px}' +
+        '.ppr-photo-dialog button{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;' +
+        'min-width:44px;min-height:44px;padding:8px 12px;border:1px solid #65718A;border-radius:6px;' +
+        'font:inherit;color:#fff;background:#202733;cursor:pointer}' +
+        '.ppr-photo-dialog button:hover{background:#015AFF}' +
+        '.ppr-photo-dialog button:focus-visible{outline:2px solid #8AB5FF;outline-offset:3px}' +
+        '.ppr-photo-dialog button[hidden]{display:none}' +
+        '.ppr-photo-dialog figure{min-width:0;min-height:0;margin:0}' +
+        '.ppr-photo-dialog img{display:block;width:100%;height:100%;object-fit:contain}' +
+        '.ppr-photo-footer{display:flex;align-items:center;justify-content:center;gap:16px}' +
+        '.ppr-photo-caption{flex:1;min-width:0;max-width:900px;margin:0;text-align:center;font-size:14px;overflow-wrap:anywhere}' +
+        '@media(max-width:600px){.ppr-photo-dialog{padding:12px;gap:8px}.ppr-photo-footer{gap:10px}}' +
         '.ppr-slide-prev{left:12px}.ppr-slide-next{right:12px}' +
         '[data-hero-scene]>.ppr-slide-prev{left:22px;width:48px;height:48px}' +
         '[data-hero-scene]>.ppr-slide-next{right:22px;width:48px;height:48px}';
@@ -165,26 +188,79 @@
       return el.querySelectorAll('[data-slide]');
     }
 
+    function openPhoto(el, index, onClose) {
+      var photos = Array.prototype.map.call(slidesOf(el), function (slide) {
+        var img = slide.tagName === 'IMG' ? slide : slide.querySelector('img:not([aria-hidden="true"])');
+        return { src: img.currentSrc || img.src, caption: img.alt || '' };
+      });
+      var dialog = document.createElement('dialog');
+      dialog.className = 'ppr-photo-dialog';
+      dialog.setAttribute('aria-label', window.pprUi.viewPhoto);
+      dialog.innerHTML = '<div class="ppr-photo-toolbar"><span></span><button type="button" autofocus></button></div>' +
+        '<figure><img decoding="async"></figure>' +
+        '<div class="ppr-photo-footer"><button type="button"></button><p class="ppr-photo-caption" aria-live="polite"></p><button type="button"></button></div>';
+      var count = dialog.querySelector('.ppr-photo-toolbar span');
+      var close = dialog.querySelector('.ppr-photo-toolbar button');
+      var photo = dialog.querySelector('img');
+      var caption = dialog.querySelector('.ppr-photo-caption');
+      var buttons = dialog.querySelectorAll('.ppr-photo-footer button');
+      close.textContent = window.pprUi.closePhoto + ' ×';
+      buttons[0].innerHTML = CHEVRON_PREV;
+      buttons[1].innerHTML = CHEVRON_NEXT;
+      buttons[0].setAttribute('aria-label', window.pprUi.prev);
+      buttons[1].setAttribute('aria-label', window.pprUi.next);
+      buttons[0].hidden = buttons[1].hidden = photos.length < 2;
+      function show(delta) {
+        index = (index + delta + photos.length) % photos.length;
+        photo.src = photos[index].src;
+        photo.alt = photos[index].caption;
+        caption.textContent = photos[index].caption;
+        count.textContent = (index + 1) + ' / ' + photos.length;
+      }
+      close.addEventListener('click', function () { dialog.close(); });
+      buttons[0].addEventListener('click', function () { show(-1); });
+      buttons[1].addEventListener('click', function () { show(1); });
+      dialog.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          show(e.key === 'ArrowLeft' ? -1 : 1);
+        }
+      });
+      var previousOverflow = document.documentElement.style.overflow;
+      dialog.addEventListener('close', function () {
+        document.documentElement.style.overflow = previousOverflow;
+        dialog.remove();
+        onClose(index);
+        var opener = el.querySelector('.ppr-photo-open');
+        if (opener) opener.focus({ preventScroll: true });
+      }, { once: true });
+      document.body.appendChild(dialog);
+      show(0);
+      dialog.showModal();
+      document.documentElement.style.overflow = 'hidden';
+    }
+
     function initContainer(el) {
       if (inited.has(el)) return;
       var imgs = slidesOf(el);
       if (!imgs.length) return;
       inited.add(el);
-      if (imgs.length < 2) return;
       ensureStyles();
 
       var seconds = Math.min(60, Math.max(2, Number(el.getAttribute('data-slideshow-interval')) || 7));
-      var state = { idx: 0, timer: null };
+      var state = { idx: 0, timer: null, viewerOpen: false };
 
       // The hero's decorative gradient overlays sit above the slideshow, so
       // its arrows live on the scene element (last children paint on top).
       var host = el.closest('[data-hero-scene]') || el;
+      var canEnlarge = host === el;
 
       function apply() {
         var list = slidesOf(el);
         for (var i = 0; i < list.length; i++) {
           list[i].style.opacity = i === state.idx ? '1' : '0';
           list[i].setAttribute('aria-hidden', i === state.idx ? 'false' : 'true');
+          list[i].style.pointerEvents = i === state.idx ? 'auto' : 'none';
         }
         var hint = host.querySelector('.ppr-slide-hint');
         if (hint) hint.textContent = '↔ ' + window.pprUi.swipe + ' · ' + (state.idx + 1) + ' / ' + list.length;
@@ -197,9 +273,9 @@
       }
       function restartAuto() {
         if (state.timer) clearInterval(state.timer);
-        if (reduceMotion) return;
+        if (reduceMotion || slidesOf(el).length < 2) return;
         state.timer = setInterval(function () {
-          if (el.isConnected) step(1);
+          if (el.isConnected && !state.viewerOpen) step(1);
         }, seconds * 1000);
       }
       function makeArrow(delta) {
@@ -219,6 +295,18 @@
       }
       function ensureArrows() {
         host.classList.add('ppr-slide-host');
+        if (canEnlarge && !host.querySelector('.ppr-photo-open')) {
+          host.classList.add('ppr-photo-host');
+          var open = document.createElement('button');
+          open.type = 'button';
+          open.className = 'ppr-photo-open';
+          open.setAttribute('aria-haspopup', 'dialog');
+          open.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5M3 3l6 6m12-6-6 6M3 21l6-6m12 6-6-6"/></svg>';
+          open.appendChild(document.createTextNode(window.pprUi.viewPhoto));
+          open.addEventListener('click', enlarge);
+          host.appendChild(open);
+        }
+        if (slidesOf(el).length < 2) return;
         if (!host.querySelector('.ppr-slide-prev')) {
           host.appendChild(makeArrow(-1));
           host.appendChild(makeArrow(1));
@@ -230,12 +318,28 @@
         }
       }
 
+      function enlarge(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (state.viewerOpen) return;
+        state.viewerOpen = true;
+        openPhoto(el, state.idx, function (index) {
+          state.idx = index;
+          state.viewerOpen = false;
+          apply();
+          restartAuto();
+        });
+      }
+      if (canEnlarge) host.addEventListener('click', function (e) {
+        if (e.target.closest('img')) enlarge(e);
+      });
+
       // Touch devices browse by swiping the photo area. Passive listeners:
       // vertical page scrolling is untouched, and a real swipe suppresses the
       // click so reference-card links do not navigate.
       var touchX = 0, touchY = 0, touching = false, suppressClickUntil = 0;
       host.addEventListener('touchstart', function (e) {
-        touching = e.touches.length === 1 && !e.target.closest('.ppr-slide-arrow');
+        touching = e.touches.length === 1 && !e.target.closest('button');
         var t = e.touches[0];
         if (t) { touchX = t.clientX; touchY = t.clientY; }
       }, { passive: true });

@@ -8,8 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet">
 <style>html,body{background:#F0F2F6;margin:0}body{font-family:'Archivo',system-ui,sans-serif}</style>
 <script src="./support.js"></script>
-<script src="./language.js?v=20260923-topbar"></script>
-<script src="./loader.js?v=20260923-languages"></script>
+<script src="./language.js?v=20260929-photos"></script>
+<script src="./loader.js?v=20260929-photos"></script>
 <script defer src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
 <script defer src="./scroll-reveal.js?v=20260922"></script>
 <script defer src="./active-nav.js?v=20260923"></script>
@@ -221,7 +221,7 @@
           
             <div data-slideshow data-slideshow-interval="{{ slideshowInterval }}" style="position:absolute;inset:0">
               <sc-for list="{{ expertiseSlides }}" as="sl">
-                <img data-slide="{{ sl.i }}" src="{{ sl.src }}" alt="{{ page.expertise.title }}" style="{{ sl.style }}">
+                <img data-slide="{{ sl.i }}" src="{{ sl.src }}" alt="{{ sl.caption }}" style="{{ sl.style }}">
               </sc-for>
             </div>
           </div>
@@ -310,7 +310,7 @@ class Component extends DCLogic {
       storyParas: pprParas(c.yritys.story.paragraphs, LIGHT + 'margin:0 0 20px 0', LIGHT + 'margin:0'),
       qualityParas: pprParas(c.yritys.quality.paragraphs, DARK + 'margin:0 0 22px 0;max-width:520px', DARK + 'margin:0;max-width:520px'),
       expertiseParas: pprParas(c.yritys.expertise.paragraphs, DARK + 'margin:0 0 22px 0;max-width:540px', DARK + 'margin:0 0 34px 0;max-width:540px'),
-      expertiseSlides: pprSlides(c.yritys.expertise.images)
+      expertiseSlides: pprSlides(c.yritys.expertise.images, 'center', c.common.photoCaptions).map((sl) => Object.assign({}, sl, { caption: sl.caption || c.yritys.expertise.title }))
     }, pprCommonVals(c));
   }
 }

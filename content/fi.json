@@ -108,7 +108,7 @@
       "items": [
         {
           "title": "Teollisuusrakentaminen",
-          "desc": "Vaativat kohteet Kilpilahden alueella Neste Oyj:n ja Borealis Polymers Oy:n työtapojen mukaisesti."
+          "desc": "Vaativat kohteet Kilpilahden alueella Neste Oyj:n ja Borouge Internationalin työtapojen mukaisesti."
         },
         {
           "title": "Maanrakennus- ja perustustyöt",
@@ -177,11 +177,11 @@
     "details": [
       {
         "title": "Teollisuusrakentaminen",
-        "desc": "Ydinosaamistamme ovat vaativat kohteet Kilpilahden teollisuusalueella, Neste Oyj:n ja Borealis Polymers Oy:n specifikaatioiden, määräysten ja työtapojen mukaisesti.",
+        "desc": "Ydinosaamistamme ovat vaativat kohteet Kilpilahden teollisuusalueella, Neste Oyj:n ja Borouge Internationalin spesifikaatioiden, määräysten ja työtapojen mukaisesti.",
         "shot": "Muuntamo- ja sähkötilojen rakentaminen",
         "bullets": [
           "Kilpilahden teollisuusalue",
-          "Neste Oyj:n ja Borealis Polymers Oy:n specifikaatiot",
+          "Neste Oyj:n ja Borouge Internationalin spesifikaatiot",
           "Työturvallisuus- ja tulityökortit",
           "Seisokit ja investointihankkeet"
         ],
@@ -307,7 +307,7 @@
         }
       ],
       "paragraphs": [
-        "Erikoisosaamistamme on teollisuusrakentaminen Kilpilahden alueella, jossa toimimme Neste Oyj:n ja Borealis Polymers Oy:n specifikaatioiden, määräysten ja työtapojen mukaisesti.",
+        "Erikoisosaamistamme on teollisuusrakentaminen Kilpilahden alueella, jossa toimimme Neste Oyj:n ja Borouge Internationalin spesifikaatioiden, määräysten ja työtapojen mukaisesti.",
         "Yrityksemme työnjohtohenkilöstöllä on jo vuosikymmenien kokemus sekä vaativista teollisuusrakentamisen että muista rakennusalan töistä.",
         "Laadun takaa kokenut ja ammattitaitoinen henkilökunta."
       ]
@@ -317,13 +317,13 @@
       "title": "Turvallisuus on työmme perusta.",
       "paragraphs": [
         "Yrityksemme panostaa kaikessa toiminnassaan korkeaan laatuun sekä työturvallisuuteen. Henkilöstöllämme on voimassa olevat työturvallisuus- ja tulityökortit.",
-        "Kilpilahden alueella noudatamme Neste Oyj:n ja Borealis Polymers Oy:n määräyksiä ja työtapoja jokaisessa työvaiheessa."
+        "Kilpilahden alueella noudatamme Neste Oyj:n ja Borouge Internationalin määräyksiä ja työtapoja jokaisessa työvaiheessa."
       ],
       "badges": [
         "Työturvallisuuskortti",
         "Tulityökortti",
         "Neste työtavat",
-        "Borealis työtavat"
+        "Borouge Internationalin työtavat"
       ]
     },
     "creds": {
@@ -352,12 +352,12 @@
       "eyebrow": "Erikoisosaaminen",
       "title": "Teollisuusrakentaminen Kilpilahden alueella.",
       "paragraphs": [
-        "Toimimme Kilpilahdessa Neste Oyj:n ja Borealis Polymers Oy:n specifikaatioiden, määräysten ja työtapojen mukaisesti. Henkilöstöllämme on voimassa olevat työturvallisuus- ja tulityökortit.",
+        "Toimimme Kilpilahdessa Neste Oyj:n ja Borouge Internationalin spesifikaatioiden, määräysten ja työtapojen mukaisesti. Henkilöstöllämme on voimassa olevat työturvallisuus- ja tulityökortit.",
         "Turvallisuus ja laatu ovat työmme perusta jokaisessa kohteessa."
       ],
       "badges": [
         "Neste",
-        "Borealis",
+        "Borouge International",
         "Työturvallisuuskortti",
         "Tulityökortti"
       ],
@@ -526,7 +526,7 @@
       {
         "sector": "Betonityöt",
         "title": "Zero Pellet ja jätevesiallas",
-        "scope": "Zero Pellet, maanrakennus, HDPE kalvotus Borealis Polymers Oy, toinen kohde Jätevesialtaan rakentaminen Jenni Valonen, V-17 maanrakennustyö, betonointityö, maanrakennus pohjaputkiston asennus.",
+        "scope": "Zero Pellet, maanrakennus, HDPE kalvotus Borouge International, toinen kohde Jätevesialtaan rakentaminen Jenni Valonen, V-17 maanrakennustyö, betonointityö, maanrakennus pohjaputkiston asennus.",
         "loc": "",
         "year": "",
         "shot": "",
@@ -535,7 +535,7 @@
       {
         "sector": "Betonityöt",
         "title": "Own Naptha Storage",
-        "scope": "Own Naptha Storage rakennustekniset työt, maanrakennustyöt 3000 m³, palovesilinjan rakentaminen PEH PN16 500 mm 400 jm ja paikallavalutyöt 450 m³ (pilareita ja anturoita) Borealis Polymers Oy, 2019",
+        "scope": "Own Naptha Storage rakennustekniset työt, maanrakennustyöt 3000 m³, palovesilinjan rakentaminen PEH PN16 500 mm 400 jm ja paikallavalutyöt 450 m³ (pilareita ja anturoita) Borouge International, 2019",
         "loc": "",
         "year": "",
         "shot": "",
@@ -562,7 +562,7 @@
       {
         "sector": "Betonityöt",
         "title": "Aviation ja UBC-konttikenttä",
-        "scope": "Aviation 42641 / 632147 / FI00000144 / 308, kesä 2019 -talvi 2019, Neste Markkinointi Oy UBC konttikenttä, paikallavalu rakenteita 2200 m³, viemäröintejä sosiaalitiloille, konttikentän viemäröinnit, öljynerottimet, HDPE kalvotus ja louhintaa 15000 m³. Konttikenttä maastolaattaa (300 mm) reunavahvistuksella (600 mm), yhteensä 5500 m² Borealis Polymers Oy 2018 talvi 2019",
+        "scope": "Aviation 42641 / 632147 / FI00000144 / 308, kesä 2019 -talvi 2019, Neste Markkinointi Oy UBC konttikenttä, paikallavalu rakenteita 2200 m³, viemäröintejä sosiaalitiloille, konttikentän viemäröinnit, öljynerottimet, HDPE kalvotus ja louhintaa 15000 m³. Konttikenttä maastolaattaa (300 mm) reunavahvistuksella (600 mm), yhteensä 5500 m² Borouge International 2018 talvi 2019",
         "loc": "",
         "year": "",
         "shot": "",

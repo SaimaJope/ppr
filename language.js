@@ -17,6 +17,12 @@
     en: { language: 'Select language', menu: 'Menu', prev: 'Previous image', next: 'Next image', swipe: 'Swipe', certs: 'Next certificates', error: 'The content could not be loaded. Reload the page.', retry: 'Try again' }
   };
   window.pprUi = labels[language];
+  var photoLabels = {
+    fi: { viewPhoto: 'Katso koko kuva', closePhoto: 'Sulje kuva' },
+    sv: { viewPhoto: 'Visa hela bilden', closePhoto: 'Stäng bilden' },
+    en: { viewPhoto: 'View full image', closePhoto: 'Close image' }
+  };
+  Object.assign(window.pprUi, photoLabels[language]);
   var pageNames = { 'Etusivu.dc.html': 'etusivu', 'Palvelut.dc.html': 'palvelut', 'Yritys.dc.html': 'yritys', 'Referenssit.dc.html': 'referenssit', 'Yhteystiedot.dc.html': 'yhteystiedot' };
   var page = window.__pprPreviewPage || location.pathname.split('/').pop() || 'Etusivu.dc.html';
   if (page === 'index.html') page = 'Etusivu.dc.html';

@@ -8,8 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet">
 <style>html,body{background:#F0F2F6;margin:0}body{font-family:'Archivo',system-ui,sans-serif}</style>
 <script src="./support.js"></script>
-<script src="./language.js?v=20260923-topbar"></script>
-<script src="./loader.js?v=20260923-languages"></script>
+<script src="./language.js?v=20260929-photos"></script>
+<script src="./loader.js?v=20260929-photos"></script>
 <script defer src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
 <script defer src="./scroll-reveal.js?v=20260922"></script>
 <script defer src="./active-nav.js?v=20260923"></script>
@@ -157,18 +157,18 @@
       </div>
       <div data-grid3 style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
         <sc-for list="{{ projects }}" as="p" hint-placeholder-count="9">
-          <a href="Yhteystiedot.dc.html?lang={{ language }}" style="display:flex;flex-direction:column;background:#fff;border:1px solid rgba(14,17,22,.10)" style-hover="border-color:#015AFF">
+          <article style="display:flex;flex-direction:column;background:#fff;border:1px solid rgba(14,17,22,.10)" style-hover="border-color:#015AFF">
             <sc-if value="{{ p.slides.0 }}">
 <div style="position:relative;aspect-ratio:3/2;background:#171C24;overflow:hidden">
               
                 <div data-slideshow data-slideshow-interval="{{ slideshowInterval }}" style="position:absolute;inset:0">
                   <sc-for list="{{ p.slides }}" as="sl">
-                    <img data-slide="{{ sl.i }}" src="{{ sl.src }}" alt="{{ p.title }}" style="{{ sl.style }}">
+                    <img data-slide="{{ sl.i }}" src="{{ sl.src }}" alt="{{ sl.caption }}" style="{{ sl.style }}">
                   </sc-for>
                 </div>
               </div>
             </sc-if>
-            <div style="padding:24px 24px 26px 24px;display:flex;flex-direction:column;flex:1">
+            <a href="Yhteystiedot.dc.html?lang={{ language }}" style="padding:24px 24px 26px 24px;display:flex;flex-direction:column;flex:1">
               <div class="lbl" style="font-size:12px;color:#015AFF;font-weight:600;margin-bottom:12px">{{ p.sector }}</div>
               <h3 style="font-size:20px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:0 0 12px 0">{{ p.title }}</h3>
               <p style="font-size:15px;line-height:1.55;color:#56607A;margin:0 0 18px 0;flex:1">{{ p.scope }}</p>
@@ -176,8 +176,8 @@
                 <span>{{ p.loc }}</span>
                 <span>{{ p.year }}</span>
               </div></sc-if>
-            </div>
-          </a>
+            </a>
+          </article>
         </sc-for>
       </div>
     </div>
@@ -248,7 +248,7 @@ class Component extends DCLogic {
       menuOpen: this.state.menuOpen,
       toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
       page: c.referenssit,
-      projects: (c.referenssit.projects || []).map((p) => Object.assign({}, p, { slides: pprSlides(p.images) })),
+      projects: (c.referenssit.projects || []).map((p) => Object.assign({}, p, { slides: pprSlides(p.images, 'center', c.common.photoCaptions).map((sl) => Object.assign({}, sl, { caption: sl.caption || p.title })) })),
       projectCount: (c.referenssit.projects || []).length
     }, pprCommonVals(c));
   }
