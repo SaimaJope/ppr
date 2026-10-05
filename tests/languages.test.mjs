@@ -36,13 +36,14 @@ function languageContext(search='',saved=null,blocked=false,preview=null) {
   vm.runInNewContext(read('language.js'),context);
   return {context,attrs};
 }
-test('URL selection, remembered choice, defaults and blocked storage',()=>{
-  for(const [search,saved,expected] of [['',null,'fi'],['','sv','sv'],['?lang=en','sv','en'],['?lang=fi','en','fi'],['?lang=xx','sv','fi'],['?lang=','en','fi']]) {
+test('URL selection, Finnish defaults, preview override and blocked storage',()=>{
+  for(const [search,saved,expected] of [['',null,'fi'],['','sv','fi'],['','en','fi'],['?lang=en','sv','en'],['?lang=fi','en','fi'],['?lang=xx','sv','fi'],['?lang=','en','fi']]) {
     const {context}=languageContext(search,saved);
     assert.equal(context.pprLanguage,expected);
     assert.equal(context.document.documentElement.lang,expected);
     for(const option of context.pprLanguageOptions) {
-      const url=new URL(option.href);assert.equal(url.pathname,'/ppr/Palvelut.dc.html');assert.equal(url.hash,'#photos');assert.equal(url.searchParams.get('lang'),option.lang);
+      assert.ok(!option.href.startsWith('/')&&!/^https?:/.test(option.href));
+      const url=new URL(option.href,context.document.baseURI);assert.equal(url.pathname,'/ppr/Palvelut.dc.html');assert.equal(url.hash,'#photos');assert.equal(url.searchParams.get('lang'),option.lang);
     }
   }
   assert.equal(languageContext('?lang=en',null,true).context.pprLanguage,'en');
@@ -52,13 +53,14 @@ test('URL selection, remembered choice, defaults and blocked storage',()=>{
 test('internal content links retain locale; external links and assets stay unchanged',()=>{
   const {context}=languageContext('?lang=sv');
   const result=context.pprLocalizeContent({a:'Palvelut.dc.html#photos',b:'https://external.test/',c:'assets/photo.jpg',d:'#billing'});
-  assert.equal(result.a,'https://example.test/ppr/Palvelut.dc.html?lang=sv#photos');
+  assert.ok(!result.a.startsWith('/')&&!/^https?:/.test(result.a));
+  assert.equal(new URL(result.a,context.document.baseURI).href,'https://example.test/ppr/Palvelut.dc.html?lang=sv#photos');
   assert.equal(result.b,'https://external.test/');assert.equal(result.c,'assets/photo.jpg');assert.equal(result.d,'#billing');
   assert.equal(languageContext('',null,false,'sv').context.pprLocalizeContent('#billing'),'https://admin.test/preview#billing');
 });
 test('all templates use shared routing, translated controls and valid scripts',()=>{
-  for(const page of ['Etusivu','Palvelut','Yritys','Referenssit','Yhteystiedot']) {
-    const html=read(page+'.dc.html');
+  for(const page of ['index.html','Etusivu.dc.html','Palvelut.dc.html','Yritys.dc.html','Referenssit.dc.html','Yhteystiedot.dc.html']) {
+    const html=read(page);
     assert.ok(html.indexOf('./language.js')<html.indexOf('./loader.js'));
     assert.ok(html.includes('data-language-switch'));
     assert.ok(html.includes('aria-label="{{ ui.menu }}"'));
@@ -67,7 +69,8 @@ test('all templates use shared routing, translated controls and valid scripts',(
   }
   new vm.Script(read('loader.js'));new vm.Script(read('language.js'));
   new vm.Script(ADMIN_HTML.match(/<script>([\s\S]*)<\/script>/)[1]);
-  assert.ok(read('index.html').includes('target.search = location.search'));
+  assert.ok(read('index.html').includes('<x-dc>'));
+  assert.ok(!read('index.html').includes('window.location.replace'));
 });
 const env={SESSION_SECRET:'test-only',CONTENT_PATH:'content/fi.json',GITHUB_OWNER:'example',GITHUB_REPO:'site',GITHUB_BRANCH:'main',SITE_URL:'https://example.test/ppr/'};
 const expiry=Date.now()+600000;

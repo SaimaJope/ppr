@@ -28,8 +28,8 @@
   }
 
   function fileNameFromPath(pathname) {
-    const file = decodeURIComponent((pathname || '').split('/').filter(Boolean).pop() || '');
-    return (file || 'Etusivu.dc.html').toLowerCase();
+    const file = decodeURIComponent((pathname || '').split('/').pop() || 'index.html').toLowerCase();
+    return file === 'index.html' ? 'etusivu.dc.html' : file;
   }
 
   function pageFileFromHref(href) {
@@ -41,8 +41,7 @@
   }
 
   function currentPageFile() {
-    const file = fileNameFromPath(window.location.pathname);
-    return file === 'index.html' ? 'etusivu.dc.html' : file;
+    return fileNameFromPath(window.location.pathname);
   }
 
   function clearActive(link) {

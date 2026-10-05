@@ -14,8 +14,8 @@ Sivusto toimii näin:
 
 ## Kieliversiot
 
-- Suomi on oletuskieli. `?lang=fi`, `?lang=sv` ja `?lang=en` valitsevat kielen;
-  URL:n valinta ohittaa selaimeen tallennetun valinnan.
+- Ilman `?lang=`-parametria kieli on aina suomi. `?lang=fi`, `?lang=sv` ja
+  `?lang=en` valitsevat kielen; sivujen väliset linkit säilyttävät valinnan.
 - Hallintapaneelin **Sisällön kieli** valitsee ladattavan, tallennettavan ja
   esikatseltavan kieliversion. Tallentamattomista muutoksista varoitetaan ennen
   vaihtoa. Muutoksia ei käännetä automaattisesti muihin kieliin.
@@ -24,6 +24,13 @@ Sivusto toimii näin:
 - Julkaise sekä staattiset sivut GitHub Pagesiin että päivitetty Worker.
   Julkiset käännökset toimivat itsenäisesti, vaikka Worker olisi vielä vanha.
 - Tarkistukset: `node --test tests/languages.test.mjs` repon juuressa.
+
+## Oma verkkotunnus ppr.fi
+
+Katso [verkkotunnuksen vaihdon ohje](DOMAIN-MIGRATION.md). `CNAME` lisätään
+erillisessä commitissa vasta DNS-vaihdon päivänä. Hallintapaneelin `SITE_URL`
+vaihdetaan silloin arvoksi `https://ppr.fi/` ja Worker julkaistaan uudelleen.
+OAuth- tai CORS-asetuksia ei tarvitse muuttaa.
 
 ## 1. Luo fine-grained PAT (GitHub-token)
 

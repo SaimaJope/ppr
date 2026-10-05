@@ -1,10 +1,8 @@
-// Shared locale routing. Explicit URLs take priority over a remembered choice.
+// Shared locale routing. URLs without a language always use Finnish.
 (function () {
   var supported = ['fi', 'sv', 'en'];
   var query = new URLSearchParams(location.search);
-  var saved;
-  try { saved = localStorage.getItem('ppr-language'); } catch (_) {}
-  var requested = window.__pprPreviewLanguage || (query.has('lang') ? query.get('lang') : saved);
+  var requested = window.__pprPreviewLanguage || query.get('lang');
   var language = supported.indexOf(requested) >= 0 ? requested : 'fi';
   window.pprLanguage = language;
   document.documentElement.lang = language;
@@ -23,15 +21,14 @@
     en: { viewPhoto: 'View full image', closePhoto: 'Close image' }
   };
   Object.assign(window.pprUi, photoLabels[language]);
-  var pageNames = { 'Etusivu.dc.html': 'etusivu', 'Palvelut.dc.html': 'palvelut', 'Yritys.dc.html': 'yritys', 'Referenssit.dc.html': 'referenssit', 'Yhteystiedot.dc.html': 'yhteystiedot' };
-  var page = window.__pprPreviewPage || location.pathname.split('/').pop() || 'Etusivu.dc.html';
-  if (page === 'index.html') page = 'Etusivu.dc.html';
+  var pageNames = { 'index.html': 'etusivu', 'Etusivu.dc.html': 'etusivu', 'Palvelut.dc.html': 'palvelut', 'Yritys.dc.html': 'yritys', 'Referenssit.dc.html': 'referenssit', 'Yhteystiedot.dc.html': 'yhteystiedot' };
+  var page = window.__pprPreviewPage || location.pathname.split('/').pop() || 'index.html';
   window.pprLanguageOptions = supported.map(function (lang) {
     var url = new URL(page, document.baseURI);
     url.search = location.search;
     url.searchParams.set('lang', lang);
     url.hash = location.hash;
-    return { code: lang.toUpperCase(), name: { fi: 'Suomi', sv: 'Svenska', en: 'English' }[lang], lang: lang, href: url.href, current: lang === language ? 'true' : 'false' };
+    return { code: lang.toUpperCase(), name: { fi: 'Suomi', sv: 'Svenska', en: 'English' }[lang], lang: lang, href: page + url.search + url.hash, current: lang === language ? 'true' : 'false' };
   });
   // Used on content links as well as fixed template links, before React renders.
   window.pprLocalizeContent = function localize(value) {
@@ -44,13 +41,20 @@
     if (typeof value === 'string' && window.__pprPreviewLanguage && value.charAt(0) === '#') {
       return new URL(value, location.href).href;
     }
-    if (typeof value === 'string' && /^(?:\.\/)?(?:Etusivu|Palvelut|Yritys|Referenssit|Yhteystiedot)\.dc\.html(?:[?#]|$)/.test(value)) {
+    if (typeof value === 'string' && /^(?:\.\/)?(?:index\.html|(?:Etusivu|Palvelut|Yritys|Referenssit|Yhteystiedot)\.dc\.html)(?:[?#]|$)/.test(value)) {
       var url = new URL(value, document.baseURI);
       url.searchParams.set('lang', language);
-      return url.href;
+      return value.split(/[?#]/)[0] + url.search + url.hash;
     }
     return value;
   };
+  // Navigation stays relative; search/social metadata uses the production domain.
+  var canonicalPage = pageNames[page] === 'etusivu' ? '' : page;
+  var canonicalUrl = 'https://ppr.fi/' + canonicalPage + (language === 'fi' ? '' : '?lang=' + language);
+  var canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.href = canonicalUrl;
+  var ogUrl = document.querySelector('meta[property="og:url"]');
+  if (ogUrl) ogUrl.content = canonicalUrl;
   window.pprSetPageMetadata = function (content) {
     var key = pageNames[page] || 'etusivu';
     document.title = content.common.nav[key] + ' | Porvoon Paalurakenne Oy';
@@ -61,6 +65,10 @@
       document.head.appendChild(description);
     }
     description.content = content[key].hero.lead;
+    var ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.content = document.title;
+    var ogDescription = document.querySelector('meta[property="og:description"]');
+    if (ogDescription) ogDescription.content = description.content;
   };
   var style = document.createElement('style');
   style.textContent = '[data-split]>*,[data-grid3]>*{min-width:0}h1,h2,h3{overflow-wrap:anywhere;hyphens:auto}' +

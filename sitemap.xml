@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://ppr.fi/</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/"/>
+  </url>
+  <url>
+    <loc>https://ppr.fi/?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/"/>
+  </url>
+  <url>
+    <loc>https://ppr.fi/?lang=sv</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/"/>
+  </url>
+  <url>
+    <loc>https://ppr.fi/Palvelut.dc.html</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/Palvelut.dc.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/Palvelut.dc.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/Palvelut.dc.html?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/Palvelut.dc.html"/>
+  </url>
+  <url>
+    <loc>https://ppr.fi/Palvelut.dc.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/Palvelut.dc.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/Palvelut.dc.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/Palvelut.dc.html?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/Palvelut.dc.html"/>
+  </url>
+  <url>
+    <loc>https://ppr.fi/Palvelut.dc.html?lang=sv</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/Palvelut.dc.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/Palvelut.dc.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/Palvelut.dc.html?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/Palvelut.dc.html"/>
+  </url>
+  <url>
+    <loc>https://ppr.fi/Yritys.dc.html</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/Yritys.dc.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/Yritys.dc.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/Yritys.dc.html?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/Yritys.dc.html"/>
+  </url>
+  <url>
+    <loc>https://ppr.fi/Yritys.dc.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/Yritys.dc.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/Yritys.dc.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/Yritys.dc.html?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/Yritys.dc.html"/>
+  </url>
+  <url>
+    <loc>https://ppr.fi/Yritys.dc.html?lang=sv</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/Yritys.dc.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/Yritys.dc.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/Yritys.dc.html?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/Yritys.dc.html"/>
+  </url>
+  <url>
+    <loc>https://ppr.fi/Referenssit.dc.html</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/Referenssit.dc.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/Referenssit.dc.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/Referenssit.dc.html?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/Referenssit.dc.html"/>
+  </url>
+  <url>
+    <loc>https://ppr.fi/Referenssit.dc.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/Referenssit.dc.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/Referenssit.dc.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/Referenssit.dc.html?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/Referenssit.dc.html"/>
+  </url>
+  <url>
+    <loc>https://ppr.fi/Referenssit.dc.html?lang=sv</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/Referenssit.dc.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/Referenssit.dc.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/Referenssit.dc.html?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/Referenssit.dc.html"/>
+  </url>
+  <url>
+    <loc>https://ppr.fi/Yhteystiedot.dc.html</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/Yhteystiedot.dc.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/Yhteystiedot.dc.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/Yhteystiedot.dc.html?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/Yhteystiedot.dc.html"/>
+  </url>
+  <url>
+    <loc>https://ppr.fi/Yhteystiedot.dc.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/Yhteystiedot.dc.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/Yhteystiedot.dc.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/Yhteystiedot.dc.html?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/Yhteystiedot.dc.html"/>
+  </url>
+  <url>
+    <loc>https://ppr.fi/Yhteystiedot.dc.html?lang=sv</loc>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://ppr.fi/Yhteystiedot.dc.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ppr.fi/Yhteystiedot.dc.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sv" href="https://ppr.fi/Yhteystiedot.dc.html?lang=sv"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ppr.fi/Yhteystiedot.dc.html"/>
+  </url>
+</urlset>

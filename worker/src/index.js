@@ -12,7 +12,7 @@
 //
 // GITHUB_TOKEN ei koskaan päädy selaimeen: kaikki GitHub-kutsut tehdään täällä.
 
-import { ADMIN_HTML } from './ui.js';
+import { escapeHtmlAttribute, normalizeSiteUrl, renderAdminHtml } from './ui.js';
 
 const SESSION_COOKIE = 'ppr_session';
 const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // 24 h
@@ -38,7 +38,7 @@ export default {
     const url = new URL(request.url);
     try {
       if (url.pathname === '/' && request.method === 'GET') {
-        return htmlResponse(ADMIN_HTML);
+        return htmlResponse(renderAdminHtml(env.SITE_URL));
       }
       if (url.pathname === '/api/login' && request.method === 'POST') {
         return handleLogin(request, env);
@@ -309,7 +309,8 @@ async function handlePreview(request, env) {
   }
 
   if (!content || typeof content !== 'object' || Array.isArray(content) || (content.locale && content.locale !== language)) return new Response('Virheellinen sisältö tai kieli', { status: 400 });
-  const liveUrl = env.SITE_URL + page + '.dc.html?lang=' + language;
+  const siteBase = normalizeSiteUrl(env.SITE_URL);
+  const liveUrl = new URL(page + '.dc.html?lang=' + language, siteBase).href;
   const upstream = await fetch(liveUrl, { headers: { 'user-agent': 'ppr-admin-worker' } });
   if (!upstream.ok) {
     return new Response('Esikatselua ei voitu ladata (sivusto vastasi ' + upstream.status + ').', { status: 502 });
@@ -318,7 +319,7 @@ async function handlePreview(request, env) {
 
   // <base> ohjaa sivun suhteelliset polut (support.js, kuvat, fontit)
   // takaisin julkiseen sivustoon.
-  html = html.replace(/<head>/i, '<head><base href="' + env.SITE_URL + '">');
+  html = html.replace(/<head>/i, () => '<head><base href="' + escapeHtmlAttribute(siteBase) + '">');
 
   // loader.js asettaa window.__pprContent -promisen; korvataan se heti perään
   // muokkaamattomalla pending-sisällöllä, jolloin sivu renderöityy siitä.

@@ -1,17 +1,34 @@
 // Hallintapaneelin käyttöliittymä yhtenä HTML-merkkijonona.
 // Ulkoasu seuraa julkisen sivuston tyyliä: Archivo-fontit, terävät kulmat,
 // tummansininen/teräksinen väripaletti.
-// HUOM: sisäinen JavaScript ei käytä takahipsuja eikä ${ -merkintää,
-// jotta se voidaan upottaa tähän template-literaaliin turvallisesti.
+// HUOM: sisäinen JavaScript ei käytä takahipsuja. Ainoat interpoloinnit
+// ovat palvelimen lisäämiä, HTML- tai JavaScript-kontekstiin escapettuja URL-arvoja.
 
-export const ADMIN_HTML = `<!doctype html>
+export function normalizeSiteUrl(siteUrl = 'https://ppr.fi/') {
+  const url = new URL(siteUrl);
+  if (!['http:', 'https:'].includes(url.protocol)) throw new Error('SITE_URL must use HTTP or HTTPS');
+  url.search = '';
+  url.hash = '';
+  url.pathname = url.pathname.replace(/\/?$/, '/');
+  return url.href;
+}
+
+export function escapeHtmlAttribute(value) {
+  return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+export function renderAdminHtml(siteUrl) {
+  const siteBase = normalizeSiteUrl(siteUrl);
+  const assetBase = escapeHtmlAttribute(siteBase);
+  const scriptBase = JSON.stringify(siteBase).replace(/</g, '\\u003c');
+  return `<!doctype html>
 <html lang="fi">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>PPR | Sisällönhallinta</title>
-<link rel="icon" type="image/png" href="https://saimajope.github.io/ppr/assets/favicon.png">
+<link rel="icon" type="image/png" href="${assetBase}assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet">
@@ -443,7 +460,7 @@ export const ADMIN_HTML = `<!doctype html>
 
 <div id="login-view">
   <div class="login-card">
-    <img class="logo" src="https://saimajope.github.io/ppr/assets/ppr-mark.png" alt="PPR">
+    <img class="logo" src="${assetBase}assets/ppr-mark.png" alt="PPR">
     <div class="lbl eyebrow">Sisällönhallinta</div>
     <h1>Kirjaudu sisään</h1>
     <p class="sub">Porvoon Paalurakenne Oy:n sivuston hallintapaneeli.</p>
@@ -470,7 +487,7 @@ export const ADMIN_HTML = `<!doctype html>
     <button class="btn btn-ghost" id="preview-btn">Esikatselu</button>
     <button class="btn btn-primary" id="save-btn" disabled>Tallenna muutokset</button>
     <button class="btn btn-ghost" id="logout-btn">Kirjaudu ulos</button>
-    <img class="logo" src="https://saimajope.github.io/ppr/assets/ppr-mark-white.png" alt="PPR">
+    <img class="logo" src="${assetBase}assets/ppr-mark-white.png" alt="PPR">
   </header>
   <div class="layout">
     <nav class="side" id="side-nav">
@@ -496,14 +513,14 @@ export const ADMIN_HTML = `<!doctype html>
 </div>
 
 <div id="transition-overlay" class="on" style="display:flex" aria-hidden="true">
-  <img src="https://saimajope.github.io/ppr/assets/ppr-mark-white.png" alt="">
+  <img src="${assetBase}assets/ppr-mark-white.png" alt="">
   <div class="t-bar"><span></span></div>
   <div class="t-label lbl" id="transition-label">Ladataan…</div>
 </div>
 
 <div id="toast"></div>
 
-<form id="preview-form" method="POST" action="/preview" target="_blank" style="display:none">
+<form id="preview-form" method="POST" action="./preview" target="_blank" style="display:none">
   <input type="hidden" name="page" id="preview-page">
   <input type="hidden" name="language" id="preview-language">
   <input type="hidden" name="content" id="preview-content">
@@ -525,7 +542,7 @@ var state = {
   localImages: {} // path -> dataURL (esikatselukuva ennen julkaisua)
 };
 
-var SITE_URL = 'https://saimajope.github.io/ppr/';
+var SITE_URL = ${scriptBase};
 
 var IMAGES_HINT = 'Yksi kuva näkyy sellaisenaan. Kaksi tai useampi kuva vaihtuu automaattisesti kuvaesityksenä ja saa selausnuolet.';
 
@@ -1007,7 +1024,7 @@ function uploadFile(file) {
     reader.onerror = function () { reject(new Error('Kuvatiedostoa ei voitu lukea.')); };
     reader.onload = function () {
       var dataUrl = String(reader.result);
-      fetch('/api/upload', {
+      fetch('./api/upload', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ filename: file.name, dataBase64: dataUrl })
@@ -1557,7 +1574,7 @@ function loadContent(language) {
   var requestedLanguage = language || state.language;
   state.loading = true;
   $('language-select').disabled = true;
-  return fetch('/api/content?lang=' + requestedLanguage).then(function (res) {
+  return fetch('./api/content?lang=' + requestedLanguage).then(function (res) {
     if (res.status === 401) {
       showLogin();
       return null;
@@ -1596,7 +1613,7 @@ function save() {
   var btn = $('save-btn');
   btn.disabled = true;
   btn.textContent = 'Tallennetaan…';
-  fetch('/api/content', {
+  fetch('./api/content', {
     method: 'PUT',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ content: state.data, sha: state.sha, language: state.language })
@@ -1649,7 +1666,7 @@ $('login-form').addEventListener('submit', function (e) {
   var btn = $('login-btn');
   btn.disabled = true;
   $('login-error').textContent = '';
-  fetch('/api/login', {
+  fetch('./api/login', {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ password: $('password').value })
@@ -1694,7 +1711,7 @@ $('discard-btn').addEventListener('click', function () {
 });
 $('logout-btn').addEventListener('click', function () {
   showOverlay('Kirjaudutaan ulos…');
-  fetch('/api/logout', { method: 'POST' }).then(function () {
+  fetch('./api/logout', { method: 'POST' }).then(function () {
     state.data = null;
     clearDirty();
     showLogin();
@@ -1716,3 +1733,7 @@ loadContent();
 </script>
 </body>
 </html>`;
+}
+
+// Kept for syntax checks and other consumers; live responses use SITE_URL.
+export const ADMIN_HTML = renderAdminHtml();

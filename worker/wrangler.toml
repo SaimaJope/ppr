@@ -14,4 +14,7 @@ GITHUB_REPO = "ppr"
 GITHUB_BRANCH = "main"
 CONTENT_PATH = "content/fi.json"
 ASSETS_DIR = "assets"
+# Ennen DNS-vaihtoa nykyinen julkinen sivusto; vaihda arvoksi https://ppr.fi/
+# ja julkaise Worker uudelleen DNS-vaihdon yhteydessä. Myös www-osoite tai
+# paikallinen /ppr/-polku toimii tällä samalla asetuksella.
 SITE_URL = "https://saimajope.github.io/ppr/"
