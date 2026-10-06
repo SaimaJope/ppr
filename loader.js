@@ -88,6 +88,7 @@
       company: common.company,
       language: window.pprLanguage,
       languages: window.pprLanguageOptions,
+      pageLinks: window.pprPageLinks,
       ui: window.pprUi,
       nav: common.nav,
       office: office,

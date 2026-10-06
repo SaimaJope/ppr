@@ -4,7 +4,8 @@ Sivusto toimii näin:
 
 - Kunkin kielen sisältö on omassa tiedostossaan: **`content/fi.json`**,
   **`content/sv.json`** ja **`content/en.json`**. Sivut
-  (`*.dc.html`) hakevat sen selaimessa välimuistin ohi (`?v=aikaleima` +
+  (`index.html`, sivuhakemistojen `index.html` ja vanhat `*.dc.html`-osoitteet)
+  hakevat sen selaimessa välimuistin ohi (`?v=aikaleima` +
   `cache: "no-store"`), joten muutos näkyy heti kun GitHub Pages on julkaissut
   uuden version (yleensä alle minuutissa).
 - Hallintapaneeli on **Cloudflare Worker** (`worker/`-kansio). Se tallentaa
@@ -21,16 +22,29 @@ Sivusto toimii näin:
   vaihtoa. Muutoksia ei käännetä automaattisesti muihin kieliin.
 - GET `/api/content?lang=sv` lukee ruotsin. PUT `/api/content` käyttää rungon
   `language`-kenttää. Ilman kielivalintaa molemmat käyttävät suomea.
-- Julkaise sekä staattiset sivut GitHub Pagesiin että päivitetty Worker.
-  Julkiset käännökset toimivat itsenäisesti, vaikka Worker olisi vielä vanha.
+- Uudessa käyttöönotossa julkaise staattiset sivut GitHub Pagesiin ja Worker
+  erikseen. Julkiset käännökset toimivat itsenäisesti, vaikka Worker olisi vielä
+  vanha; puhtaiden sivuosoitteiden julkaisu ei edellytä Workerin päivitystä.
 - Tarkistukset: `node --test tests/languages.test.mjs` repon juuressa.
 
 ## Oma verkkotunnus ppr.fi
 
-Katso [verkkotunnuksen vaihdon ohje](DOMAIN-MIGRATION.md). `CNAME` lisätään
-erillisessä commitissa vasta DNS-vaihdon päivänä. Hallintapaneelin `SITE_URL`
-vaihdetaan silloin arvoksi `https://ppr.fi/` ja Worker julkaistaan uudelleen.
-OAuth- tai CORS-asetuksia ei tarvitse muuttaa.
+Verkkotunnus on käytössä 6.10.2026 alkaen. `CNAME` sisältää `ppr.fi`, ja GitHub
+Pagesin **Enforce HTTPS** on käytössä. `www.ppr.fi` ohjaa osoitteeseen `ppr.fi`.
+Katso [julkaisu- ja osoiteohje](DOMAIN-MIGRATION.md).
+
+Uudet julkiset osoitteet ovat `/`, `/palvelut/`, `/yritys/`, `/referenssit/` ja
+`/yhteystiedot/`. Suomen osoitteet eivät tarvitse kieliparametria; englanti ja
+ruotsi käyttävät `?lang=en` ja `?lang=sv`. Vanhat `.dc.html`-osoitteet säilyvät ja
+ohjaavat selaimessa uusiin osoitteisiin. Niiden kokonaiset sivupohjat säilyvät
+hallintapaneelin esikatseluja varten.
+
+Tämä julkaisu koskee GitHub Pagesin staattista sivustoa. Hallintapaneeli pysyy
+nykyisessä `workers.dev`-osoitteessaan, eikä Workeria julkaista tässä yhteydessä
+uudelleen. OAuth- tai CORS-asetuksia ei tarvitse muuttaa. Jos valmisteltu Worker
+julkaistaan myöhemmin erikseen, aseta sen julkisen sivuston `SITE_URL` arvoksi
+`https://ppr.fi/` myös `worker/wrangler.toml`-tiedostossa; tämä ei muuta
+hallintapaneelin omaa osoitetta.
 
 ## 1. Luo fine-grained PAT (GitHub-token)
 
@@ -91,7 +105,7 @@ tämä on hallintapaneelin osoite, jonka voit antaa asiakkaalle.
 1. Avaa Workerin osoite, kirjaudu ADMIN_PASSWORD-salasanalla.
 2. Muuta jotain tekstiä ja paina **Tallenna muutokset** → paneeli näyttää
    "Tallennettu!" ja repoon syntyy commit *"Sisältöpäivitys hallintapaneelista"*.
-3. Avaa <https://saimajope.github.io/ppr/> noin minuutin päästä ja tarkista
+3. Avaa <https://ppr.fi/> noin minuutin päästä ja tarkista
    että muutos näkyy.
 4. **Esikatselu**-nappi avaa valitun sivun uuteen välilehteen tallentamattomilla
    muutoksilla. (Toimii vasta kun tämän repon uusi versio – JSONista renderöivät

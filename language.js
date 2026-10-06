@@ -21,14 +21,40 @@
     en: { viewPhoto: 'View full image', closePhoto: 'Close image' }
   };
   Object.assign(window.pprUi, photoLabels[language]);
-  var pageNames = { 'index.html': 'etusivu', 'Etusivu.dc.html': 'etusivu', 'Palvelut.dc.html': 'palvelut', 'Yritys.dc.html': 'yritys', 'Referenssit.dc.html': 'referenssit', 'Yhteystiedot.dc.html': 'yhteystiedot' };
-  var page = window.__pprPreviewPage || location.pathname.split('/').pop() || 'index.html';
+  var routes = { etusivu: './', palvelut: 'palvelut/', yritys: 'yritys/', referenssit: 'referenssit/', yhteystiedot: 'yhteystiedot/' };
+  var legacyPages = { 'index.html': 'etusivu', 'etusivu.dc.html': 'etusivu', 'palvelut.dc.html': 'palvelut', 'yritys.dc.html': 'yritys', 'referenssit.dc.html': 'referenssit', 'yhteystiedot.dc.html': 'yhteystiedot' };
+  // Directory pages set a relative <base>; the same links also work under /ppr/.
+  var siteBase = new URL('./', document.baseURI);
+  window.pprPageFromPath = function (pathname) {
+    var path = pathname;
+    try { path = decodeURIComponent(path); } catch (_) {}
+    if (path.indexOf(siteBase.pathname) !== 0) return '';
+    var relative = path.slice(siteBase.pathname.length).toLowerCase();
+    if (relative === '' || relative === 'index.html') return 'etusivu';
+    if (legacyPages[relative]) return legacyPages[relative];
+    var slug = relative.replace(/\/(?:index\.html)?$/, '');
+    return Object.prototype.hasOwnProperty.call(routes, slug) ? slug : '';
+  };
+  var page = (window.__pprPreviewPage && legacyPages[window.__pprPreviewPage.toLowerCase()]) ||
+    document.documentElement.getAttribute('data-ppr-page') || window.pprPageFromPath(location.pathname) || 'etusivu';
+  window.pprPage = page;
+  function pageHref(key, lang, search, hash) {
+    var params = new URLSearchParams(search || '');
+    if (lang === 'fi') params.delete('lang');
+    else params.set('lang', lang);
+    var suffix = params.toString();
+    return routes[key] + (suffix ? '?' + suffix : '') + (hash || '');
+  }
+  window.pprPageLinks = {};
+  Object.keys(routes).forEach(function (key) { window.pprPageLinks[key] = pageHref(key, language); });
+  // Keep bookmarked file URLs working, with the clean address in the browser.
+  // The editor fetches these full templates and must remain on its preview URL.
+  if (!window.__pprPreviewLanguage) {
+    var target = new URL(pageHref(page, language, location.search, location.hash), siteBase);
+    if (target.href !== location.href) location.replace(target.href);
+  }
   window.pprLanguageOptions = supported.map(function (lang) {
-    var url = new URL(page, document.baseURI);
-    url.search = location.search;
-    url.searchParams.set('lang', lang);
-    url.hash = location.hash;
-    return { code: lang.toUpperCase(), name: { fi: 'Suomi', sv: 'Svenska', en: 'English' }[lang], lang: lang, href: page + url.search + url.hash, current: lang === language ? 'true' : 'false' };
+    return { code: lang.toUpperCase(), name: { fi: 'Suomi', sv: 'Svenska', en: 'English' }[lang], lang: lang, href: pageHref(page, lang, location.search, location.hash), current: lang === language ? 'true' : 'false' };
   });
   // Used on content links as well as fixed template links, before React renders.
   window.pprLocalizeContent = function localize(value) {
@@ -38,25 +64,25 @@
       Object.keys(value).forEach(function (key) { copy[key] = localize(value[key]); });
       return copy;
     }
-    if (typeof value === 'string' && window.__pprPreviewLanguage && value.charAt(0) === '#') {
-      return new URL(value, location.href).href;
+    if (typeof value === 'string' && value.charAt(0) === '#') {
+      return window.__pprPreviewLanguage ? new URL(value, location.href).href : pageHref(page, language, location.search, value);
     }
-    if (typeof value === 'string' && /^(?:\.\/)?(?:index\.html|(?:Etusivu|Palvelut|Yritys|Referenssit|Yhteystiedot)\.dc\.html)(?:[?#]|$)/.test(value)) {
+    if (typeof value === 'string' && /^(?:\.\/)?(?:index\.html|(?:Etusivu|Palvelut|Yritys|Referenssit|Yhteystiedot)\.dc\.html|(?:palvelut|yritys|referenssit|yhteystiedot)\/|\.\/)(?:[?#]|$)/i.test(value)) {
       var url = new URL(value, document.baseURI);
-      url.searchParams.set('lang', language);
-      return value.split(/[?#]/)[0] + url.search + url.hash;
+      var key = window.pprPageFromPath(url.pathname);
+      if (key) return pageHref(key, language, url.search, url.hash);
     }
     return value;
   };
   // Navigation stays relative; search/social metadata uses the production domain.
-  var canonicalPage = pageNames[page] === 'etusivu' ? '' : page;
+  var canonicalPage = page === 'etusivu' ? '' : routes[page];
   var canonicalUrl = 'https://ppr.fi/' + canonicalPage + (language === 'fi' ? '' : '?lang=' + language);
   var canonical = document.querySelector('link[rel="canonical"]');
   if (canonical) canonical.href = canonicalUrl;
   var ogUrl = document.querySelector('meta[property="og:url"]');
   if (ogUrl) ogUrl.content = canonicalUrl;
   window.pprSetPageMetadata = function (content) {
-    var key = pageNames[page] || 'etusivu';
+    var key = page;
     document.title = content.common.nav[key] + ' | Porvoon Paalurakenne Oy';
     var description = document.querySelector('meta[name="description"]');
     if (!description) {

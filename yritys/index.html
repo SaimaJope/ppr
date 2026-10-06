@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html lang="fi" data-ppr-page="palvelut">
+<html lang="fi" data-ppr-page="yritys">
 <head>
 <meta charset="utf-8">
+<base href="../">
 <link rel="icon" type="image/png" href="assets/favicon.png">
-<title>Palvelut | Porvoon Paalurakenne Oy</title>
-<meta name="description" content="Tuotamme rakennusalan töitä teollisuudelle, yrityksille, yhdistyksille ja julkishallinnolle. Laadun takaa kokenut ja ammattitaitoinen henkilökunta.">
-<link rel="canonical" href="https://ppr.fi/palvelut/">
-<link rel="alternate" hreflang="fi" href="https://ppr.fi/palvelut/">
-<link rel="alternate" hreflang="en" href="https://ppr.fi/palvelut/?lang=en">
-<link rel="alternate" hreflang="sv" href="https://ppr.fi/palvelut/?lang=sv">
-<link rel="alternate" hreflang="x-default" href="https://ppr.fi/palvelut/">
+<title>Yritys | Porvoon Paalurakenne Oy</title>
+<meta name="description" content="Porvoon Paalurakenne Oy tarjoaa rakentamispalveluja teollisuudelle sekä julkisille asiakkaille Etelä-Suomen alueella.">
+<link rel="canonical" href="https://ppr.fi/yritys/">
+<link rel="alternate" hreflang="fi" href="https://ppr.fi/yritys/">
+<link rel="alternate" hreflang="en" href="https://ppr.fi/yritys/?lang=en">
+<link rel="alternate" hreflang="sv" href="https://ppr.fi/yritys/?lang=sv">
+<link rel="alternate" hreflang="x-default" href="https://ppr.fi/yritys/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Porvoon Paalurakenne Oy">
-<meta property="og:title" content="Palvelut | Porvoon Paalurakenne Oy">
-<meta property="og:description" content="Tuotamme rakennusalan töitä teollisuudelle, yrityksille, yhdistyksille ja julkishallinnolle. Laadun takaa kokenut ja ammattitaitoinen henkilökunta.">
-<meta property="og:url" content="https://ppr.fi/palvelut/">
+<meta property="og:title" content="Yritys | Porvoon Paalurakenne Oy">
+<meta property="og:description" content="Porvoon Paalurakenne Oy tarjoaa rakentamispalveluja teollisuudelle sekä julkisille asiakkaille Etelä-Suomen alueella.">
+<meta property="og:url" content="https://ppr.fi/yritys/">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -78,10 +79,6 @@
     [data-page-breadcrumb],[data-page-eyebrow]{display:none !important}
     [data-page-hero-inner]{padding:0 32px !important}
     [data-page-hero-copy]{padding:28px 0 44px 0 !important}
-    [data-detail-bullets]{grid-template-columns:1fr !important;gap:12px !important}
-    [data-page-hero-copy] .reveal-up{opacity:1 !important;visibility:visible !important;transform:none !important}
-    [data-page-hero-copy] p,[data-split] p{max-width:min(100%,31ch) !important}
-    p{text-wrap:auto !important}
     [data-nav-inner]{height:64px !important;padding:0 16px !important}
     [data-nav-logo]{height:24px !important}
     [data-nav-actions]{gap:10px !important}
@@ -151,7 +148,7 @@
     <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(128,147,181,.05) 0 1px,transparent 1px 16px)"></div>
     <div data-page-hero-inner style="position:relative;max-width:1300px;margin:0 auto;padding:0 32px">
       <div data-page-breadcrumb style="padding-top:42px;font-size:13px;color:#5A6678" class="lbl"><a href="{{ pageLinks.etusivu }}" style-hover="color:#fff">{{ nav.etusivu }}</a> / <span style="color:#9AA6BD">{{ page.hero.eyebrow }}</span></div>
-      <div data-page-hero-copy style="max-width:840px;padding:52px 0 68px 0">
+      <div data-page-hero-copy style="max-width:860px;padding:52px 0 68px 0">
         <div data-page-eyebrow class="lbl" style="font-size:13px;color:#5C97FF;font-weight:600;margin-bottom:22px">{{ page.hero.eyebrow }}</div>
         <h1 data-hero-h1 style="font-size:clamp(40px,5.6vw,80px);line-height:1.0;font-weight:800;letter-spacing:-.025em;margin:0">{{ page.hero.title }}</h1>
         <p style="font-size:clamp(17px,1.5vw,20px);line-height:1.55;color:#C2CBDB;max-width:640px;margin:28px 0 0 0">{{ page.hero.lead }}</p>
@@ -159,37 +156,100 @@
     </div>
   </header>
 
-  <!-- DETAIL LIST -->
+  <!-- STORY -->
   <section data-sec style="background:#fff">
     <div style="max-width:1300px;margin:0 auto;padding:96px 32px">
-      <sc-for list="{{ details }}" as="d" hint-placeholder-count="7">
-        <div data-split style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:64px;padding:56px 0;border-top:1px solid rgba(14,17,22,.14);align-items:start">
-          <div>
-            <h2 style="font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.02em;margin:0 0 18px 0;line-height:1.08">{{ d.title }}</h2>
-            <p style="font-size:18px;line-height:1.6;color:#3A4150;margin:0 0 26px 0;max-width:520px">{{ d.desc }}</p>
-            <ul data-detail-bullets style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:12px 28px">
-              <sc-for list="{{ d.bullets }}" as="b" hint-placeholder-count="4">
-                <li style="display:flex;gap:12px;font-size:15.5px;color:#28303C;line-height:1.4"><span style="flex:none;width:7px;height:7px;background:#015AFF;margin-top:6px"></span>{{ b }}</li>
-              </sc-for>
-            </ul>
+      <div data-split style="display:grid;grid-template-columns:0.95fr 1.05fr;gap:80px;align-items:start">
+        <div>
+          <h2 style="font-size:clamp(26px,3vw,40px);line-height:1.12;font-weight:700;letter-spacing:-.02em;margin:0">{{ page.story.title }}</h2>
+          <div style="display:flex;flex-wrap:wrap;gap:0;margin-top:40px;border-top:1px solid rgba(14,17,22,.14)">
+            <sc-for list="{{ page.story.stats }}" as="st" hint-placeholder-count="3">
+              <div style="flex:1;min-width:150px;padding:22px 0;border-bottom:1px solid rgba(14,17,22,.14)"><div style="font-size:30px;font-weight:700;letter-spacing:-.02em">{{ st.value }}</div><div style="font-size:14px;color:#56607A;margin-top:4px">{{ st.label }}</div></div>
+            </sc-for>
           </div>
-          <sc-if value="{{ d.slides.0 }}">
-<div style="position:relative;aspect-ratio:4/3;background:#171C24;overflow:hidden">
-
-              <div data-slideshow data-slideshow-interval="{{ slideshowInterval }}" style="position:absolute;inset:0">
-                <sc-for list="{{ d.slides }}" as="sl">
-                  <div data-slide="{{ sl.i }}" aria-hidden="{{ sl.hidden }}" style="{{ sl.style }}">
-                    <img src="{{ sl.src }}" alt="" aria-hidden="true" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(18px) brightness(.65);transform:scale(1.15)">
-                    <img src="{{ sl.src }}" alt="{{ sl.caption }}" loading="lazy" decoding="async" style="position:relative;width:100%;height:calc(100% - 44px);object-fit:contain;display:block">
-                    <div style="position:absolute;bottom:0;left:0;right:0;height:44px;display:flex;align-items:center;justify-content:center;padding:6px 16px;background:rgba(14,17,22,.55);color:#F0F2F6;font-size:13px;line-height:1.35;text-align:center">{{ sl.caption }}</div>
-                  </div>
-                </sc-for>
-              </div>
-            </div>
-            </sc-if>
         </div>
-      </sc-for>
-      <div style="border-top:1px solid rgba(14,17,22,.14)"></div>
+        <div style="padding-top:6px">
+          <sc-for list="{{ storyParas }}" as="p">
+            <p style="{{ p.style }}">{{ p.text }}</p>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUALITY & SAFETY -->
+  <section data-sec style="background:#0E1116;color:#F0F2F6">
+    <div style="max-width:1300px;margin:0 auto;padding:96px 32px">
+      <div data-split style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center">
+        <div>
+          <div class="lbl" style="font-size:13px;color:#5C97FF;font-weight:600;margin-bottom:22px">{{ page.quality.eyebrow }}</div>
+          <h2 style="font-size:clamp(26px,3vw,42px);line-height:1.1;font-weight:700;letter-spacing:-.02em;margin:0 0 26px 0">{{ page.quality.title }}</h2>
+          <sc-for list="{{ qualityParas }}" as="p">
+            <p style="{{ p.style }}">{{ p.text }}</p>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <sc-for list="{{ page.quality.badges }}" as="b" hint-placeholder-count="4">
+            <span class="lbl" style="font-size:12.5px;border:1px solid rgba(146,170,220,.32);padding:11px 16px;color:#D4DCEC">{{ b }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section data-sec style="background:#F0F2F6">
+    <div style="max-width:1300px;margin:0 auto;padding:96px 32px">
+      <div class="lbl" style="font-size:13px;color:#015AFF;font-weight:600;margin-bottom:20px">{{ page.creds.eyebrow }}</div>
+      <h2 style="font-size:clamp(26px,3vw,40px);line-height:1.1;font-weight:700;letter-spacing:-.02em;margin:0 0 48px 0;max-width:560px">{{ page.creds.title }}</h2>
+      <div data-grid3 style="display:grid;grid-template-columns:repeat(4,1fr);gap:36px">
+        <sc-for list="{{ page.creds.items }}" as="c" hint-placeholder-count="4">
+          <div style="border-top:2px solid #0E1116;padding-top:22px">
+            <div style="font-size:21px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px">{{ c.name }}</div>
+            <div style="font-size:15px;color:#56607A;line-height:1.55">{{ c.desc }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ERIKOISOSAAMINEN -->
+  <section data-sec style="background:#0E1116;color:#F0F2F6">
+    <div style="max-width:1300px;margin:0 auto;padding:96px 32px">
+      <div data-split style="display:grid;grid-template-columns:1.05fr 0.95fr;gap:72px;align-items:center">
+        <div>
+          <div class="lbl" style="font-size:13px;color:#5C97FF;font-weight:600;margin-bottom:22px">{{ page.expertise.eyebrow }}</div>
+          <h2 style="font-size:clamp(28px,3.4vw,46px);line-height:1.08;font-weight:700;letter-spacing:-.02em;margin:0 0 26px 0">{{ page.expertise.title }}</h2>
+          <sc-for list="{{ expertiseParas }}" as="p">
+            <p style="{{ p.style }}">{{ p.text }}</p>
+          </sc-for>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <sc-for list="{{ page.expertise.badges }}" as="b" hint-placeholder-count="4">
+              <span class="lbl" style="font-size:12.5px;border:1px solid rgba(146,170,220,.32);padding:9px 15px;color:#D4DCEC">{{ b }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <sc-if value="{{ expertiseSlides.0 }}">
+<div style="position:relative;aspect-ratio:4/5;background:#171C24;overflow:hidden;border:1px solid rgba(128,147,181,.18)">
+
+            <div data-slideshow data-slideshow-interval="{{ slideshowInterval }}" style="position:absolute;inset:0">
+              <sc-for list="{{ expertiseSlides }}" as="sl">
+                <img data-slide="{{ sl.i }}" src="{{ sl.src }}" alt="{{ sl.caption }}" style="{{ sl.style }}">
+              </sc-for>
+            </div>
+          </div>
+            </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <!-- NETWORK -->
+  <section data-sec style="background:#E9E7E1">
+    <div style="max-width:1300px;margin:0 auto;padding:96px 32px">
+      <div data-split style="display:grid;grid-template-columns:0.9fr 1.1fr;gap:72px;align-items:center">
+        <h2 style="font-size:clamp(24px,2.8vw,38px);line-height:1.12;font-weight:700;letter-spacing:-.02em;margin:0">{{ page.network.title }}</h2>
+        <p style="font-size:19px;line-height:1.6;color:#3A4150;margin:0;max-width:560px">{{ page.network.text }}</p>
+      </div>
     </div>
   </section>
 
@@ -253,12 +313,17 @@ class Component extends DCLogic {
   renderVals() {
     const c = this.state.content;
     if (!c) return { ready: false };
+    const DARK = 'font-size:18px;line-height:1.6;color:#C2CBDB;';
+    const LIGHT = 'font-size:18px;line-height:1.62;color:#3A4150;';
     return Object.assign({
       ready: true,
       menuOpen: this.state.menuOpen,
       toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
-      page: c.palvelut,
-      details: (c.palvelut.details || []).map((d) => Object.assign({}, d, { slides: pprSlides(d.images, 'center', c.common.photoCaptions).map((sl) => Object.assign({}, sl, { caption: sl.caption || d.title })) }))
+      page: c.yritys,
+      storyParas: pprParas(c.yritys.story.paragraphs, LIGHT + 'margin:0 0 20px 0', LIGHT + 'margin:0'),
+      qualityParas: pprParas(c.yritys.quality.paragraphs, DARK + 'margin:0 0 22px 0;max-width:520px', DARK + 'margin:0;max-width:520px'),
+      expertiseParas: pprParas(c.yritys.expertise.paragraphs, DARK + 'margin:0 0 22px 0;max-width:540px', DARK + 'margin:0 0 34px 0;max-width:540px'),
+      expertiseSlides: pprSlides(c.yritys.expertise.images, 'center', c.common.photoCaptions).map((sl) => Object.assign({}, sl, { caption: sl.caption || c.yritys.expertise.title }))
     }, pprCommonVals(c));
   }
 }

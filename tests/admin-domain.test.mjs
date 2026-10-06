@@ -83,6 +83,24 @@ test('preview keeps both public base paths, every page, and each selected langua
           assert.ok(html.indexOf('window.__pprPreviewContent=') < html.indexOf('./language.js'));
           assert.equal(new URL('./assets/favicon.png', normalized).href, normalized + 'assets/favicon.png');
           assert.equal(response.headers.get('x-robots-tag'), 'noindex');
+          const previewScript=[...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(match=>match[1]).find(script=>script.includes('window.__pprPreviewLanguage='));
+          assert.ok(previewScript,'preview flags must exist before shared routing runs');
+          const location=new URL('./preview',adminRoot);
+          location.replace=()=>assert.fail('admin preview must not redirect to the public clean route');
+          const key=page.toLowerCase();
+          const context={URL,URLSearchParams,location,document:{baseURI:normalized,documentElement:{dataset:{pprPage:key},getAttribute(name){return name==='data-ppr-page'?key:null}},head:{appendChild(){}},createElement(){return {}},querySelector(){return null}},localStorage:{getItem(){return 'en'},setItem(){assert.fail('preview must not change remembered public locale');}}};
+          context.window=context;
+          vm.runInNewContext(previewScript,context);
+          vm.runInNewContext(fs.readFileSync(new URL('../language.js',import.meta.url),'utf8'),context);
+          assert.equal(context.pprLanguage,language);assert.equal(context.pprPage,key);
+          assert.equal(context.pprLocalizeContent('#billing'),new URL('#billing',location).href);
+          for(const href of Object.values(context.pprPageLinks)) {
+            const target=new URL(href,normalized);
+            assert.equal(target.origin,new URL(normalized).origin);
+            assert.ok(target.pathname.startsWith(new URL(normalized).pathname));
+            assert.equal(target.searchParams.get('lang'),language==='fi'?null:language);
+            assert.ok(!target.pathname.endsWith('.html'));
+          }
         }
       }
     }

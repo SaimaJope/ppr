@@ -31,9 +31,11 @@ test('translations preserve schema, numbers, contact details and assets',()=>{
 });
 function languageContext(search='',saved=null,blocked=false,preview=null) {
   const attrs={};
-  const context={URL,URLSearchParams,location:{href:'https://admin.test/preview',search,pathname:'/ppr/Palvelut.dc.html',hash:'#photos'},localStorage:{getItem(){if(blocked)throw Error();return saved},setItem(k,v){attrs.saved=v}},document:{baseURI:'https://example.test/ppr/Palvelut.dc.html',documentElement:{},head:{appendChild(){}},createElement(){return {}},querySelector(){return null}},__pprPreviewLanguage:preview};
+  const location=new URL(preview?'https://admin.test/preview':'https://example.test/ppr/palvelut/');
+  location.search=search;location.hash='#photos';location.replace=href=>{attrs.redirect=href;location.href=new URL(href,location).href;};
+  const context={URL,URLSearchParams,location,localStorage:{getItem(){if(blocked)throw Error();return saved},setItem(k,v){attrs.saved=v}},document:{baseURI:'https://example.test/ppr/',documentElement:{dataset:{pprPage:'palvelut'},getAttribute(name){return name==='data-ppr-page'?'palvelut':null}},head:{appendChild(){}},createElement(){return {}},querySelector(){return null}},__pprPreviewLanguage:preview,__pprPreviewPage:preview?'Palvelut.dc.html':undefined};
   context.window=context;
-  vm.runInNewContext(read('language.js'),context);
+  for(let attempt=0;attempt<3;attempt++) {attrs.redirect=undefined;vm.runInNewContext(read('language.js'),context);if(!attrs.redirect)break;}
   return {context,attrs};
 }
 test('URL selection, Finnish defaults, preview override and blocked storage',()=>{
@@ -43,7 +45,7 @@ test('URL selection, Finnish defaults, preview override and blocked storage',()=
     assert.equal(context.document.documentElement.lang,expected);
     for(const option of context.pprLanguageOptions) {
       assert.ok(!option.href.startsWith('/')&&!/^https?:/.test(option.href));
-      const url=new URL(option.href,context.document.baseURI);assert.equal(url.pathname,'/ppr/Palvelut.dc.html');assert.equal(url.hash,'#photos');assert.equal(url.searchParams.get('lang'),option.lang);
+      const url=new URL(option.href,context.document.baseURI);assert.equal(url.pathname,'/ppr/palvelut/');assert.equal(url.hash,'#photos');assert.equal(url.searchParams.get('lang'),option.lang==='fi'?null:option.lang);
     }
   }
   assert.equal(languageContext('?lang=en',null,true).context.pprLanguage,'en');
@@ -52,14 +54,17 @@ test('URL selection, Finnish defaults, preview override and blocked storage',()=
 });
 test('internal content links retain locale; external links and assets stay unchanged',()=>{
   const {context}=languageContext('?lang=sv');
-  const result=context.pprLocalizeContent({a:'Palvelut.dc.html#photos',b:'https://external.test/',c:'assets/photo.jpg',d:'#billing'});
+  const result=context.pprLocalizeContent({a:'Palvelut.dc.html#photos',b:'https://external.test/',c:'assets/photo.jpg',d:'#billing',home:'Etusivu.dc.html',clean:'./yritys/?ref=content&lang=fi#about'});
   assert.ok(!result.a.startsWith('/')&&!/^https?:/.test(result.a));
-  assert.equal(new URL(result.a,context.document.baseURI).href,'https://example.test/ppr/Palvelut.dc.html?lang=sv#photos');
-  assert.equal(result.b,'https://external.test/');assert.equal(result.c,'assets/photo.jpg');assert.equal(result.d,'#billing');
+  assert.equal(new URL(result.a,context.document.baseURI).href,'https://example.test/ppr/palvelut/?lang=sv#photos');
+  assert.equal(new URL(result.home,context.document.baseURI).href,'https://example.test/ppr/?lang=sv');
+  assert.equal(new URL(result.clean,context.document.baseURI).href,'https://example.test/ppr/yritys/?ref=content&lang=sv#about');
+  assert.equal(result.b,'https://external.test/');assert.equal(result.c,'assets/photo.jpg');
+  assert.equal(new URL(result.d,context.document.baseURI).href,'https://example.test/ppr/palvelut/?lang=sv#billing');
   assert.equal(languageContext('',null,false,'sv').context.pprLocalizeContent('#billing'),'https://admin.test/preview#billing');
 });
 test('all templates use shared routing, translated controls and valid scripts',()=>{
-  for(const page of ['index.html','Etusivu.dc.html','Palvelut.dc.html','Yritys.dc.html','Referenssit.dc.html','Yhteystiedot.dc.html']) {
+  for(const page of ['index.html','palvelut/index.html','yritys/index.html','referenssit/index.html','yhteystiedot/index.html','Etusivu.dc.html','Palvelut.dc.html','Yritys.dc.html','Referenssit.dc.html','Yhteystiedot.dc.html']) {
     const html=read(page);
     assert.ok(html.indexOf('./language.js')<html.indexOf('./loader.js'));
     assert.ok(html.includes('data-language-switch'));

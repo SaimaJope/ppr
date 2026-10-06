@@ -3,11 +3,11 @@
   const DESKTOP_CLASS = 'ppr-nav-active-desktop';
   const MENU_CLASS = 'ppr-nav-active-menu';
   const PAGE_FILES = new Set([
-    'etusivu.dc.html',
-    'palvelut.dc.html',
-    'yhteystiedot.dc.html',
-    'yritys.dc.html',
-    'referenssit.dc.html'
+    'etusivu',
+    'palvelut',
+    'yhteystiedot',
+    'yritys',
+    'referenssit'
   ]);
 
   function ensureStyles() {
@@ -28,20 +28,21 @@
   }
 
   function fileNameFromPath(pathname) {
-    const file = decodeURIComponent((pathname || '').split('/').pop() || 'index.html').toLowerCase();
-    return file === 'index.html' ? 'etusivu.dc.html' : file;
+    return window.pprPageFromPath(pathname || '');
   }
 
   function pageFileFromHref(href) {
     try {
-      return fileNameFromPath(new URL(href, window.location.href).pathname);
+      const url = new URL(href, document.baseURI);
+      if (url.origin !== new URL(document.baseURI).origin) return '';
+      return fileNameFromPath(url.pathname);
     } catch {
       return '';
     }
   }
 
   function currentPageFile() {
-    return fileNameFromPath(window.location.pathname);
+    return window.pprPage || fileNameFromPath(window.location.pathname);
   }
 
   function clearActive(link) {

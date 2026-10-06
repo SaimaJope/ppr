@@ -1,100 +1,75 @@
-# Move the site to ppr.fi
+# ppr.fi deployment and clean URLs
 
-The preparation branch is `codex/ppr-domain-prep`. The domain-day branch is
-`codex/ppr-domain-cname`; its extra commit adds only `CNAME`, containing exactly
-`ppr.fi`. Publish the preparation branch first. Keep the domain-day branch local
-until cutover. A normal push of a branch containing both commits sends both.
+The domain cutover completed on 6 October 2026. GitHub Pages now serves the site
+at `https://ppr.fi/`; `https://www.ppr.fi/` redirects to that address. The repository
+already has `CNAME` containing `ppr.fi`, and **Enforce HTTPS** is enabled in Pages
+settings. Keep the existing domain setting and CNAME when publishing this release.
 
-## Before cutover
+The current release branch is `codex/ppr-clean-urls`. It combines the original
+domain preparation with the live repository's CNAME commit and adds the clean
+page addresses below. Publish the static site from the repository root.
 
-1. Review and merge the preparation changes into the current Pages publishing
-   branch. Keep publishing from the repository root. The existing `.nojekyll`
-   marker is now empty, so this plain static site bypasses Jekyll.
-2. Deploy the updated admin Worker with its current `SITE_URL` value
-   (`https://saimajope.github.io/ppr/`). This configuration now controls all admin
-   logos, favicon, image thumbnails, open-site links and preview requests.
-3. Optionally verify `ppr.fi` in **SaimaJope account Settings → Pages**. GitHub
-   supplies the TXT value for `_github-pages-challenge-SaimaJope.ppr.fi`.
-   Retain that TXT record after verification.
-4. Keep the repository's **Settings → Pages → Custom domain** unchanged until
-   cutover. Saving it early can add a remote `CNAME` commit and switch routing.
+## Public addresses
 
-## On DNS cutover day
+| Page | Finnish URL | Existing file alias |
+| --- | --- | --- |
+| Etusivu | `https://ppr.fi/` | `index.html`, `Etusivu.dc.html` |
+| Palvelut | `https://ppr.fi/palvelut/` | `Palvelut.dc.html` |
+| Yritys | `https://ppr.fi/yritys/` | `Yritys.dc.html` |
+| Referenssit | `https://ppr.fi/referenssit/` | `Referenssit.dc.html` |
+| Yhteystiedot | `https://ppr.fi/yhteystiedot/` | `Yhteystiedot.dc.html` |
 
-1. On the up-to-date publishing branch, cherry-pick the CNAME-only commit from
-   `codex/ppr-domain-cname`, then push that publishing branch. Identify the commit
-   with `git log -1 --oneline codex/ppr-domain-cname`. Example, after merging the
-   preparation changes into `main`:
+URLs without a language parameter always use Finnish. English and Swedish append
+`?lang=en` and `?lang=sv` to the same addresses. Finnish links omit `?lang=fi`;
+visiting an explicit Finnish URL normalizes to the address without that parameter.
+Navigation, language switches and content links use the clean addresses.
 
-   ```powershell
-   git switch main
-   git pull --ff-only
-   git cherry-pick codex/ppr-domain-cname
-   git push origin main
-   ```
+The legacy HTML files retain their complete templates. In a normal browser,
+`language.js` uses `location.replace` to move file aliases to the clean address,
+retaining other query parameters and the fragment. This is a JavaScript redirect:
+GitHub Pages still returns the alias file with HTTP 200, rather than a server-side
+301. Full templates also let the existing Worker continue fetching them for
+admin previews; preview flags suppress the browser redirect.
 
-   If GitHub's custom-domain setting has already created an identical `CNAME`,
-   that cherry-pick is unnecessary. Keep `CNAME` at the publishing root.
-2. Set **SaimaJope/ppr → Settings → Pages → Custom domain** to `ppr.fi` before
-   changing DNS. For branch publishing, GitHub uses the CNAME file; if publishing
-   ever changes to a custom Actions workflow, set the domain in Pages settings
-   because Actions ignores CNAME.
-3. Set the following DNS records. Remove conflicting existing website A/AAAA
-   records; preserve unrelated mail/TXT records.
+Each new directory has an `index.html` and a relative `<base href="../">` pointing
+to the site root. Shared scripts, images, JSON content and navigation therefore
+resolve correctly both at the custom-domain root and under `/ppr/`. Keep the
+legacy and directory templates in sync when changing layouts; admin content
+edits continue to use the shared JSON files.
 
-   | Host | Type | Value |
-   | --- | --- | --- |
-   | `@` | A | `185.199.108.153` |
-   | `@` | A | `185.199.109.153` |
-   | `@` | A | `185.199.110.153` |
-   | `@` | A | `185.199.111.153` |
-   | `www` | CNAME | `saimajope.github.io` |
+## Admin panel
 
-   Optional IPv6: add apex AAAA records `2606:50c0:8000::153`,
-   `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153`.
-   The `www` CNAME has no scheme or `/ppr/` path. With these records and `ppr.fi`
-   as the Pages custom domain, GitHub redirects `www.ppr.fi` to `ppr.fi`.
-4. Once the certificate is available, enable **Enforce HTTPS** in Pages settings.
-   If your DNS has CAA records, allow `letsencrypt.org` for certificate issuance.
-5. Once `https://ppr.fi/` serves the new site, change the admin Worker's **Variables
-   and Secrets → SITE_URL** to `https://ppr.fi/` and deploy the change. Also update
-   `SITE_URL` in `worker/wrangler.toml` to the same value so later CLI deployments
-   retain it. Alternatively edit that variable in the file and run your usual
-   Wrangler deployment from `worker/`.
-6. Verify `https://ppr.fi/`, `https://www.ppr.fi/`, all five pages, all three
-   languages, admin image thumbnails, **Avaa sivusto** and all page previews.
-   Submit `https://ppr.fi/sitemap.xml` in Search Console for the new domain property.
+The admin remains at its existing `workers.dev` address. It is a separate
+Cloudflare Worker, and this release does not deploy it or change its domain,
+routes, credentials or DNS. Its previews continue to fetch the legacy templates.
 
-## Admin settings that stay the same
+Login uses `ADMIN_PASSWORD` and a signed session cookie. GitHub writes use the
+server-side `GITHUB_TOKEN` personal access token. There is no OAuth application,
+callback URL, cross-origin admin API call, CORS allowlist or old-site origin check
+to change. Keep `ADMIN_PASSWORD`, `SESSION_SECRET`, `GITHUB_TOKEN`, `GITHUB_OWNER`,
+`GITHUB_REPO`, `GITHUB_BRANCH`, `CONTENT_PATH` and `ASSETS_DIR` as configured.
 
-The admin is a separate Cloudflare Worker; it does not run on GitHub Pages.
-Keep opening the current Worker address. Login uses `ADMIN_PASSWORD` and a signed
-session cookie. GitHub writes use the server-side `GITHUB_TOKEN` personal access
-token. There is no OAuth application, callback URL, cross-origin API call, CORS
-allowlist or old-site origin check to change. Keep `ADMIN_PASSWORD`,
-`SESSION_SECRET`, `GITHUB_TOKEN`, `GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH`,
-`CONTENT_PATH` and `ASSETS_DIR` as currently configured.
+The original preparation includes configurable Worker URLs in source, but those
+changes take effect only after a separate Worker deployment. If deploying that
+prepared Worker later, set `SITE_URL` to `https://ppr.fi/` in both the deployment
+configuration and `worker/wrangler.toml` so admin assets, open-site links and
+previews use the public domain. That changes the target public site, not the
+admin's `workers.dev` address. The current source value still names the old
+GitHub Pages project URL; a future CLI deployment would otherwise reapply it.
 
-## Routing and metadata
+## Search metadata
 
-- `index.html` directly renders the existing front page. `Etusivu.dc.html` remains
-  a working alias with the same template. Future layout edits to the front page
-  should update both HTML files; admin content edits still update the shared JSON.
-- Without `?lang=`, the site uses Finnish even if another language was previously
-  stored. Explicit `?lang=fi`, `?lang=en`, `?lang=sv`, cross-page navigation and
-  language switches retain the selected language. Navigation and assets are
-  relative, supporting both the domain root and `/ppr/`.
-- Canonical, Open Graph URL and language alternates target `https://ppr.fi`.
-  The home aliases canonicalize to `/`; other pages retain their filenames.
-  Finnish canonical URLs omit the query; English/Swedish use `?lang=en`/`?lang=sv`.
-  The sitemap includes all 15 page/language combinations and reciprocal alternates.
-- HTML metadata has a Finnish fallback. As in the existing site, translations
-  render in JavaScript; the selected language also updates canonical, Open Graph,
-  title and description in the browser. Crawlers that do not run JavaScript see
-  the Finnish fallback metadata.
-- Preparation metadata already names the future domain. Publish preparation near
-  cutover if you want to minimize the period when canonicals target the new host
-  before it is live.
+Canonical URLs, `og:url`, language alternates and `sitemap.xml` target the clean
+addresses on `https://ppr.fi`. Finnish URLs omit the query; English and Swedish
+retain their language query. Legacy aliases declare the corresponding clean
+canonical. The sitemap contains all 15 page/language combinations with reciprocal
+alternates; `robots.txt` allows crawling and references that sitemap.
+
+HTML metadata provides a Finnish fallback. The existing site renders translated
+content in JavaScript, which also updates the selected language's title,
+description, canonical and Open Graph URL. Crawlers without JavaScript see the
+Finnish fallback. Submit `https://ppr.fi/sitemap.xml` in Search Console if this
+has not already been done.
 
 ## Local verification
 
@@ -104,47 +79,81 @@ Run from the repository root with Node.js:
 node --test tests/*.test.mjs
 ```
 
-The migration suite starts local HTTP servers serving the real repository both
-at `/` and `/ppr/`, requests pages and referenced local resources, and exercises
-language routing and SEO. The existing content/language tests and admin domain
-tests also run. Admin network tests use mocked upstream responses; they do not
-modify GitHub or require production secrets.
+The migration tests serve the real repository at both `/` and `/ppr/` and check
+pages, referenced local resources, language routing and metadata. Clean-route
+checks cover the directory pages, file aliases, query/hash preservation and
+navigation. Admin tests use mocked upstream responses and do not modify GitHub
+or require production secrets. The release validation records the final result;
+this guide does not treat an unfinished test run as a pass.
 
-Chromium checks compare rendered text, typography and colors with the original
-repository for all page/language combinations at both mount points, check final
-images and local links, and click each language switch from the directory root.
-The existing favicon declaration is now in the real HTML head, preventing an
-initial automatic `/favicon.ico` request. The existing client-rendered templates
-still trigger transient requests for literal `{{...}}` image placeholders before
-rendering; the original repository does this too. These are recorded separately
-from real asset or navigation failures. Final rendered images use the real files.
+Browser verification should visit all five clean pages and all six file aliases
+in Finnish, English and Swedish at both mount points, click navigation and
+language switches, inspect rendered images, and exercise a legacy alias and its
+anchor. Also verify that admin previews remain on the Worker preview URL.
+Existing literal `{{...}}` image placeholders can make transient requests before
+rendering; final rendered images must use real files. The favicon declaration is
+in the actual HTML head.
 
 ## Changed files
 
-| File | Change |
-| --- | --- |
-| `index.html` | Full existing front-page template instead of a redirect, relative home links, Finnish fallback and production metadata. |
-| `Etusivu.dc.html` | Keep old front-page URL working; relative home links to index, Finnish fallback and production metadata. |
-| `Palvelut.dc.html` | Relative home links, Finnish fallback and production metadata. |
-| `Yritys.dc.html` | Relative home links, Finnish fallback and production metadata. |
-| `Referenssit.dc.html` | Relative home links, Finnish fallback and production metadata. |
-| `Yhteystiedot.dc.html` | Relative home links, Finnish fallback and production metadata. |
-| `language.js` | Finnish default without query, relative language/content links, root/index routing and locale-aware metadata. |
-| `active-nav.js` | Recognize index and directory URLs as home and keep home highlighting. |
-| `worker/src/index.js` | Render configured admin URLs and normalize/escape preview base URLs. |
-| `worker/src/ui.js` | Replace fixed GitHub Pages URLs with SITE_URL; relative admin API/form URLs. |
-| `worker/wrangler.toml` | Explain SITE_URL cutover; keep the current URL until DNS day. |
-| `sitemap.xml` | Add ppr.fi URLs for all pages/languages with language alternates. |
-| `robots.txt` | Allow crawling and point to the ppr.fi sitemap. |
-| `.nojekyll` | Make the existing marker zero bytes. |
-| `tests/languages.test.mjs` | Update routing and root-page checks for the new behavior. |
-| `tests/domain-migration.test.mjs` | Test both HTTP mount points, resources, language routes and metadata. |
-| `tests/admin-domain.test.mjs` | Test configured admin assets/links and previews on project, apex and www URLs. |
-| `DEPLOY.md` | Update Finnish-default explanation and link this cutover guide. |
-| `DOMAIN-MIGRATION.md` | Cutover instructions, configuration details and complete change list. |
-| `CNAME` | Domain-day commit only; exactly `ppr.fi`. |
+The preparation column describes commit `f48cbc6` relative to the earlier site.
+These changes are included in this release and were not in remote `main` at
+`9ccb3cb`, the live CNAME-only commit. The clean-URL column describes the subsequent
+work on `codex/ppr-clean-urls`. CNAME is already live and unchanged by this release.
 
-All existing content JSON, photos, styles and other public scripts remain unchanged.
+| File | Original domain preparation | Clean-URL release |
+| --- | --- | --- |
+| `index.html` | Full existing front-page template, relative home links, Finnish fallback and production metadata. | Home route data, shared clean navigation and updated script versions. |
+| `Etusivu.dc.html` | Keep the old front-page template, relative home links and production metadata. | Keep the complete alias for previews; normal visits redirect to `/`. |
+| `Palvelut.dc.html` | Relative home links, Finnish fallback and production metadata. | Shared clean navigation, `/palvelut/` canonical and normal-browser alias redirect. |
+| `Yritys.dc.html` | Relative home links, Finnish fallback and production metadata. | Shared clean navigation, `/yritys/` canonical and normal-browser alias redirect. |
+| `Referenssit.dc.html` | Relative home links, Finnish fallback and production metadata. | Shared clean navigation, `/referenssit/` canonical and normal-browser alias redirect. |
+| `Yhteystiedot.dc.html` | Relative home links, Finnish fallback and production metadata. | Shared clean navigation, `/yhteystiedot/` canonical and normal-browser alias redirect. |
+| `palvelut/index.html` | — | New full services template with relative root base and clean metadata. |
+| `yritys/index.html` | — | New full company template with relative root base and clean metadata. |
+| `referenssit/index.html` | — | New full references template with relative root base and clean metadata. |
+| `yhteystiedot/index.html` | — | New full contact template with relative root base and clean metadata. |
+| `language.js` | Finnish default, relative content/language links and locale-aware metadata. | Shared clean route map, navigation links, alias normalization, query/hash preservation and preview exception. |
+| `active-nav.js` | Recognize index and directory root as the home page. | Recognize clean directory routes, aliases and preview page selection. |
+| `loader.js` | — | Expose shared `pageLinks` for template navigation. |
+| `worker/src/index.js` | Render configured admin URLs; normalize and escape preview base URLs. | No additional Worker code change or deployment. |
+| `worker/src/ui.js` | Replace fixed public-site URLs with `SITE_URL`; relative admin API/form URLs. | No additional Worker code change or deployment. |
+| `worker/wrangler.toml` | Document the public-site `SITE_URL` setting. | No additional configuration change; review the value before a future Worker deployment. |
+| `sitemap.xml` | Add production URLs and language alternates. | Replace file URLs with the five clean routes in all three languages. |
+| `robots.txt` | Allow crawling; point to the production sitemap. | Unchanged. |
+| `.nojekyll` | Make the existing marker empty to bypass Jekyll. | Unchanged. |
+| `tests/languages.test.mjs` | Update Finnish-default, locale routing and root-page checks. | Update clean navigation, language-switch, fragment and preview expectations. |
+| `tests/domain-migration.test.mjs` | Test HTTP mount points, resources, language routes and metadata. | Check clean directory pages, aliases, query/hash preservation and production metadata. |
+| `tests/admin-domain.test.mjs` | Test configured assets, links and previews for project, apex and www URLs. | Add preview routing compatibility assertions. |
+| `DEPLOY.md` | Explain Finnish defaults and link the migration guide. | Record the live domain, clean addresses and unchanged Worker hosting. |
+| `DOMAIN-MIGRATION.md` | Explain cutover, configuration and the original change list. | Replace pending-cutover instructions with completed cutover and this release guide. |
+| `CNAME` | Originally prepared as a separate domain-day commit. | Already present in remote `main`; keep exactly `ppr.fi`. |
+
+Content JSON, photos, styles and the visible page design remain unchanged.
+
+## Cutover history and current DNS
+
+The original branches were `codex/ppr-domain-prep` and `codex/ppr-domain-cname`.
+The latter kept CNAME in a separate commit/patch so it could be applied on DNS
+day. GitHub subsequently added the live CNAME in commit `9ccb3cb` (**Create
+CNAME**). That historical local CNAME commit/patch is no longer an action to
+apply, and should not be cherry-picked again into this release.
+
+The active DNS configuration uses four apex A records and the www CNAME:
+
+| Host | Type | Value |
+| --- | --- | --- |
+| `@` | A | `185.199.108.153` |
+| `@` | A | `185.199.109.153` |
+| `@` | A | `185.199.110.153` |
+| `@` | A | `185.199.111.153` |
+| `www` | CNAME | `saimajope.github.io` |
+
+No DNS changes are needed for clean page paths. Preserve mail and TXT records.
+If domain ownership verification is configured, retain GitHub's TXT record at
+`_github-pages-challenge-SaimaJope.ppr.fi`. If CAA records are used, allow
+`letsencrypt.org`. Branch publishing uses the root CNAME; a future custom Actions
+publishing workflow would instead use the custom domain in Pages settings.
 
 ## Sources
 

@@ -7,7 +7,15 @@ import vm from 'node:vm';
 import {fileURLToPath} from 'node:url';
 
 const root=path.resolve(fileURLToPath(new URL('../',import.meta.url)));
-const pages=['index.html','Etusivu.dc.html','Palvelut.dc.html','Yritys.dc.html','Referenssit.dc.html','Yhteystiedot.dc.html'];
+const cleanPages=[
+  {file:'index.html',route:'',key:'etusivu'},
+  {file:'palvelut/index.html',route:'palvelut/',key:'palvelut'},
+  {file:'yritys/index.html',route:'yritys/',key:'yritys'},
+  {file:'referenssit/index.html',route:'referenssit/',key:'referenssit'},
+  {file:'yhteystiedot/index.html',route:'yhteystiedot/',key:'yhteystiedot'}
+];
+const legacyNames=['Etusivu','Palvelut','Yritys','Referenssit','Yhteystiedot'];
+const pages=[...cleanPages,...legacyNames.map((name,index)=>({...cleanPages[index],file:name+'.dc.html',legacy:true}))];
 const languages=['fi','en','sv'];
 const read=name=>fs.readFile(path.join(root,name),'utf8');
 const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml'};
@@ -33,23 +41,28 @@ async function serve(mount,run) {
   finally{server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}
 }
 
+function documentBase(html,url) {
+  const href=html.match(/<base\b[^>]*href=["']([^"']+)["']/i)?.[1];
+  return href?new URL(href,url):url;
+}
 function localReferences(source) {
   const refs=[];
+  source=source.replace(/<base\b[^>]*>/gi,'');
   for(const [,value] of source.matchAll(/\b(?:href|src|poster)\s*=\s*["']([^"']+)["']/gi))refs.push(value);
-  for(const [,value] of source.matchAll(/\burl\(\s*["']?([^\s"')]+)["']?\s*\)/gi))refs.push(value);
+  for(const [,value] of source.matchAll(/\burl\(\s*["']?([^\s"')]+)["']?\s*\)/g))refs.push(value);
   // Static resource names inside script strings (e.g. the loading curtain).
   for(const [,value] of source.matchAll(/["']((?:\.\/)?(?:assets\/[^"'\s<>]+|[^"'\s<>]+\.(?:js|css|woff2?|ttf|otf)))(?:["'])/gi))refs.push(value);
   return refs.filter(value=>!value.includes('{{')&&!value.startsWith('#')&&!/^[a-z][a-z\d+.-]*:/i.test(value)&&!value.startsWith('//'));
 }
 
 function contentReferences(value,out=[]) {
-  if(typeof value==='string'&&/^(?:\.\/)?(?:assets\/|(?:index|\w+\.dc)\.html(?:[?#]|$))/.test(value))out.push(value);
+  if(typeof value==='string'&&/^(?:\.\/)?(?:assets\/|(?:index|\w+\.dc)\.html(?:[?#]|$)|(?:palvelut|yritys|referenssit|yhteystiedot)\/)/.test(value))out.push(value);
   else if(value&&typeof value==='object')for(const entry of Object.values(value))contentReferences(entry,out);
   return out;
 }
 
-test('every public page, script and content asset is reachable at root and /ppr/',async(t)=>{
-  const publicSources=(await fs.readdir(root)).filter(name=>/\.(?:html|css|js)$/.test(name));
+test('real clean directories, legacy pages, scripts and content assets work at root and /ppr/',async(t)=>{
+  const publicSources=[...new Set([...(await fs.readdir(root)).filter(name=>/\.(?:html|css|js)$/.test(name)),...pages.map(page=>page.file)])];
   for(const mount of ['/','/ppr/'])await serve(mount,async(base)=>{
     const requested=new Set();
     async function check(reference,from=base) {
@@ -67,8 +80,9 @@ test('every public page, script and content asset is reachable at root and /ppr/
     for(const name of publicSources) {
       await check(name);
       const source=await read(name);
-      for(const reference of localReferences(source))await check(reference,new URL(name,base));
+      for(const reference of localReferences(source))await check(reference,documentBase(source,new URL(name,base)));
     }
+    for(const page of cleanPages)await check(page.route||'./');
     for(const language of languages) {
       await check('content/'+language+'.json');
       const content=JSON.parse(await read('content/'+language+'.json'));
@@ -80,58 +94,97 @@ test('every public page, script and content asset is reachable at root and /ppr/
   });
 });
 
-test('language routes stay inside each mount and Finnish is default after an earlier choice',async()=>{
+async function languageAt(source,initial) {
+  let url=new URL(initial);
+  const redirects=[];
+  for(let attempt=0;attempt<4;attempt++) {
+    const response=await fetch(url);assert.equal(response.status,200,url.href);
+    const html=await response.text();
+    const pageKey=html.match(/data-ppr-page=["']([^"']+)["']/)?.[1];
+    let redirect;
+    url.replace=href=>{redirect=new URL(href,url);};
+    const context={URL,URLSearchParams,location:url,localStorage:{getItem(){return 'en'},setItem(){}},document:{baseURI:documentBase(html,url).href,documentElement:{dataset:{pprPage:pageKey},getAttribute(name){return name==='data-ppr-page'?pageKey:null}},head:{appendChild(){}},createElement(){return {}},querySelector(){return null}}};
+    context.window=context;
+    vm.runInNewContext(source,context);
+    if(!redirect)return {context,url,redirects};
+    redirects.push(redirect.href);url=redirect;
+  }
+  assert.fail('redirect loop: '+redirects.join(' -> '));
+}
+
+test('clean URLs, legacy redirects, locale choices and anchors preserve the mounted site',async()=>{
   const source=await read('language.js');
   for(const mount of ['/','/ppr/'])await serve(mount,async(base)=>{
-    for(const name of pages)for(const selection of [null,...languages]) {
-      const location=new URL(name,base);
-      location.search='?ref=route-test'+(selection?'&lang='+selection:'');
-      location.hash='#photos';
-      const context={URL,URLSearchParams,location,localStorage:{getItem(){return 'en'},setItem(){}},document:{baseURI:location.href,documentElement:{},head:{appendChild(){}},createElement(){return {}},querySelector(){return null}}};
-      context.window=context;
-      vm.runInNewContext(source,context);
-      assert.equal(context.pprLanguage,selection||'fi');
-      assert.equal(context.document.documentElement.lang,selection||'fi');
+    for(const page of pages)for(const selection of [null,...languages]) {
+      const initial=new URL(page.file,base);
+      initial.search='?ref=route-test'+(selection?'&lang='+selection:'');initial.hash='#photos';
+      const {context,url,redirects}=await languageAt(source,initial);
+      const language=selection||'fi';
+      const expectedPath=base.pathname+page.route;
+      assert.equal(url.pathname,expectedPath,initial.href+' should normalize to a clean URL');
+      assert.equal(url.searchParams.get('ref'),'route-test');assert.equal(url.hash,'#photos');
+      assert.equal(url.searchParams.get('lang'),language==='fi'?null:language);
+      if(page.legacy||page.file==='index.html'||selection==='fi')assert.ok(redirects.length>0,initial.href+' should redirect');
+      assert.equal(context.pprLanguage,language);assert.equal(context.document.documentElement.lang,language);
+      assert.equal(context.pprPage,page.key);
       assert.equal(context.pprLanguageOptions.length,3);
       for(const option of context.pprLanguageOptions) {
         assert.ok(!option.href.startsWith('/')&&!/^https?:/.test(option.href),option.href);
-        const destination=new URL(option.href,location);
-        assert.equal(destination.pathname,location.pathname);
+        const destination=new URL(option.href,context.document.baseURI);
+        assert.equal(destination.pathname,expectedPath);
         assert.equal(destination.hash,'#photos');
         assert.equal(destination.searchParams.get('ref'),'route-test');
-        assert.equal(destination.searchParams.get('lang'),option.lang);
+        assert.equal(destination.searchParams.get('lang'),option.lang==='fi'?null:option.lang);
         assert.equal((await fetch(destination)).status,200);
       }
-      const links=context.pprLocalizeContent({home:'index.html',service:'Palvelut.dc.html#photos',asset:'assets/ppr-logo.png',external:'https://external.example/'});
-      for(const key of ['home','service']) {
-        const destination=new URL(links[key],location);
-        assert.equal(destination.searchParams.get('lang'),selection||'fi');
-        assert.ok(destination.pathname.startsWith(base.pathname));
+      for(const destination of Object.values(context.pprPageLinks)) {
+        assert.ok(!destination.startsWith('/')&&!/^https?:/.test(destination));
+        const target=new URL(destination,context.document.baseURI);
+        assert.ok(target.pathname.startsWith(base.pathname));
+        assert.equal(target.searchParams.get('lang'),language==='fi'?null:language);
+        assert.equal((await fetch(target)).status,200);
+      }
+      const links=context.pprLocalizeContent({home:'index.html?ref=content&lang=en',service:'Palvelut.dc.html#photos',clean:'referenssit/',fragment:'#billing',asset:'assets/ppr-logo.png',external:'https://external.example/'});
+      for(const [key,route] of [['home',''],['service','palvelut/'],['clean','referenssit/']]) {
+        const destination=new URL(links[key],context.document.baseURI);
+        assert.equal(destination.pathname,base.pathname+route);
+        assert.equal(destination.searchParams.get('lang'),language==='fi'?null:language);
         assert.equal((await fetch(destination)).status,200);
       }
+      assert.equal(new URL(links.home,context.document.baseURI).searchParams.get('ref'),'content');
+      const fragment=new URL(links.fragment,context.document.baseURI);
+      assert.equal(fragment.pathname,expectedPath);assert.equal(fragment.hash,'#billing');
+      assert.equal(fragment.searchParams.get('ref'),'route-test');
+      assert.equal(fragment.searchParams.get('lang'),language==='fi'?null:language);
       assert.equal(links.asset,'assets/ppr-logo.png');
       assert.equal(links.external,'https://external.example/');
     }
   });
 });
 
-test('canonical metadata and crawler files identify the custom domain',async()=>{
+test('metadata and crawler files use the clean custom-domain URLs',async()=>{
   for(const page of pages) {
-    const html=await read(page);
-    assert.match(Buffer.from(html,'utf8').subarray(0,1024).toString('utf8'),/<meta\s+charset=["']utf-8["']/i,page+' must declare UTF-8 within the first 1024 bytes');
+    const html=await read(page.file);
+    assert.match(Buffer.from(html,'utf8').subarray(0,1024).toString('utf8'),/<meta\s+charset=["']utf-8["']/i,page.file+' must declare UTF-8 within the first 1024 bytes');
     const head=html.match(/<head>([\s\S]*?)<\/head>/i)?.[1]||'';
-    assert.match(head,/<link\b[^>]*rel=["']icon["'][^>]*href=["']assets\/favicon\.png["']/i,page+' must declare the existing relative favicon before rendering');
-    const expected='https://ppr.fi/'+(['index.html','Etusivu.dc.html'].includes(page)?'':page);
-    assert.ok(html.includes('<x-dc>'),page+' should serve content');
+    assert.match(head,/<link\b[^>]*rel=["']icon["'][^>]*href=["']assets\/favicon\.png["']/i,page.file+' must declare the existing relative favicon before rendering');
+    if(page.file.includes('/'))assert.equal(documentBase(html,new URL(page.file,'https://example.test/ppr/')).href,'https://example.test/ppr/');
+    const expected='https://ppr.fi/'+page.route;
+    assert.ok(html.includes('<x-dc>'),page.file+' should serve content');
     const canonical=html.match(/<link\b[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)/i)?.[1];
     const openGraph=html.match(/<meta\b[^>]*property=["']og:url["'][^>]*content=["']([^"']+)/i)?.[1];
-    assert.equal(canonical,expected,page);
-    assert.equal(openGraph,expected,page);
+    assert.equal(canonical,expected,page.file);
+    assert.equal(openGraph,expected,page.file);
   }
   const sitemap=await read('sitemap.xml');
   const locations=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match=>new URL(match[1].replaceAll('&amp;','&')));
-  assert.ok(locations.length>=5);
-  for(const location of locations)assert.equal(location.origin,'https://ppr.fi');
+  assert.equal(locations.length,15,'five pages in three languages');
+  for(const location of locations) {
+    assert.equal(location.origin,'https://ppr.fi');
+    assert.ok(cleanPages.some(page=>location.pathname==='/'+page.route),location.href);
+    assert.ok(!location.searchParams.has('lang')||['en','sv'].includes(location.searchParams.get('lang')),location.href);
+  }
+  for(const page of cleanPages)for(const language of languages)assert.ok(locations.some(location=>location.pathname==='/'+page.route&&location.searchParams.get('lang')===(language==='fi'?null:language)));
   const robots=await read('robots.txt');
   assert.match(robots,/^Sitemap: https:\/\/ppr\.fi\/sitemap\.xml\s*$/m);
 });
