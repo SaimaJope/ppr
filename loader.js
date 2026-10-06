@@ -160,6 +160,8 @@
       s.id = 'ppr-slide-style';
       s.textContent =
         // Desktop arrows appear on hover; mobile controls stay visible.
+        // Keep hover changes immediate: scrolling under a stationary mouse
+        // otherwise repeatedly restarts the controls' transitions.
         '.ppr-slide-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:6;' +
         'width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.4);' +
         'display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;' +
@@ -167,7 +169,6 @@
         'backdrop-filter:blur(12px) saturate(160%);-webkit-backdrop-filter:blur(12px) saturate(160%);' +
         'box-shadow:0 6px 20px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.45);' +
         'opacity:0;pointer-events:none;' +
-        'transition:opacity .25s ease,background .18s ease,transform .18s ease;' +
         '-webkit-tap-highlight-color:transparent}' +
         '@media (hover:hover){' +
         '.ppr-slide-host:hover>.ppr-slide-arrow,.ppr-slide-arrow:focus-visible{opacity:1;pointer-events:auto}' +
@@ -190,7 +191,7 @@
         '.ppr-photo-open{position:absolute;top:12px;right:12px;z-index:7;display:inline-flex;align-items:center;gap:8px;' +
         'min-height:44px;padding:10px 15px;border:1px solid rgba(255,255,255,.5);border-radius:24px;' +
         'font:500 13px/1.3 Archivo,system-ui,sans-serif;color:#fff;background:rgba(14,17,22,.85);cursor:zoom-in;' +
-        'opacity:0;pointer-events:none;transition:opacity .2s ease}' +
+        'opacity:0;pointer-events:none}' +
         '@media(hover:hover){.ppr-photo-host:hover>.ppr-photo-open{opacity:1;pointer-events:auto}}' +
         '.ppr-photo-open:focus-visible{opacity:1;pointer-events:auto}' +
         '.ppr-photo-open:hover{background:#015AFF}' +

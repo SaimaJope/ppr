@@ -1,103 +1,89 @@
-# Scrolling performance — 6 October 2026
+# Scrolling performance - 6 October 2026
 
-## Current changes
+## Latest change
 
-The follow-up removes section entrance animations with the site owner's
-approval. Content now appears in its final position immediately. The layout,
-text, typography, colours, photographs, header blur, image treatments and
-manual controls are unchanged.
+Scrolling moves content under a stationary pointer. Gallery controls and home
+service links were therefore repeatedly starting hover transitions, even when
+visitors did not move the mouse. Removing those transitions avoids continuous
+style updates and repainting between scroll updates.
 
-- Remove ScrollReveal and its initialization script from all 13 templates.
-  There are no reveal scroll callbacks, hidden waiting sections or offscreen
-  reveal transforms. Remove the associated backface-hiding style.
-- Retain a small, harmless `scroll-reveal.js` compatibility file for previously
-  cached HTML. New pages do not request it or the external animation library.
-- Replace the slideshow's one-second repair timers and 30-second startup scan
-  with DOM observers. Only changed/new content requires repair. Detached
-  slideshows release timers and observers; reinserted nodes reuse their state
-  and controls without duplicate event handlers.
-- Pause automatic slide changes during scrolling. One passive shared scroll
-  listener pauses the timers, then returns immediately on subsequent events.
-  Native `scrollend` resumes a full slide interval. Older browsers use a
-  trailing 150 ms timer. An existing crossfade can finish; manual navigation
-  remains available throughout.
-- Keep offscreen/hidden-tab pausing, reduced-motion handling, the photo dialog,
-  swipe controls, loading curtain and billing-anchor behavior.
-- Version `loader.js` as `20261006-smooth-scroll` in every template.
+- Gallery arrows and photo-opening controls now respond immediately to hover,
+  focus and presses. Their colours, opacity endpoints, positions, glass effect
+  and keyboard focus indicators are unchanged.
+- Home service links still turn blue and move their arrow 4px on hover/focus;
+  the change is immediate instead of animated over 200ms.
+- The sticky header keeps its original blur, transparency, colours and shadows
+  at all times. Layout, text, photographs, fonts and image treatments are
+  unchanged. No header rendering fallback was introduced.
+- Version `loader.js` as `20261006-hover-perf` in every template.
 
-The loading curtain covers startup, not ongoing scrolling. The first pass
-(commit `6d8d72a`) already made DOM writes conditional, scoped active-navigation
-observation, removed permanent reveal `will-change` hints and prepared rendered
-content before lifting the curtain. Those changes are retained.
+Previously published improvements remain: section entrance animations are
+removed, slideshow setup/repair uses observers instead of recurring polling,
+active navigation observes a small DOM scope, and automatic slides pause while
+scrolling, offscreen or in hidden tabs. Manual controls and the loading curtain
+remain available.
 
-## Measurements and limits
+## Measurements
 
-The reported laptop frame-rate problem was not reproduced on the available
-desktop. CPU throttling and software rendering are useful comparisons, but do
-not recreate that laptop's GPU, drivers or browser configuration. No guaranteed
-frame rate or hardware GPU-memory saving is claimed.
+Comparison: frozen commit `c19e126` versus the actual candidate, Chrome 154,
+1366x768 viewport, device scale 2, 4x CPU throttling and software graphics.
+The pointer remains over the content while identical wheel sequences reverse
+at page bounds. First scrolling and subsequent scrolling are recorded
+separately. The original header blur is active in both versions.
 
-The follow-up compares frozen `6d8d72a` with the candidate in Chrome 154,
-1366×768, device scale 2, 4× CPU throttling and software graphics. The same
-continuous wheel sequence reverses at page bounds. Motion is enabled in both
-runs, and the baseline animation library was confirmed active. SVG assets use
-the correct MIME type. Raw traces and reports are retained outside the site.
-
-| Local observation | Before | After |
+| Subsequent-scroll workload | Before | After |
 | --- | --- | --- |
-| Hidden targets with reveal transforms just after load, home | 13 | 0 |
-| Hidden targets with reveal transforms just after load, services | 12 | 0 |
-| Display drawing time during first home scroll sequence | 848 ms | 719 ms |
-| Display drawing time during first services scroll sequence | 864 ms | 683 ms |
-| Script time during first home scroll sequence | 60 ms | 51 ms |
-| Script time during first services scroll sequence | 73 ms | 68 ms |
+| Home style recalculations | 169 | 26 |
+| Services style recalculations | 288 | 42 |
+| Home main-thread task time | 678 ms | 352 ms |
+| Services main-thread task time | 730 ms | 391 ms |
+| Home display drawing time | 753 ms | 526 ms |
+| Services display drawing time | 705 ms | 368 ms |
 
-These are single local workload samples, not FPS improvements. Subsequent
-scroll timings were mixed: display drawing fell slightly on both pages while
-overall main-thread time rose slightly. No scroll long tasks over 50 ms were
-observed in either version. Animation-frame callbacks are not measurements of
-presented GPU frames. CDP layer-tree data was unavailable.
+First-scroll samples also improved: home task time 684 to 331ms and services
+745 to 460ms. An independent diagnostic override produced the same direction
+of improvement before the source edit. These are local workload measurements,
+not measured frame rates on the reported laptop. They show about 85% fewer
+style updates and roughly half the subsequent-scroll main-thread work in these
+samples. No scroll long tasks over 50ms appeared in either version. Frame
+callback timing is not presented GPU FPS; actual compositor layer data was
+unavailable. Raw traces and reports are retained outside the published site.
 
-The earlier first-pass comparison reduced idle services-page mutation records
-from 228 to 0 over three seconds. This follow-up removes the remaining recurring
-slideshow polling itself, as well as the entrance animations.
+Extra header layer promotion did not show a clear benefit. Removing header
+blur reduced drawing cost but changed its appearance, so neither experiment
+was shipped. The hover transition fix preserves the original header.
 
 ## Verification
 
-- All 13 repository tests pass, covering routing, locale/default language,
-  metadata, admin preview configuration and assets at both `/` and `/ppr/`.
-  Both mounts serve all 61 distinct tested page/resource URLs successfully.
-- Six browser visual fixtures pass at desktop, tablet and narrow mobile widths,
-  including `/ppr/`. Page dimensions, zoom, heading geometry, hero crop/filter
-  and header blur match the baseline. Screenshots were visually reviewed;
-  small text-edge rasterization differences remain after removing transforms.
-  Rendered images load without failures.
-- All 50 focused browser regression cases pass: all five pages and three
-  languages at both mounts, mobile pages/menu/swipe, photo controls, billing
-  anchors, autoplay visibility/scroll pausing and resumption, delayed slideshow
-  insertion, detach/reinsert, idle observer stability, reduced motion and
-  delayed/failed loading. The older-browser scrollend fallback also passes
-  with real scrolling and mobile touch swipe. There are no unexpected errors.
-  Existing raw-template image placeholders are recorded separately from
-  rendered images.
+All 13 repository tests pass, including language/default routing, metadata,
+admin preview configuration and 61 distinct public page/resource URLs at each
+of the `/` and `/ppr/` mounts.
 
-## Files in this follow-up
+All 14 focused browser checks pass: desktop/mobile pages, English/Swedish
+subpath navigation, menu rerender and touch swipe, billing links, gallery
+controls and photo dialogs, plus mouse and keyboard hover/focus behavior.
+The original header blur/background and service-link colour/4px arrow endpoint
+are verified. Six visual fixtures also pass across desktop, tablet and narrow
+mobile layouts with both URL mounts. There are no unexpected runtime errors
+or broken rendered images; inherited raw-template image placeholders are
+recorded separately.
+
+## Files in this update
 
 | File | Change |
 | --- | --- |
-| `loader.js` | Event-driven slideshow setup/repair, lifecycle cleanup, scrolling pause/resume. |
-| `scroll-reveal.js` | Small compatibility entry point; entrance animations removed. |
-| `index.html` | Remove reveal scripts/backface hiding; version the loader. |
-| `Etusivu.dc.html` | Same shared changes in the legacy home template. |
-| `Palvelut.dc.html` | Same shared changes in the services template. |
-| `Referenssit.dc.html` | Same shared changes in the references template. |
-| `Yhteystiedot.dc.html` | Same shared changes in the contact template. |
-| `Yritys.dc.html` | Same shared changes in the company template. |
-| `palvelut/index.html` | Synchronized clean services route. |
-| `referenssit/index.html` | Synchronized clean references route. |
-| `yhteystiedot/index.html` | Synchronized clean contact route. |
-| `yritys/index.html` | Synchronized clean company route. |
-| `index.php/index.html` | Synchronized old home alias. |
-| `palvelut.php/index.html` | Synchronized old services alias. |
-| `yhteys.php/index.html` | Synchronized old contact alias. |
-| `PERFORMANCE.md` | Current changes, measurements, limitations and file inventory. |
+| `loader.js` | Remove gallery-control hover transitions; retain their complete visual states and actions. |
+| `index.html` | Remove service-row transition; version the loader. |
+| `Etusivu.dc.html` | Same home-template changes. |
+| `index.php/index.html` | Same changes in the old home alias. |
+| `Palvelut.dc.html` | Update loader version. |
+| `Referenssit.dc.html` | Update loader version. |
+| `Yhteystiedot.dc.html` | Update loader version. |
+| `Yritys.dc.html` | Update loader version. |
+| `palvelut/index.html` | Update loader version in the clean services route. |
+| `referenssit/index.html` | Update loader version in the clean references route. |
+| `yhteystiedot/index.html` | Update loader version in the clean contact route. |
+| `yritys/index.html` | Update loader version in the clean company route. |
+| `palvelut.php/index.html` | Update loader version in the old services alias. |
+| `yhteys.php/index.html` | Update loader version in the old contact alias. |
+| `PERFORMANCE.md` | Current changes, measurements, limits and file inventory. |

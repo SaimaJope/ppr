@@ -23,7 +23,7 @@
 <style>html,body{background:#F0F2F6;margin:0}body{font-family:'Archivo',system-ui,sans-serif}</style>
 <script src="./support.js"></script>
 <script src="./language.js?v=20261006-clean-urls"></script>
-<script src="./loader.js?v=20261006-smooth-scroll"></script>
+<script src="./loader.js?v=20261006-hover-perf"></script>
 <script defer src="./active-nav.js?v=20261006-scroll-perf"></script>
 </head>
 <body>
@@ -52,7 +52,7 @@
   [data-cert-next]:focus-visible{outline:2px solid #015AFF;outline-offset:4px}
   [data-cert-next]:active img{filter:grayscale(1);opacity:.55}
   [data-cert-grid]{overscroll-behavior-x:contain}
-  a[data-srow] h3,a[data-srow]>span{transition:color .2s ease,transform .2s ease}
+  a[data-srow] h3,a[data-srow]>span{transition:none}
   a[data-srow]:hover h3,a[data-srow]:focus-visible h3{color:#015AFF}
   a[data-srow]:hover>span,a[data-srow]:focus-visible>span{color:#015AFF !important;transform:translateX(4px)}
   a[data-srow]:focus-visible{outline:2px solid #015AFF;outline-offset:5px}
