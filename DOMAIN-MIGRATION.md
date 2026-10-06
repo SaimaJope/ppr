@@ -1,16 +1,16 @@
 # ppr.fi deployment and clean URLs
 
 The domain cutover was configured on 6 October 2026. GitHub Pages serves the site
-at `https://ppr.fi/`; `https://www.ppr.fi/` is configured to redirect there, subject
-to the cached response issue described below. The repository
+at `https://ppr.fi/`; `https://www.ppr.fi/` is configured to redirect there. The
+historical cache incident and observed recovery are described below. The repository
 already has `CNAME` containing `ppr.fi`, and **Enforce HTTPS** is enabled in Pages
 settings. Keep the existing domain setting and CNAME when publishing this release.
 
 The release branch is `codex/ppr-clean-urls`. Commit `55520e3` published the
 original domain preparation and clean page addresses alongside the live CNAME.
-The follow-ups add compatibility for old indexed PHP addresses and footer
-navigation to billing details. Keep publishing the static site from the
-repository root.
+The follow-ups add compatibility for old indexed PHP addresses, footer
+navigation to billing details and Finnish mobile headline wrapping. Keep
+publishing the static site from the repository root.
 
 ## Public addresses
 
@@ -63,8 +63,14 @@ only the clean addresses. Include these templates in future layout updates.
 
 During the 6 October cutover, a separate compressed response for
 `https://www.ppr.fi/` was observed returning a cached GitHub Pages missing-site
-404 while the apex and other www paths worked. The PHP aliases provide old-path
-compatibility; they do not purge that CDN response or change DNS/Pages settings.
+404 while the apex and other www paths worked. On the tested network, a fresh
+gzip request at 07:02 UTC returned the correct 301 redirect with `Age: 0`.
+At 07:03 UTC, fresh desktop Chrome and Pixel 7 emulation followed www to the
+apex, returned HTTP 200 and loaded the rendered images; 16 protocol variations
+also returned the expected responses. These are observations from the tested
+network, not a guarantee that every network's cache had expired at the same time.
+The PHP aliases provide old-path compatibility; they did not purge the CDN
+response or change DNS/Pages settings.
 
 ## Billing details footer link
 
@@ -91,6 +97,20 @@ All 13 HTML templates have the updated footer link:
   `referenssit/index.html`, `yhteystiedot/index.html`.
 - Indexed PHP compatibility templates: `index.php/index.html`,
   `palvelut.php/index.html`, `yhteys.php/index.html`.
+
+## Finnish mobile home headline
+
+The Finnish home headline's display value now inserts discretionary soft hyphens
+after `Rakennus` and `palve` within `Rakennuspalvelut`. Its `hyphens: manual`
+setting lets the browser use those break points without adding a fixed line break.
+English and Swedish keep their original title value and `hyphens: auto` behavior.
+The stored content JSON is unchanged.
+
+At viewport widths of **370px or less**, only the Finnish home heading uses
+**36px** instead of the previous 38px mobile size. This narrow adjustment supports
+keeping `lut teollisuudelle.` together; wider layouts and the English/Swedish
+font sizes remain unchanged. The change is in exactly three home templates:
+`index.html`, `Etusivu.dc.html` and `index.php/index.html`.
 
 ## Admin panel
 
@@ -159,14 +179,15 @@ in the actual HTML head.
 The preparation column describes commit `f48cbc6` relative to the earlier site.
 These changes are included in this release and were not in remote `main` at
 `9ccb3cb`, the live CNAME-only commit. The clean-URL column describes the subsequent
-work on `codex/ppr-clean-urls`, including the indexed-PHP compatibility and billing
-footer follow-ups. The billing section above lists all 13 modified templates.
+work on `codex/ppr-clean-urls`, including indexed-PHP compatibility, billing
+footer and Finnish mobile headline follow-ups. The billing section above lists
+all 13 footer templates; the headline section identifies its three home templates.
 CNAME is already live and unchanged by this release.
 
 | File | Original domain preparation | Clean-URL release |
 | --- | --- | --- |
-| `index.html` | Full existing front-page template, relative home links, Finnish fallback and production metadata. | Home route data, shared clean navigation and updated script versions. |
-| `Etusivu.dc.html` | Keep the old front-page template, relative home links and production metadata. | Keep the complete alias for previews; normal visits redirect to `/`. |
+| `index.html` | Full existing front-page template, relative home links, Finnish fallback and production metadata. | Clean home navigation; Finnish discretionary headline breaks and 36px heading at widths up to 370px. |
+| `Etusivu.dc.html` | Keep the old front-page template, relative home links and production metadata. | Complete alias/preview template; clean redirect plus the same Finnish headline wrapping and narrow 36px setting. |
 | `Palvelut.dc.html` | Relative home links, Finnish fallback and production metadata. | Shared clean navigation, `/palvelut/` canonical and normal-browser alias redirect. |
 | `Yritys.dc.html` | Relative home links, Finnish fallback and production metadata. | Shared clean navigation, `/yritys/` canonical and normal-browser alias redirect. |
 | `Referenssit.dc.html` | Relative home links, Finnish fallback and production metadata. | Shared clean navigation, `/referenssit/` canonical and normal-browser alias redirect. |
@@ -175,7 +196,7 @@ CNAME is already live and unchanged by this release.
 | `yritys/index.html` | — | New full company template with relative root base and clean metadata. |
 | `referenssit/index.html` | — | New full references template with relative root base and clean metadata. |
 | `yhteystiedot/index.html` | — | Full clean contact template; billing footer link, rendered anchor, asynchronous scroll and header offset. |
-| `index.php/index.html` | — | Static compatibility template for the old indexed front-page address; redirect to `/` with clean metadata. |
+| `index.php/index.html` | — | Static old front-page alias; clean redirect/metadata plus the same Finnish headline wrapping and narrow 36px setting. |
 | `palvelut.php/index.html` | — | Static compatibility template for the old indexed services address; redirect to `/palvelut/` with clean metadata. |
 | `yhteys.php/index.html` | — | Static contact compatibility template; clean redirect/metadata, billing anchor, asynchronous scroll and header offset. |
 | `language.js` | Finnish default, relative content/language links and locale-aware metadata. | Shared clean route map, navigation links, alias normalization, query/hash preservation and preview exception. |
@@ -191,11 +212,14 @@ CNAME is already live and unchanged by this release.
 | `tests/domain-migration.test.mjs` | Test HTTP mount points, resources, language routes and metadata. | Check clean pages, HTML and indexed PHP aliases, query/hash preservation and production metadata. |
 | `tests/admin-domain.test.mjs` | Test configured assets, links and previews for project, apex and www URLs. | Add preview routing compatibility assertions. |
 | `DEPLOY.md` | Explain Finnish defaults and link the migration guide. | Record the live domain, clean addresses, indexed PHP compatibility and unchanged Worker hosting. |
-| `DOMAIN-MIGRATION.md` | Explain cutover, configuration and the original change list. | Record cutover, clean routes, indexed PHP compatibility, billing-footer behavior and the separate CDN cache incident. |
+| `DOMAIN-MIGRATION.md` | Explain cutover, configuration and the original change list. | Record cutover, clean routes, PHP aliases, billing/footer and headline follow-ups, plus observed CDN cache recovery. |
 | `CNAME` | Originally prepared as a separate domain-day commit. | Already present in remote `main`; keep exactly `ppr.fi`. |
 
-Content JSON, photos and the visible page design remain unchanged. The billing
-section's added scroll margin only affects its position after anchor navigation.
+The original domain and clean-URL migration preserved the visible content and
+design. Later requested changes adjust billing-anchor navigation and the narrow
+Finnish home headline's font size and wrapping as described above. Stored content
+JSON and photos remain unchanged; the billing scroll margin affects only the
+section's position after anchor navigation.
 
 ## Cutover history and current DNS
 
