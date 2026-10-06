@@ -1,13 +1,15 @@
 # ppr.fi deployment and clean URLs
 
-The domain cutover completed on 6 October 2026. GitHub Pages now serves the site
-at `https://ppr.fi/`; `https://www.ppr.fi/` redirects to that address. The repository
+The domain cutover was configured on 6 October 2026. GitHub Pages serves the site
+at `https://ppr.fi/`; `https://www.ppr.fi/` is configured to redirect there, subject
+to the cached response issue described below. The repository
 already has `CNAME` containing `ppr.fi`, and **Enforce HTTPS** is enabled in Pages
 settings. Keep the existing domain setting and CNAME when publishing this release.
 
-The current release branch is `codex/ppr-clean-urls`. It combines the original
-domain preparation with the live repository's CNAME commit and adds the clean
-page addresses below. Publish the static site from the repository root.
+The release branch is `codex/ppr-clean-urls`. Commit `55520e3` published the
+original domain preparation and clean page addresses alongside the live CNAME.
+The follow-up adds compatibility for old indexed PHP addresses. Keep publishing
+the static site from the repository root.
 
 ## Public addresses
 
@@ -36,6 +38,32 @@ to the site root. Shared scripts, images, JSON content and navigation therefore
 resolve correctly both at the custom-domain root and under `/ppr/`. Keep the
 legacy and directory templates in sync when changing layouts; admin content
 edits continue to use the shared JSON files.
+
+## Old indexed PHP addresses
+
+The earlier website used `index.php`, `palvelut.php` and `yhteys.php`; existing
+search results or bookmarks can still request those addresses. GitHub Pages does
+not execute PHP. Each compatibility path is a directory containing a full static
+HTML template, with the same relative root base and visible content as its
+corresponding page:
+
+| Old requested address | Static file | Clean destination |
+| --- | --- | --- |
+| `/index.php` | `index.php/index.html` | `/` |
+| `/palvelut.php` | `palvelut.php/index.html` | `/palvelut/` |
+| `/yhteys.php` | `yhteys.php/index.html` | `/yhteystiedot/` |
+
+GitHub Pages first redirects a directory address without its trailing slash to
+the slash form. The static template then uses the existing `language.js`
+`location.replace` redirect to reach the clean destination, preserving the
+selected language, other query parameters and the fragment. The alias templates
+declare the clean canonical and Open Graph URL; the sitemap continues to list
+only the clean addresses. Include these templates in future layout updates.
+
+During the 6 October cutover, a separate compressed response for
+`https://www.ppr.fi/` was observed returning a cached GitHub Pages missing-site
+404 while the apex and other www paths worked. The PHP aliases provide old-path
+compatibility; they do not purge that CDN response or change DNS/Pages settings.
 
 ## Admin panel
 
@@ -86,8 +114,10 @@ navigation. Admin tests use mocked upstream responses and do not modify GitHub
 or require production secrets. The release validation records the final result;
 this guide does not treat an unfinished test run as a pass.
 
-Browser verification should visit all five clean pages and all six file aliases
-in Finnish, English and Swedish at both mount points, click navigation and
+Browser verification should visit all five clean pages, all six HTML file aliases
+and the three indexed PHP compatibility paths in Finnish, English and Swedish at
+both mount points. Check the PHP paths with and without trailing slashes, and
+their static `index.html` forms. Click navigation and
 language switches, inspect rendered images, and exercise a legacy alias and its
 anchor. Also verify that admin previews remain on the Worker preview URL.
 Existing literal `{{...}}` image placeholders can make transient requests before
@@ -99,7 +129,8 @@ in the actual HTML head.
 The preparation column describes commit `f48cbc6` relative to the earlier site.
 These changes are included in this release and were not in remote `main` at
 `9ccb3cb`, the live CNAME-only commit. The clean-URL column describes the subsequent
-work on `codex/ppr-clean-urls`. CNAME is already live and unchanged by this release.
+work on `codex/ppr-clean-urls`, including the indexed-PHP compatibility follow-up.
+CNAME is already live and unchanged by this release.
 
 | File | Original domain preparation | Clean-URL release |
 | --- | --- | --- |
@@ -113,6 +144,9 @@ work on `codex/ppr-clean-urls`. CNAME is already live and unchanged by this rele
 | `yritys/index.html` | — | New full company template with relative root base and clean metadata. |
 | `referenssit/index.html` | — | New full references template with relative root base and clean metadata. |
 | `yhteystiedot/index.html` | — | New full contact template with relative root base and clean metadata. |
+| `index.php/index.html` | — | Static compatibility template for the old indexed front-page address; redirect to `/` with clean metadata. |
+| `palvelut.php/index.html` | — | Static compatibility template for the old indexed services address; redirect to `/palvelut/` with clean metadata. |
+| `yhteys.php/index.html` | — | Static compatibility template for the old indexed contact address; redirect to `/yhteystiedot/` with clean metadata. |
 | `language.js` | Finnish default, relative content/language links and locale-aware metadata. | Shared clean route map, navigation links, alias normalization, query/hash preservation and preview exception. |
 | `active-nav.js` | Recognize index and directory root as the home page. | Recognize clean directory routes, aliases and preview page selection. |
 | `loader.js` | — | Expose shared `pageLinks` for template navigation. |
@@ -123,10 +157,10 @@ work on `codex/ppr-clean-urls`. CNAME is already live and unchanged by this rele
 | `robots.txt` | Allow crawling; point to the production sitemap. | Unchanged. |
 | `.nojekyll` | Make the existing marker empty to bypass Jekyll. | Unchanged. |
 | `tests/languages.test.mjs` | Update Finnish-default, locale routing and root-page checks. | Update clean navigation, language-switch, fragment and preview expectations. |
-| `tests/domain-migration.test.mjs` | Test HTTP mount points, resources, language routes and metadata. | Check clean directory pages, aliases, query/hash preservation and production metadata. |
+| `tests/domain-migration.test.mjs` | Test HTTP mount points, resources, language routes and metadata. | Check clean pages, HTML and indexed PHP aliases, query/hash preservation and production metadata. |
 | `tests/admin-domain.test.mjs` | Test configured assets, links and previews for project, apex and www URLs. | Add preview routing compatibility assertions. |
-| `DEPLOY.md` | Explain Finnish defaults and link the migration guide. | Record the live domain, clean addresses and unchanged Worker hosting. |
-| `DOMAIN-MIGRATION.md` | Explain cutover, configuration and the original change list. | Replace pending-cutover instructions with completed cutover and this release guide. |
+| `DEPLOY.md` | Explain Finnish defaults and link the migration guide. | Record the live domain, clean addresses, indexed PHP compatibility and unchanged Worker hosting. |
+| `DOMAIN-MIGRATION.md` | Explain cutover, configuration and the original change list. | Record completed cutover, clean routes, indexed PHP compatibility and the separate CDN cache incident. |
 | `CNAME` | Originally prepared as a separate domain-day commit. | Already present in remote `main`; keep exactly `ppr.fi`. |
 
 Content JSON, photos, styles and the visible page design remain unchanged.
@@ -160,6 +194,7 @@ publishing workflow would instead use the custom domain in Pages settings.
 - [GitHub Pages custom domain and DNS configuration](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)
 - [Verify a GitHub Pages domain](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages)
 - [GitHub Pages HTTPS](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https)
+- [GitHub Pages static publishing](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
 - [Cloudflare Worker variables](https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables)
 - [Google canonical URLs](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls)
 - [Google language alternates](https://developers.google.com/search/docs/specialty/international/localized-versions)

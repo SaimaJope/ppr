@@ -30,7 +30,8 @@ Sivusto toimii näin:
 ## Oma verkkotunnus ppr.fi
 
 Verkkotunnus on käytössä 6.10.2026 alkaen. `CNAME` sisältää `ppr.fi`, ja GitHub
-Pagesin **Enforce HTTPS** on käytössä. `www.ppr.fi` ohjaa osoitteeseen `ppr.fi`.
+Pagesin **Enforce HTTPS** on käytössä. `www.ppr.fi` on määritetty ohjaamaan
+osoitteeseen `ppr.fi`; alla on kuvattu havaittu www-välimuistiongelma.
 Katso [julkaisu- ja osoiteohje](DOMAIN-MIGRATION.md).
 
 Uudet julkiset osoitteet ovat `/`, `/palvelut/`, `/yritys/`, `/referenssit/` ja
@@ -38,6 +39,14 @@ Uudet julkiset osoitteet ovat `/`, `/palvelut/`, `/yritys/`, `/referenssit/` ja
 ruotsi käyttävät `?lang=en` ja `?lang=sv`. Vanhat `.dc.html`-osoitteet säilyvät ja
 ohjaavat selaimessa uusiin osoitteisiin. Niiden kokonaiset sivupohjat säilyvät
 hallintapaneelin esikatseluja varten.
+
+Myös vanhan sivuston hakutuloksissa olevat `/index.php`, `/palvelut.php` ja
+`/yhteys.php` säilyvät toimivina osoitteina. Ne ovat hakemistoissa olevia
+staattisia HTML-sivuja, eivät ajettavaa PHP-koodia. GitHub Pages lisää ensin
+hakemisto-osoitteen loppuun vinoviivan; sivun JavaScript ohjaa sitten vastaavasti
+osoitteisiin `/`, `/palvelut/` ja `/yhteystiedot/`, säilyttäen kielivalinnan,
+muut kyselyparametrit ja ankkurin. Tämä yhteensopivuus ei tyhjennä erikseen
+havaittua www-etusivun pakatun vastauksen GitHub CDN:n 404-välimuistia.
 
 Tämä julkaisu koskee GitHub Pagesin staattista sivustoa. Hallintapaneeli pysyy
 nykyisessä `workers.dev`-osoitteessaan, eikä Workeria julkaista tässä yhteydessä

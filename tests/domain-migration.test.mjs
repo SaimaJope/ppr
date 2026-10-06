@@ -15,7 +15,12 @@ const cleanPages=[
   {file:'yhteystiedot/index.html',route:'yhteystiedot/',key:'yhteystiedot'}
 ];
 const legacyNames=['Etusivu','Palvelut','Yritys','Referenssit','Yhteystiedot'];
-const pages=[...cleanPages,...legacyNames.map((name,index)=>({...cleanPages[index],file:name+'.dc.html',legacy:true}))];
+const phpPages=[
+  {...cleanPages[0],file:'index.php/index.html',requestPath:'index.php',legacy:true},
+  {...cleanPages[1],file:'palvelut.php/index.html',requestPath:'palvelut.php',legacy:true},
+  {...cleanPages[4],file:'yhteys.php/index.html',requestPath:'yhteys.php',legacy:true}
+];
+const pages=[...cleanPages,...legacyNames.map((name,index)=>({...cleanPages[index],file:name+'.dc.html',legacy:true})),...phpPages];
 const languages=['fi','en','sv'];
 const read=name=>fs.readFile(path.join(root,name),'utf8');
 const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml'};
@@ -25,12 +30,16 @@ const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.jso
 async function serve(mount,run) {
   const server=http.createServer(async(req,res)=>{
     try {
-      const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
+      const requestURL=new URL(req.url,'http://localhost');
+      const pathname=decodeURIComponent(requestURL.pathname);
       if(!pathname.startsWith(mount)){res.writeHead(404).end();return;}
       let relative=pathname.slice(mount.length);
-      if(relative.endsWith('/')||!relative)relative+='index.html';
-      const filename=path.resolve(root,relative);
-      if(!filename.startsWith(root+path.sep)){res.writeHead(404).end();return;}
+      let filename=path.resolve(root,relative);
+      if(filename!==root&&!filename.startsWith(root+path.sep)){res.writeHead(404).end();return;}
+      if((await fs.stat(filename)).isDirectory()) {
+        if(!pathname.endsWith('/')){res.writeHead(301,{location:pathname+'/'+requestURL.search}).end();return;}
+        filename=path.join(filename,'index.html');
+      }
       const data=await fs.readFile(filename);
       res.writeHead(200,{'content-type':types[path.extname(filename)]||'application/octet-stream','content-length':data.length}).end(data);
     }catch{res.writeHead(404).end();}
@@ -83,6 +92,7 @@ test('real clean directories, legacy pages, scripts and content assets work at r
       for(const reference of localReferences(source))await check(reference,documentBase(source,new URL(name,base)));
     }
     for(const page of cleanPages)await check(page.route||'./');
+    for(const page of phpPages){await check(page.requestPath);await check(page.requestPath+'/');}
     for(const language of languages) {
       await check('content/'+language+'.json');
       const content=JSON.parse(await read('content/'+language+'.json'));
@@ -98,7 +108,15 @@ async function languageAt(source,initial) {
   let url=new URL(initial);
   const redirects=[];
   for(let attempt=0;attempt<4;attempt++) {
-    const response=await fetch(url);assert.equal(response.status,200,url.href);
+    const response=await fetch(url,{redirect:'manual'});
+    if(response.status===301) {
+      const destination=new URL(response.headers.get('location'),url);
+      if(!destination.hash)destination.hash=url.hash;
+      assert.equal(destination.pathname,url.pathname+'/','directory redirect should only append the missing slash');
+      assert.equal(destination.search,url.search,'directory redirect must retain query');
+      redirects.push(destination.href);url=destination;continue;
+    }
+    assert.equal(response.status,200,url.href);
     const html=await response.text();
     const pageKey=html.match(/data-ppr-page=["']([^"']+)["']/)?.[1];
     let redirect;
@@ -116,7 +134,7 @@ test('clean URLs, legacy redirects, locale choices and anchors preserve the moun
   const source=await read('language.js');
   for(const mount of ['/','/ppr/'])await serve(mount,async(base)=>{
     for(const page of pages)for(const selection of [null,...languages]) {
-      const initial=new URL(page.file,base);
+      const initial=new URL(page.requestPath||page.file,base);
       initial.search='?ref=route-test'+(selection?'&lang='+selection:'');initial.hash='#photos';
       const {context,url,redirects}=await languageAt(source,initial);
       const language=selection||'fi';
