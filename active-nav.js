@@ -45,31 +45,36 @@
     return window.pprPage || fileNameFromPath(window.location.pathname);
   }
 
-  function clearActive(link) {
-    link.classList.remove(ACTIVE_CLASS, DESKTOP_CLASS, MENU_CLASS);
-    if (link.getAttribute('aria-current') === 'page') {
-      link.removeAttribute('aria-current');
+  function renderedNav() {
+    return Array.from(document.querySelectorAll('nav'))
+      .find((nav) => !nav.closest('x-dc')) || null;
+  }
+
+  function setClass(link, className, active) {
+    if (link.classList.contains(className) !== active) {
+      link.classList.toggle(className, active);
     }
   }
 
-  function syncActiveNav() {
-    const nav = document.querySelector('nav');
+  function syncActiveNav(nav = renderedNav()) {
     if (!nav) return false;
 
     const current = currentPageFile();
     nav.querySelectorAll('a[href]').forEach((link) => {
-      clearActive(link);
-
       const isDesktopLink = Boolean(link.closest('[data-navlinks]'));
       const isMenuLink = !isDesktopLink && !link.closest('[data-nav-inner]');
-      if (!isDesktopLink && !isMenuLink) return;
-
       const target = pageFileFromHref(link.getAttribute('href'));
-      if (!PAGE_FILES.has(target) || target !== current) return;
+      const active = (isDesktopLink || isMenuLink) &&
+        PAGE_FILES.has(target) && target === current;
 
-      link.classList.add(ACTIVE_CLASS);
-      link.classList.add(isDesktopLink ? DESKTOP_CLASS : MENU_CLASS);
-      link.setAttribute('aria-current', 'page');
+      setClass(link, ACTIVE_CLASS, active);
+      setClass(link, DESKTOP_CLASS, active && isDesktopLink);
+      setClass(link, MENU_CLASS, active && isMenuLink);
+      if (active && link.getAttribute('aria-current') !== 'page') {
+        link.setAttribute('aria-current', 'page');
+      } else if (!active && link.getAttribute('aria-current') === 'page') {
+        link.removeAttribute('aria-current');
+      }
     });
 
     return true;
@@ -78,15 +83,47 @@
   function start() {
     ensureStyles();
 
+    let watchedNav = null;
+    const observer = new MutationObserver((mutations) => {
+      const nav = renderedNav();
+      if (nav !== watchedNav) {
+        watchNav(nav);
+        syncActiveNav(nav);
+      } else if (nav && mutations.some((mutation) => nav.contains(mutation.target))) {
+        syncActiveNav(nav);
+      }
+    });
+
+    function watchNav(nav) {
+      observer.disconnect();
+      watchedNav = nav;
+      if (!nav) {
+        // React replaces the hidden source template before mounting the nav.
+        observer.observe(document.body, { childList: true, subtree: true });
+        return;
+      }
+      observer.observe(nav, { childList: true, subtree: true });
+      // Direct child lists catch nav/root replacement without observing photo
+      // captions, slideshow controls or other unrelated section descendants.
+      for (let parent = nav.parentElement; parent; parent = parent.parentElement) {
+        observer.observe(parent, { childList: true });
+      }
+    }
+
+    function syncAndWatchNav() {
+      const nav = renderedNav();
+      if (nav !== watchedNav) watchNav(nav);
+      return syncActiveNav(nav);
+    }
+
+    watchNav(renderedNav());
     const startedAt = Date.now();
     (function whenNavReady() {
-      if (syncActiveNav()) return;
+      if (syncAndWatchNav()) return;
       if (Date.now() - startedAt < 8000) setTimeout(whenNavReady, 50);
     })();
 
-    const observer = new MutationObserver(syncActiveNav);
-    observer.observe(document.body, { childList: true, subtree: true });
-    document.addEventListener('ppr:loaded', syncActiveNav);
+    document.addEventListener('ppr:loaded', syncAndWatchNav);
   }
 
   if (document.readyState === 'loading') {

@@ -257,7 +257,7 @@
       ensureStyles();
 
       var seconds = Math.min(60, Math.max(2, Number(el.getAttribute('data-slideshow-interval')) || 7));
-      var state = { idx: 0, timer: null, viewerOpen: false };
+      var state = { idx: 0, timer: null, viewerOpen: false, inView: !window.IntersectionObserver };
 
       // The hero's decorative gradient overlays sit above the slideshow, so
       // its arrows live on the scene element (last children paint on top).
@@ -267,12 +267,16 @@
       function apply() {
         var list = slidesOf(el);
         for (var i = 0; i < list.length; i++) {
-          list[i].style.opacity = i === state.idx ? '1' : '0';
-          list[i].setAttribute('aria-hidden', i === state.idx ? 'false' : 'true');
-          list[i].style.pointerEvents = i === state.idx ? 'auto' : 'none';
+          var opacity = i === state.idx ? '1' : '0';
+          var hidden = i === state.idx ? 'false' : 'true';
+          var pointer = i === state.idx ? 'auto' : 'none';
+          if (list[i].style.opacity !== opacity) list[i].style.opacity = opacity;
+          if (list[i].getAttribute('aria-hidden') !== hidden) list[i].setAttribute('aria-hidden', hidden);
+          if (list[i].style.pointerEvents !== pointer) list[i].style.pointerEvents = pointer;
         }
         var hint = host.querySelector('.ppr-slide-hint');
-        if (hint) hint.textContent = '↔ ' + window.pprUi.swipe + ' · ' + (state.idx + 1) + ' / ' + list.length;
+        var label = '↔ ' + window.pprUi.swipe + ' · ' + (state.idx + 1) + ' / ' + list.length;
+        if (hint && hint.textContent !== label) hint.textContent = label;
       }
       function step(delta) {
         var n = slidesOf(el).length;
@@ -282,7 +286,8 @@
       }
       function restartAuto() {
         if (state.timer) clearInterval(state.timer);
-        if (reduceMotion || slidesOf(el).length < 2) return;
+        state.timer = null;
+        if (reduceMotion || document.hidden || !state.inView || state.viewerOpen || !el.isConnected || slidesOf(el).length < 2) return;
         state.timer = setInterval(function () {
           if (el.isConnected && !state.viewerOpen) step(1);
         }, seconds * 1000);
@@ -303,7 +308,7 @@
         return b;
       }
       function ensureArrows() {
-        host.classList.add('ppr-slide-host');
+        if (!host.classList.contains('ppr-slide-host')) host.classList.add('ppr-slide-host');
         if (canEnlarge && !host.querySelector('.ppr-photo-open')) {
           host.classList.add('ppr-photo-host');
           var open = document.createElement('button');
@@ -332,6 +337,7 @@
         e.stopPropagation();
         if (state.viewerOpen) return;
         state.viewerOpen = true;
+        restartAuto();
         openPhoto(el, state.idx, function (index) {
           state.idx = index;
           state.viewerOpen = false;
@@ -375,17 +381,33 @@
 
       ensureArrows();
       apply();
+      // Offscreen photos need no compositing work. Resume with a full interval
+      // when the photo becomes visible, without changing manual navigation.
+      var visibilityObserver = window.IntersectionObserver && new IntersectionObserver(function (entries) {
+        state.inView = entries[0].isIntersecting;
+        restartAuto();
+      });
+      if (visibilityObserver) visibilityObserver.observe(el);
+      document.addEventListener('visibilitychange', restartAuto);
       restartAuto();
-      // Reassert after React re-renders (they reset opacities / drop arrows).
-      setInterval(function () {
-        if (!el.isConnected) return;
+      // Repair React re-renders (they reset opacities / drop arrows), but leave
+      // unchanged DOM alone so idle slideshows do not trigger style work.
+      var repairTimer = setInterval(function () {
+        if (!el.isConnected) {
+          clearInterval(repairTimer);
+          clearInterval(state.timer);
+          if (visibilityObserver) visibilityObserver.disconnect();
+          document.removeEventListener('visibilitychange', restartAuto);
+          return;
+        }
+        if (document.hidden) return;
         ensureArrows();
         apply();
       }, 1000);
     }
 
     function scan() {
-      var els = document.querySelectorAll('[data-slideshow]');
+      var els = document.querySelectorAll('#dc-root [data-slideshow]');
       for (var i = 0; i < els.length; i++) initContainer(els[i]);
     }
     var started = Date.now();
@@ -393,6 +415,7 @@
       scan();
       if (Date.now() - started < 30000) setTimeout(poll, 1000);
     })();
+    document.addEventListener('ppr:prepare', scan);
     document.addEventListener('ppr:loaded', scan);
   })();
 
@@ -444,14 +467,15 @@
   (document.body || document.documentElement).appendChild(el);
 
   function contentReady() {
-    return document.querySelector('[data-sec], [data-split], [data-grid3], [data-srow], [data-cert-card]');
+    // The raw x-dc template contains the same selectors before React mounts.
+    return document.querySelector('#dc-root [data-sec], #dc-root [data-split], #dc-root [data-grid3], #dc-root [data-srow], #dc-root [data-cert-card]');
   }
 
   // If the hero renders a content-driven slideshow, hold the curtain until its
   // first photo has finished loading (it is the LCP; without this a changed
   // hero image would pop in after the curtain lifts).
   function heroImageReady() {
-    var img = document.querySelector('[data-hero-scene] [data-slideshow] img[data-slide="0"]');
+    var img = document.querySelector('#dc-root [data-hero-scene] [data-slideshow] img[data-slide="0"]');
     if (!img) return true;
     return img.complete;
   }
@@ -497,10 +521,19 @@
   })();
 
   function lift() {
-    el.classList.add('ppr-hide');
-    // Signal scroll-reveal to start so the hero animates as the curtain fades.
-    document.dispatchEvent(new Event('ppr:loaded'));
-    setTimeout(function () { el.remove(); }, FADE_MS + 60);
+    // Prepare controls and reveal styles while the curtain still covers layout.
+    document.dispatchEvent(new Event('ppr:prepare'));
+    var lifted = false;
+    function reveal() {
+      if (lifted) return;
+      lifted = true;
+      window.__pprLoaded = true;
+      el.classList.add('ppr-hide');
+      document.dispatchEvent(new Event('ppr:loaded'));
+      setTimeout(function () { el.remove(); }, FADE_MS + 60);
+    }
+    requestAnimationFrame(function () { requestAnimationFrame(reveal); });
+    setTimeout(reveal, 100); // Also release in background tabs with paused frames.
   }
 
   (function check() {

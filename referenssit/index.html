@@ -23,10 +23,10 @@
 <style>html,body{background:#F0F2F6;margin:0}body{font-family:'Archivo',system-ui,sans-serif}</style>
 <script src="./support.js"></script>
 <script src="./language.js?v=20261006-clean-urls"></script>
-<script src="./loader.js?v=20261006-clean-urls"></script>
+<script src="./loader.js?v=20261006-scroll-perf"></script>
 <script defer src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
-<script defer src="./scroll-reveal.js?v=20260922"></script>
-<script defer src="./active-nav.js?v=20261006-clean-urls"></script>
+<script defer src="./scroll-reveal.js?v=20261006-scroll-perf"></script>
+<script defer src="./active-nav.js?v=20261006-scroll-perf"></script>
 </head>
 <body>
 <x-dc>
@@ -42,7 +42,7 @@
   a{color:inherit;text-decoration:none}
   ::selection{background:#015AFF;color:#fff}
   .lbl{font-family:'Archivo Narrow',sans-serif;text-transform:uppercase;letter-spacing:.14em}
-  .reveal-soft,.reveal-up,.reveal-stagger,.reveal-invert{will-change:transform,opacity;backface-visibility:hidden}
+  .reveal-soft,.reveal-up,.reveal-stagger,.reveal-invert{backface-visibility:hidden}
   .reveal-motion-off .reveal-soft,.reveal-motion-off .reveal-up,.reveal-motion-off .reveal-stagger,.reveal-motion-off .reveal-invert{opacity:1 !important;transform:none !important;visibility:visible !important}
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}

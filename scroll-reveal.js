@@ -13,26 +13,28 @@
   const revealViewport = isDesktopViewport ? desktopRevealViewport : mobileRevealViewport;
 
   function markRevealTargets() {
-    document.querySelectorAll('[data-sec] > div').forEach((el) => {
+    const root = document.getElementById('dc-root');
+    if (!root) return;
+    root.querySelectorAll('[data-sec] > div').forEach((el) => {
       el.classList.add('reveal-soft');
     });
 
-    document.querySelectorAll('[data-split] > *, header h1, header p, header .lbl').forEach((el) => {
+    root.querySelectorAll('[data-split] > *, header h1, header p, header .lbl').forEach((el) => {
       el.classList.add('reveal-up');
     });
 
-    document.querySelectorAll('[data-grid3]:not([data-cert-grid]) > *, [data-srow]').forEach((el) => {
+    root.querySelectorAll('[data-grid3]:not([data-cert-grid]) > *, [data-srow]').forEach((el) => {
       el.classList.add('reveal-stagger');
     });
 
     // Reveal the horizontal certificate strip together so offscreen logos
     // are already visible when visitors swipe them into view on mobile.
-    document.querySelectorAll('[data-cert-grid]').forEach((el) => {
+    root.querySelectorAll('[data-cert-grid]').forEach((el) => {
       el.classList.add('reveal-soft');
     });
 
     // Reveal each piece once; a hidden parent otherwise delays its children too.
-    document.querySelectorAll('.reveal-soft').forEach((el) => {
+    root.querySelectorAll('.reveal-soft').forEach((el) => {
       if (el.querySelector('.reveal-up, .reveal-stagger')) {
         el.classList.remove('reveal-soft');
       }
@@ -84,7 +86,7 @@
   // The page is rendered by React (support.js) *after* it async-loads React
   // from a CDN, so the reveal targets don't exist at DOMContentLoaded.
   function contentReady() {
-    return document.querySelector('[data-sec], [data-split], [data-grid3], [data-srow], [data-cert-card]');
+    return document.querySelector('#dc-root [data-sec], #dc-root [data-split], #dc-root [data-grid3], #dc-root [data-srow], #dc-root [data-cert-card]');
   }
   function libReady() {
     return reduceMotion || typeof window.ScrollReveal === 'function';
@@ -95,28 +97,27 @@
   }
 
   if (window.__pprLoader) {
-    // loader.js owns the cold-load curtain and detects when content is ready.
-    // Bind the reveal as it lifts so the hero animates in with the fade,
-    // instead of playing hidden behind the curtain or flashing then re-animating.
+    // Set up while the loader is still opaque, before the first visible scroll.
+    // If this script/CDN arrives after the curtain, keep already visible content
+    // visible instead of hiding it again to start a late animation.
     let fired = false;
-    const go = function () {
+    const prepare = function () {
       if (fired) return;
       fired = true;
-      // The ScrollReveal lib is CDN-loaded with `defer` and the curtain doesn't
-      // wait for it — on a cold load it can still be downloading when the
-      // curtain lifts. Starting now would find ScrollReveal undefined and bail
-      // (no effect). Poll until the lib is ready, with a cap so we never hang.
-      const startedAt = Date.now();
-      (function whenLibReady() {
-        if (libReady() || Date.now() - startedAt > 4000) {
-          start();
-        } else {
-          setTimeout(whenLibReady, 50);
-        }
-      })();
+      initScrollReveal();
     };
-    document.addEventListener('ppr:loaded', go, { once: true });
-    setTimeout(go, 12000); // fallback if the curtain never lifts
+    const fallback = function () {
+      if (fired) return;
+      fired = true;
+      document.documentElement.classList.add('reveal-motion-off');
+    };
+    if (window.__pprLoaded) {
+      fallback();
+    } else {
+      document.addEventListener('ppr:prepare', prepare, { once: true });
+      document.addEventListener('ppr:loaded', fallback, { once: true });
+      setTimeout(fallback, 12100);
+    }
   } else {
     // No loader present — wait for the rendered content (and the lib) ourselves.
     const startedAt = Date.now();
