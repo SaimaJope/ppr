@@ -2,12 +2,11 @@
 //
 // The page is client-rendered by React (support.js), which async-loads React
 // from a CDN before any content exists — so on a cold load the page is blank
-// for a beat and then content pops in. This overlay covers that gap and the
-// initial scroll-reveal so the page appears as one elegant fade instead.
+// for a beat and then content pops in. This overlay covers that initial gap.
 //
 // Loaded synchronously in <head> so the curtain paints during HTML parse,
-// before the blank flash. scroll-reveal.js waits for the `ppr:loaded` event
-// (see window.__pprLoader) so the hero animates in as the curtain lifts.
+// before the blank flash. The lifecycle events prepare slideshow controls and
+// restore deep links before the curtain lifts.
 (function () {
   window.__pprLoader = true;
 
@@ -108,13 +107,43 @@
   // container: automatic crossfade plus frosted-glass prev/next arrows for
   // manual browsing. Runs outside React on purpose: a re-render (e.g. the
   // mobile menu opening) resets inline opacities and can drop the arrows, and
-  // the periodic reassert below simply puts them back. Containers appear only
-  // after content renders, so keep scanning for a while and after the curtain
-  // lifts. Reduced motion disables the auto-rotation but keeps the arrows.
+  // the DOM-change repair below simply puts them back. Watch the rendered root
+  // for new containers, including delayed content. Reduced motion disables the
+  // auto-rotation but keeps the arrows.
   (function () {
     var reduceMotion = window.matchMedia &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var inited = new WeakSet();
+    var initialized = new WeakMap();
+    var activeContainers = new Map();
+    var scrolling = false;
+    var scrollResumeTimer = null;
+    var supportsScrollEnd = 'onscrollend' in window;
+
+    function resumeAutoAfterScroll() {
+      clearTimeout(scrollResumeTimer);
+      scrollResumeTimer = null;
+      if (!scrolling) return;
+      scrolling = false;
+      activeContainers.forEach(function (lifecycle) { lifecycle.restartAuto(); });
+    }
+    window.addEventListener('scroll', function () {
+      if (!supportsScrollEnd) {
+        clearTimeout(scrollResumeTimer);
+        scrollResumeTimer = setTimeout(resumeAutoAfterScroll, 150);
+      }
+      if (scrolling) return;
+      scrolling = true;
+      // Let an existing fade finish, but start no new crossfade during scroll.
+      activeContainers.forEach(function (lifecycle) { lifecycle.restartAuto(); });
+    }, { passive: true });
+    if (supportsScrollEnd) window.addEventListener('scrollend', resumeAutoAfterScroll);
+    document.addEventListener('visibilitychange', function () {
+      // A hidden tab can miss scrollend. Container listeners below synchronize
+      // their timers after this shared flag has been cleared.
+      scrolling = false;
+      clearTimeout(scrollResumeTimer);
+      scrollResumeTimer = null;
+    });
 
     var CHEVRON_PREV =
       '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" ' +
@@ -250,14 +279,15 @@
     }
 
     function initContainer(el) {
-      if (inited.has(el)) return;
+      var existing = initialized.get(el);
+      if (existing) { existing.resume(); return; }
       var imgs = slidesOf(el);
       if (!imgs.length) return;
-      inited.add(el);
       ensureStyles();
 
       var seconds = Math.min(60, Math.max(2, Number(el.getAttribute('data-slideshow-interval')) || 7));
-      var state = { idx: 0, timer: null, viewerOpen: false, inView: !window.IntersectionObserver };
+      var state = { idx: 0, timer: null, viewerOpen: false, inView: !window.IntersectionObserver, active: false };
+      var slideCount = imgs.length;
 
       // The hero's decorative gradient overlays sit above the slideshow, so
       // its arrows live on the scene element (last children paint on top).
@@ -266,6 +296,7 @@
 
       function apply() {
         var list = slidesOf(el);
+        state.idx = list.length ? state.idx % list.length : 0;
         for (var i = 0; i < list.length; i++) {
           var opacity = i === state.idx ? '1' : '0';
           var hidden = i === state.idx ? 'false' : 'true';
@@ -287,7 +318,7 @@
       function restartAuto() {
         if (state.timer) clearInterval(state.timer);
         state.timer = null;
-        if (reduceMotion || document.hidden || !state.inView || state.viewerOpen || !el.isConnected || slidesOf(el).length < 2) return;
+        if (!state.active || scrolling || reduceMotion || document.hidden || !state.inView || state.viewerOpen || !el.isConnected || slidesOf(el).length < 2) return;
         state.timer = setInterval(function () {
           if (el.isConnected && !state.viewerOpen) step(1);
         }, seconds * 1000);
@@ -309,8 +340,8 @@
       }
       function ensureArrows() {
         if (!host.classList.contains('ppr-slide-host')) host.classList.add('ppr-slide-host');
+        if (canEnlarge && !host.classList.contains('ppr-photo-host')) host.classList.add('ppr-photo-host');
         if (canEnlarge && !host.querySelector('.ppr-photo-open')) {
-          host.classList.add('ppr-photo-host');
           var open = document.createElement('button');
           open.type = 'button';
           open.className = 'ppr-photo-open';
@@ -321,10 +352,8 @@
           host.appendChild(open);
         }
         if (slidesOf(el).length < 2) return;
-        if (!host.querySelector('.ppr-slide-prev')) {
-          host.appendChild(makeArrow(-1));
-          host.appendChild(makeArrow(1));
-        }
+        if (!host.querySelector('.ppr-slide-prev')) host.appendChild(makeArrow(-1));
+        if (!host.querySelector('.ppr-slide-next')) host.appendChild(makeArrow(1));
         if (!host.querySelector('.ppr-slide-hint')) {
           var hint = document.createElement('div');
           hint.className = 'ppr-slide-hint';
@@ -379,42 +408,123 @@
         }
       }, true);
 
-      ensureArrows();
-      apply();
       // Offscreen photos need no compositing work. Resume with a full interval
       // when the photo becomes visible, without changing manual navigation.
       var visibilityObserver = window.IntersectionObserver && new IntersectionObserver(function (entries) {
         state.inView = entries[0].isIntersecting;
         restartAuto();
       });
-      if (visibilityObserver) visibilityObserver.observe(el);
-      document.addEventListener('visibilitychange', restartAuto);
-      restartAuto();
-      // Repair React re-renders (they reset opacities / drop arrows), but leave
-      // unchanged DOM alone so idle slideshows do not trigger style work.
-      var repairTimer = setInterval(function () {
-        if (!el.isConnected) {
-          clearInterval(repairTimer);
-          clearInterval(state.timer);
-          if (visibilityObserver) visibilityObserver.disconnect();
-          document.removeEventListener('visibilitychange', restartAuto);
-          return;
-        }
+      function repair() {
+        if (!el.isConnected) { stop(); return; }
         if (document.hidden) return;
+        // All writes are conditional. Notifications caused by our own repair
+        // see the expected state and finish without another DOM mutation.
         ensureArrows();
         apply();
-      }, 1000);
+        var count = slidesOf(el).length;
+        if (count !== slideCount) {
+          slideCount = count;
+          restartAuto();
+        }
+      }
+      var repairObserver = new MutationObserver(repair);
+      function handleVisibility() {
+        repair();
+        restartAuto();
+      }
+      function stop() {
+        state.active = false;
+        clearInterval(state.timer);
+        state.timer = null;
+        repairObserver.disconnect();
+        if (visibilityObserver) visibilityObserver.disconnect();
+        document.removeEventListener('visibilitychange', handleVisibility);
+        activeContainers.delete(el);
+      }
+      function resume() {
+        if (state.active || !el.isConnected) return;
+        state.active = true;
+        state.inView = !visibilityObserver;
+        activeContainers.set(el, lifecycle);
+        ensureArrows();
+        apply();
+        repairObserver.observe(el, {
+          childList: true, subtree: true, attributes: true,
+          attributeFilter: ['style', 'aria-hidden', 'class']
+        });
+        if (host !== el) repairObserver.observe(host, {
+          childList: true, attributes: true, attributeFilter: ['class']
+        });
+        if (visibilityObserver) visibilityObserver.observe(el);
+        document.addEventListener('visibilitychange', handleVisibility);
+        restartAuto();
+      }
+      // Reinserted containers reuse their state and native handlers; detached
+      // ones release timers, observers and the document listener immediately.
+      var lifecycle = { resume: resume, stop: stop, restartAuto: restartAuto };
+      initialized.set(el, lifecycle);
+      resume();
     }
 
     function scan() {
       var els = document.querySelectorAll('#dc-root [data-slideshow]');
       for (var i = 0; i < els.length; i++) initContainer(els[i]);
     }
-    var started = Date.now();
-    (function poll() {
-      scan();
-      if (Date.now() - started < 30000) setTimeout(poll, 1000);
-    })();
+    function scanAdded(node) {
+      if (node.nodeType !== 1) return;
+      if (node.matches('[data-slideshow]')) initContainer(node);
+      var els = node.querySelectorAll('[data-slideshow]');
+      for (var i = 0; i < els.length; i++) initContainer(els[i]);
+    }
+    var renderedRoot = null;
+    function watchRoot(root) {
+      rootObserver.disconnect();
+      renderedRoot = root;
+      if (!root) {
+        // loader.js can execute in <head>, before the React root exists.
+        rootObserver.observe(document.documentElement, { childList: true, subtree: true });
+        return;
+      }
+      rootObserver.observe(root, { childList: true, subtree: true });
+      // Detect replacement of the root without watching unrelated subtrees.
+      for (var parent = root.parentNode; parent; parent = parent.parentNode) {
+        rootObserver.observe(parent, { childList: true });
+      }
+    }
+    var rootObserver = new MutationObserver(function (mutations) {
+      var root = document.getElementById('dc-root');
+      var removed = false;
+      if (root !== renderedRoot) {
+        watchRoot(root);
+        scan();
+        removed = true;
+      } else if (root) {
+        for (var i = 0; i < mutations.length; i++) {
+          var mutation = mutations[i];
+          if (mutation.target !== root && !root.contains(mutation.target)) continue;
+          var addedElements = false;
+          for (var j = 0; j < mutation.addedNodes.length; j++) {
+            if (mutation.addedNodes[j].nodeType === 1) addedElements = true;
+            scanAdded(mutation.addedNodes[j]);
+          }
+          // An empty slideshow may receive its images in a later React commit.
+          if (addedElements && mutation.target.nodeType === 1) {
+            var container = mutation.target.closest('[data-slideshow]');
+            if (container) initContainer(container);
+          }
+          for (var k = 0; k < mutation.removedNodes.length; k++) {
+            if (mutation.removedNodes[k].nodeType === 1) removed = true;
+          }
+        }
+      }
+      if (removed) activeContainers.forEach(function (lifecycle, el) {
+        if (!el.isConnected) lifecycle.stop();
+      });
+    });
+    watchRoot(document.getElementById('dc-root'));
+    // Existing rendered content and loader lifecycle events share the same
+    // initialization path; no idle scan or per-container repair poll remains.
+    scan();
     document.addEventListener('ppr:prepare', scan);
     document.addEventListener('ppr:loaded', scan);
   })();
@@ -521,7 +631,7 @@
   })();
 
   function lift() {
-    // Prepare controls and reveal styles while the curtain still covers layout.
+    // Prepare controls while the curtain still covers the initial layout.
     document.dispatchEvent(new Event('ppr:prepare'));
     var lifted = false;
     function reveal() {

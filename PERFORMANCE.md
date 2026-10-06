@@ -1,91 +1,103 @@
-# Chrome scrolling adjustments — 6 October 2026
+# Scrolling performance — 6 October 2026
 
-The reported laptop stutter was not reproduced on the available desktop's
-RTX 3070 Ti, including Chrome with 4× CPU throttling. CPU throttling does not
-simulate a laptop GPU. These changes remove verified unnecessary rendering
-work without changing the page content, photos, typography or header blur.
+## Current changes
 
-## Changes
+The follow-up removes section entrance animations with the site owner's
+approval. Content now appears in its final position immediately. The layout,
+text, typography, colours, photographs, header blur, image treatments and
+manual controls are unchanged.
 
-- Remove permanent `will-change: transform, opacity` from reveal classes.
-  ScrollReveal still performs the same one-time animations and cleans up its
-  inline styles. The browser can release resources after each animation.
-- Update slideshow styles, attributes and captions only when their values
-  change. Keep the repair check needed after React menu rerenders.
-- Pause autoplay outside the viewport and in hidden tabs; resume with a full
-  slide interval. Manual arrows, swipes and the photo dialog remain available.
-  Clean up timers and observers when a slideshow is removed.
-- Limit navigation observation to the rendered navigation and its ancestor
-  replacements, and avoid rewriting unchanged active-link classes.
-- Wait for the actual React content and first hero image before lifting the
-  existing loading screen. Prepare slideshow controls and reveal styles while
-  the screen is still opaque. Preserve the bounded loading fallback; if the
-  reveal script arrives late, keep visible content visible.
-- Version the three changed scripts in every template so browsers request
-  the updated files.
+- Remove ScrollReveal and its initialization script from all 13 templates.
+  There are no reveal scroll callbacks, hidden waiting sections or offscreen
+  reveal transforms. Remove the associated backface-hiding style.
+- Retain a small, harmless `scroll-reveal.js` compatibility file for previously
+  cached HTML. New pages do not request it or the external animation library.
+- Replace the slideshow's one-second repair timers and 30-second startup scan
+  with DOM observers. Only changed/new content requires repair. Detached
+  slideshows release timers and observers; reinserted nodes reuse their state
+  and controls without duplicate event handlers.
+- Pause automatic slide changes during scrolling. One passive shared scroll
+  listener pauses the timers, then returns immediately on subsequent events.
+  Native `scrollend` resumes a full slide interval. Older browsers use a
+  trailing 150 ms timer. An existing crossfade can finish; manual navigation
+  remains available throughout.
+- Keep offscreen/hidden-tab pausing, reduced-motion handling, the photo dialog,
+  swipe controls, loading curtain and billing-anchor behavior.
+- Version `loader.js` as `20261006-smooth-scroll` in every template.
 
-A loading screen helps cover initial rendering; it cannot fix ongoing scroll
-work. The persistent-work changes above are therefore separate from loading.
-The sticky header's blur and service-photo backgrounds remain unchanged:
-temporary blur-removal experiments did not reproduce or resolve scroll stalls
-on this test machine. The existing dormant hero parallax was not activated.
+The loading curtain covers startup, not ongoing scrolling. The first pass
+(commit `6d8d72a`) already made DOM writes conditional, scoped active-navigation
+observation, removed permanent reveal `will-change` hints and prepared rendered
+content before lifting the curtain. Those changes are retained.
 
-## Verification
+## Measurements and limits
 
-Chrome comparisons use a frozen copy of commit `bdb48ce`, a 1366×768 viewport,
-4× CPU throttling, normal motion, and identical wheel sequences on the home
-and services pages. Cold loading, first scrolling and subsequent scrolling
-are captured separately. These are local comparisons, not field measurements
-or a guarantee of a particular frame rate on other hardware.
+The reported laptop frame-rate problem was not reproduced on the available
+desktop. CPU throttling and software rendering are useful comparisons, but do
+not recreate that laptop's GPU, drivers or browser configuration. No guaranteed
+frame rate or hardware GPU-memory saving is claimed.
+
+The follow-up compares frozen `6d8d72a` with the candidate in Chrome 154,
+1366×768, device scale 2, 4× CPU throttling and software graphics. The same
+continuous wheel sequence reverses at page bounds. Motion is enabled in both
+runs, and the baseline animation library was confirmed active. SVG assets use
+the correct MIME type. Raw traces and reports are retained outside the site.
 
 | Local observation | Before | After |
 | --- | --- | --- |
-| DOM mutation records during 3 seconds on idle services page | 228 | 0 |
-| Elements with an explicit `will-change` hint, home | 19 | 1 |
-| Elements with an explicit `will-change` hint, services | 18 | 0 |
-| New DOM nodes over the steady home scroll sequence | 6 | 0 |
-| New DOM nodes over the steady services scroll sequence | 30 | 0 |
+| Hidden targets with reveal transforms just after load, home | 13 | 0 |
+| Hidden targets with reveal transforms just after load, services | 12 | 0 |
+| Display drawing time during first home scroll sequence | 848 ms | 719 ms |
+| Display drawing time during first services scroll sequence | 864 ms | 683 ms |
+| Script time during first home scroll sequence | 60 ms | 51 ms |
+| Script time during first services scroll sequence | 73 ms | 68 ms |
 
-No scroll long tasks over 50 ms were observed before or after; the measured
-95th-percentile animation-frame interval remained about 16.8 ms. Style work
-fell in these samples, but overall CPU timings varied. No frame-rate speedup
-or measured GPU-memory saving is claimed. CDP layer-tree data was unavailable;
-element hint counts must not be interpreted as actual compositor layer counts.
+These are single local workload samples, not FPS improvements. Subsequent
+scroll timings were mixed: display drawing fell slightly on both pages while
+overall main-thread time rose slightly. No scroll long tasks over 50 ms were
+observed in either version. Animation-frame callbacks are not measurements of
+presented GPU frames. CDP layer-tree data was unavailable.
 
-The 13 existing automated tests pass, including both `/` and `/ppr/` mounts,
-locale routing, assets and admin previews. The eight source/alias pairs remain
-synchronized. All 24 focused browser regression cases pass: desktop/mobile
-pages, English/Swedish and subpath navigation, mobile menu and touch swipe,
-slideshow autoplay/pause/resume, photo dialog controls, billing anchors,
-delayed content and hero-image loading, a blocked reveal CDN, reduced motion,
-and the loading timeout. No unexpected runtime/network failures or broken
-rendered images were found. Desktop/mobile screenshots were visually reviewed.
-Two initial test cases tried to click intentionally hidden hero controls;
-they were corrected to exercise touch swipe and visible service controls.
-The original diagnostics and successful reruns are retained outside the
-public site along with the performance traces.
+The earlier first-pass comparison reduced idle services-page mutation records
+from 228 to 0 over three seconds. This follow-up removes the remaining recurring
+slideshow polling itself, as well as the entrance animations.
 
-## Files changed
+## Verification
+
+- All 13 repository tests pass, covering routing, locale/default language,
+  metadata, admin preview configuration and assets at both `/` and `/ppr/`.
+  Both mounts serve all 61 distinct tested page/resource URLs successfully.
+- Six browser visual fixtures pass at desktop, tablet and narrow mobile widths,
+  including `/ppr/`. Page dimensions, zoom, heading geometry, hero crop/filter
+  and header blur match the baseline. Screenshots were visually reviewed;
+  small text-edge rasterization differences remain after removing transforms.
+  Rendered images load without failures.
+- All 50 focused browser regression cases pass: all five pages and three
+  languages at both mounts, mobile pages/menu/swipe, photo controls, billing
+  anchors, autoplay visibility/scroll pausing and resumption, delayed slideshow
+  insertion, detach/reinsert, idle observer stability, reduced motion and
+  delayed/failed loading. The older-browser scrollend fallback also passes
+  with real scrolling and mobile touch swipe. There are no unexpected errors.
+  Existing raw-template image placeholders are recorded separately from
+  rendered images.
+
+## Files in this follow-up
 
 | File | Change |
 | --- | --- |
-| `loader.js` | Idempotent slideshow updates, visibility-aware autoplay, cleanup, rendered-content loading gate and preparation event. |
-| `scroll-reveal.js` | Initialize against rendered content behind the loader; keep content visible when scripts arrive late. |
-| `active-nav.js` | Scope mutation observation and update only changed link state. |
-| `index.html` | Remove permanent reveal promotion and update the three script versions. |
-| `Etusivu.dc.html` | Same home-template CSS and script versions. |
-| `Palvelut.dc.html` | Same shared CSS and script versions. |
-| `Referenssit.dc.html` | Same shared CSS and script versions. |
-| `Yhteystiedot.dc.html` | Same shared CSS and script versions. |
-| `Yritys.dc.html` | Same shared CSS and script versions. |
-| `palvelut/index.html` | Synchronized services template. |
-| `referenssit/index.html` | Synchronized references template. |
-| `yhteystiedot/index.html` | Synchronized contact template. |
-| `yritys/index.html` | Synchronized company template. |
-| `index.php/index.html` | Synchronized legacy home template. |
-| `palvelut.php/index.html` | Synchronized legacy services template. |
-| `yhteys.php/index.html` | Synchronized legacy contact template. |
-| `PERFORMANCE.md` | Change summary, verification limits and file inventory. |
-
-For the reasoning behind avoiding persistent layer hints, see
-[MDN's will-change guidance](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/will-change).
+| `loader.js` | Event-driven slideshow setup/repair, lifecycle cleanup, scrolling pause/resume. |
+| `scroll-reveal.js` | Small compatibility entry point; entrance animations removed. |
+| `index.html` | Remove reveal scripts/backface hiding; version the loader. |
+| `Etusivu.dc.html` | Same shared changes in the legacy home template. |
+| `Palvelut.dc.html` | Same shared changes in the services template. |
+| `Referenssit.dc.html` | Same shared changes in the references template. |
+| `Yhteystiedot.dc.html` | Same shared changes in the contact template. |
+| `Yritys.dc.html` | Same shared changes in the company template. |
+| `palvelut/index.html` | Synchronized clean services route. |
+| `referenssit/index.html` | Synchronized clean references route. |
+| `yhteystiedot/index.html` | Synchronized clean contact route. |
+| `yritys/index.html` | Synchronized clean company route. |
+| `index.php/index.html` | Synchronized old home alias. |
+| `palvelut.php/index.html` | Synchronized old services alias. |
+| `yhteys.php/index.html` | Synchronized old contact alias. |
+| `PERFORMANCE.md` | Current changes, measurements, limitations and file inventory. |
