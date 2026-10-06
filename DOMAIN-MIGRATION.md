@@ -8,8 +8,9 @@ settings. Keep the existing domain setting and CNAME when publishing this releas
 
 The release branch is `codex/ppr-clean-urls`. Commit `55520e3` published the
 original domain preparation and clean page addresses alongside the live CNAME.
-The follow-up adds compatibility for old indexed PHP addresses. Keep publishing
-the static site from the repository root.
+The follow-ups add compatibility for old indexed PHP addresses and footer
+navigation to billing details. Keep publishing the static site from the
+repository root.
 
 ## Public addresses
 
@@ -64,6 +65,32 @@ During the 6 October cutover, a separate compressed response for
 `https://www.ppr.fi/` was observed returning a cached GitHub Pages missing-site
 404 while the apex and other www paths worked. The PHP aliases provide old-path
 compatibility; they do not purge that CDN response or change DNS/Pages settings.
+
+## Billing details footer link
+
+The existing billing link in every footer now targets the clean contact page's
+`#laskutustiedot` anchor, retaining the selected language. For Finnish, the
+destination is `yhteystiedot/#laskutustiedot`; English and Swedish include their
+language query before the fragment. The label, content and visual design stay
+the same.
+
+The three contact templates render the billing section's actual DOM ID from
+`billingAnchorId: 'laskutustiedot'`. Scrolling waits for the asynchronous content
+to render, the fonts to finish loading and the next animation frame; it ignores
+the hidden source template. Hash changes and the `ppr:loaded` event also trigger
+the scroll, and the component removes those listeners when unmounted.
+`scroll-margin-top:88px` keeps the section below the sticky header. These contact
+changes are in `Yhteystiedot.dc.html`, `yhteystiedot/index.html` and
+`yhteys.php/index.html`.
+
+All 13 HTML templates have the updated footer link:
+
+- Root templates: `index.html`, `Etusivu.dc.html`, `Palvelut.dc.html`,
+  `Yritys.dc.html`, `Referenssit.dc.html`, `Yhteystiedot.dc.html`.
+- Clean directory templates: `palvelut/index.html`, `yritys/index.html`,
+  `referenssit/index.html`, `yhteystiedot/index.html`.
+- Indexed PHP compatibility templates: `index.php/index.html`,
+  `palvelut.php/index.html`, `yhteys.php/index.html`.
 
 ## Admin panel
 
@@ -120,6 +147,9 @@ both mount points. Check the PHP paths with and without trailing slashes, and
 their static `index.html` forms. Click navigation and
 language switches, inspect rendered images, and exercise a legacy alias and its
 anchor. Also verify that admin previews remain on the Worker preview URL.
+Click the billing footer link from each page and open the contact anchor directly
+with delayed content loading; check all three languages and the sticky-header
+offset at both mount points.
 Existing literal `{{...}}` image placeholders can make transient requests before
 rendering; final rendered images must use real files. The favicon declaration is
 in the actual HTML head.
@@ -129,7 +159,8 @@ in the actual HTML head.
 The preparation column describes commit `f48cbc6` relative to the earlier site.
 These changes are included in this release and were not in remote `main` at
 `9ccb3cb`, the live CNAME-only commit. The clean-URL column describes the subsequent
-work on `codex/ppr-clean-urls`, including the indexed-PHP compatibility follow-up.
+work on `codex/ppr-clean-urls`, including the indexed-PHP compatibility and billing
+footer follow-ups. The billing section above lists all 13 modified templates.
 CNAME is already live and unchanged by this release.
 
 | File | Original domain preparation | Clean-URL release |
@@ -139,14 +170,14 @@ CNAME is already live and unchanged by this release.
 | `Palvelut.dc.html` | Relative home links, Finnish fallback and production metadata. | Shared clean navigation, `/palvelut/` canonical and normal-browser alias redirect. |
 | `Yritys.dc.html` | Relative home links, Finnish fallback and production metadata. | Shared clean navigation, `/yritys/` canonical and normal-browser alias redirect. |
 | `Referenssit.dc.html` | Relative home links, Finnish fallback and production metadata. | Shared clean navigation, `/referenssit/` canonical and normal-browser alias redirect. |
-| `Yhteystiedot.dc.html` | Relative home links, Finnish fallback and production metadata. | Shared clean navigation, `/yhteystiedot/` canonical and normal-browser alias redirect. |
+| `Yhteystiedot.dc.html` | Relative home links, Finnish fallback and production metadata. | Clean navigation/canonical and alias redirect; rendered billing anchor, asynchronous scroll and header offset. |
 | `palvelut/index.html` | — | New full services template with relative root base and clean metadata. |
 | `yritys/index.html` | — | New full company template with relative root base and clean metadata. |
 | `referenssit/index.html` | — | New full references template with relative root base and clean metadata. |
-| `yhteystiedot/index.html` | — | New full contact template with relative root base and clean metadata. |
+| `yhteystiedot/index.html` | — | Full clean contact template; billing footer link, rendered anchor, asynchronous scroll and header offset. |
 | `index.php/index.html` | — | Static compatibility template for the old indexed front-page address; redirect to `/` with clean metadata. |
 | `palvelut.php/index.html` | — | Static compatibility template for the old indexed services address; redirect to `/palvelut/` with clean metadata. |
-| `yhteys.php/index.html` | — | Static compatibility template for the old indexed contact address; redirect to `/yhteystiedot/` with clean metadata. |
+| `yhteys.php/index.html` | — | Static contact compatibility template; clean redirect/metadata, billing anchor, asynchronous scroll and header offset. |
 | `language.js` | Finnish default, relative content/language links and locale-aware metadata. | Shared clean route map, navigation links, alias normalization, query/hash preservation and preview exception. |
 | `active-nav.js` | Recognize index and directory root as the home page. | Recognize clean directory routes, aliases and preview page selection. |
 | `loader.js` | — | Expose shared `pageLinks` for template navigation. |
@@ -160,10 +191,11 @@ CNAME is already live and unchanged by this release.
 | `tests/domain-migration.test.mjs` | Test HTTP mount points, resources, language routes and metadata. | Check clean pages, HTML and indexed PHP aliases, query/hash preservation and production metadata. |
 | `tests/admin-domain.test.mjs` | Test configured assets, links and previews for project, apex and www URLs. | Add preview routing compatibility assertions. |
 | `DEPLOY.md` | Explain Finnish defaults and link the migration guide. | Record the live domain, clean addresses, indexed PHP compatibility and unchanged Worker hosting. |
-| `DOMAIN-MIGRATION.md` | Explain cutover, configuration and the original change list. | Record completed cutover, clean routes, indexed PHP compatibility and the separate CDN cache incident. |
+| `DOMAIN-MIGRATION.md` | Explain cutover, configuration and the original change list. | Record cutover, clean routes, indexed PHP compatibility, billing-footer behavior and the separate CDN cache incident. |
 | `CNAME` | Originally prepared as a separate domain-day commit. | Already present in remote `main`; keep exactly `ppr.fi`. |
 
-Content JSON, photos, styles and the visible page design remain unchanged.
+Content JSON, photos and the visible page design remain unchanged. The billing
+section's added scroll margin only affects its position after anchor navigation.
 
 ## Cutover history and current DNS
 
