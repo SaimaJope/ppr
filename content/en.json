@@ -166,6 +166,10 @@
       "depotLabel": "Warehouse and depot",
       "billingLabel": "Invoicing",
       "phonePrefix": "Tel."
+    },
+    "seo": {
+      "title": "Porvoon Paalurakenne Oy | Industrial Construction in Porvoo",
+      "description": "Porvoon Paalurakenne Oy provides construction services for industry and public clients in Southern Finland. Request a quote."
     }
   },
   "palvelut": {
@@ -282,7 +286,11 @@
           "assets/teollisuuden-rakennustyomaa.jpg"
         ]
       }
-    ]
+    ],
+    "seo": {
+      "title": "Construction Services for Industry | Porvoon Paalurakenne Oy",
+      "description": "Industrial construction, groundworks, concrete structures, municipal engineering and renovation. Request a quote from Porvoon Paalurakenne Oy."
+    }
   },
   "yritys": {
     "hero": {
@@ -370,6 +378,10 @@
     "network": {
       "title": "An extensive, established subcontractor network.",
       "text": "Our established network of construction subcontractors and partners in eastern Uusimaa enables us to deliver large contracts with quality results and reliable schedules."
+    },
+    "seo": {
+      "title": "Construction Expertise Since 2006 | Porvoon Paalurakenne Oy",
+      "description": "Porvoon Paalurakenne Oy has worked in construction since 2006. Learn about the company, safety and our certifications."
     }
   },
   "referenssit": {
@@ -721,7 +733,11 @@
         "shot": "",
         "images": []
       }
-    ]
+    ],
+    "seo": {
+      "title": "Construction References and Projects | Porvoon Paalurakenne Oy",
+      "description": "References from concrete and groundworks, industrial construction and maintenance. See the completed projects of Porvoon Paalurakenne Oy."
+    }
   },
   "yhteystiedot": {
     "hero": {
@@ -796,6 +812,10 @@
     "invoicing": {
       "eyebrow": "Invoicing",
       "title": "Invoicing details"
+    },
+    "seo": {
+      "title": "Contact Details and 24h Standby | Porvoon Paalurakenne Oy",
+      "description": "Office in Askola, depot and warehouse in Kulloo, Kilpilahti. The Kilpilahti 24h standby service is available around the clock. Request a quote."
     }
   },
   "ura": {}

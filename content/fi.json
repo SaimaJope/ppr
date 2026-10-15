@@ -166,6 +166,10 @@
       "depotLabel": "Varasto ja varikko",
       "billingLabel": "Laskutus",
       "phonePrefix": "Puh."
+    },
+    "seo": {
+      "title": "Porvoon Paalurakenne Oy | Teollisuusrakentaminen Porvoossa",
+      "description": "Porvoon Paalurakenne Oy tuottaa rakentamispalveluja teollisuudelle ja julkisille asiakkaille. Pyydä tarjous."
     }
   },
   "palvelut": {
@@ -282,7 +286,11 @@
           "assets/teollisuuden-rakennustyomaa.jpg"
         ]
       }
-    ]
+    ],
+    "seo": {
+      "title": "Rakennuspalvelut teollisuudelle | Porvoon Paalurakenne Oy",
+      "description": "Teollisuusrakentaminen, maanrakennus, betonirakenteet, kunnallistekniikka ja korjausrakentaminen. Pyydä tarjous Porvoon Paalurakenne Oy:ltä."
+    }
   },
   "yritys": {
     "hero": {
@@ -370,6 +378,10 @@
     "network": {
       "title": "Laaja ja testattu alihankintaverkosto.",
       "text": "Toimiva ja testattu rakentamisen alihankinta- ja yhteistyöverkosto Itä-Uudenmaan alueella mahdollistaa suuretkin työkokonaisuudet sekä takaa laadukkaan lopputuloksen ja pitävät aikataulut."
+    },
+    "seo": {
+      "title": "Rakennusalan osaaja vuodesta 2006 | Porvoon Paalurakenne Oy",
+      "description": "Porvoon Paalurakenne Oy on toiminut rakennusalalla vuodesta 2006. Tutustu yritykseen, turvallisuuteen ja sertifikaatteihin."
     }
   },
   "referenssit": {
@@ -721,7 +733,11 @@
         "shot": "",
         "images": []
       }
-    ]
+    ],
+    "seo": {
+      "title": "Rakennusreferenssit ja työkohteet | Porvoon Paalurakenne Oy",
+      "description": "Referenssejä betoni- ja maanrakennustöistä, teollisuusrakentamisesta ja kunnossapidosta. Katso Porvoon Paalurakenne Oy:n toteutuneet työt."
+    }
   },
   "yhteystiedot": {
     "hero": {
@@ -796,6 +812,10 @@
     "invoicing": {
       "eyebrow": "Laskutus",
       "title": "Laskutustiedot"
+    },
+    "seo": {
+      "title": "Yhteystiedot ja 24h päivystys | Porvoon Paalurakenne Oy",
+      "description": "Toimisto Askolassa, toimipiste ja varasto Kilpilahden Kulloossa. Kilpilahden 24h päivystys palvelee ympäri vuorokauden. Pyydä tarjous."
     }
   }
 }

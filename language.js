@@ -83,14 +83,15 @@
   if (ogUrl) ogUrl.content = canonicalUrl;
   window.pprSetPageMetadata = function (content) {
     var key = page;
-    document.title = content.common.nav[key] + ' | Porvoon Paalurakenne Oy';
+    var seo = (content[key] && content[key].seo) || {};
+    document.title = seo.title || content.common.nav[key] + ' | Porvoon Paalurakenne Oy';
     var description = document.querySelector('meta[name="description"]');
     if (!description) {
       description = document.createElement('meta');
       description.name = 'description';
       document.head.appendChild(description);
     }
-    description.content = content[key].hero.lead;
+    description.content = seo.description || content[key].hero.lead;
     var ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) ogTitle.content = document.title;
     var ogDescription = document.querySelector('meta[property="og:description"]');
